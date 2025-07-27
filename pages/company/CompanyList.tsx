@@ -9,7 +9,13 @@ interface Company {
   id: number;
   name: string;
   shortName: string;
-  active: boolean;
+  town?: {
+    id: number;
+    name: string;
+    city: string | null;
+    region: string | null;
+  };
+  addressDetail?: string;
 }
 
 const CompanyList = () => {
@@ -52,31 +58,55 @@ const CompanyList = () => {
     <View style={styles.card}>
       <Text style={styles.title}>{item.name}</Text>
       <Text style={styles.subtitle}>{item.shortName}</Text>
-      <Text style={{ color: item.active ? 'green' : 'red' }}>
-        {item.active ? 'Aktif' : 'Pasif'}
-      </Text>
-    <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
-    <TouchableOpacity
-      style={[styles.button, { backgroundColor: '#3498db' }]}
-      onPress={() => navigation.navigate('CompanyDetail', { id: item.id })}
-    >
-      <Text style={styles.buttonText}>Detay</Text>
-    </TouchableOpacity>
+      
+      {/* Lokasyon bilgileri */}
+      <View style={styles.locationInfo}>
+        {item.town && (
+          <>
+            <Text style={styles.locationText}>
+              <Text style={styles.locationLabel}>İlçe: </Text>
+              {item.town.name}
+            </Text>
+            <Text style={styles.locationText}>
+              <Text style={styles.locationLabel}>İl: </Text>
+              {item.town.city || 'Belirtilmedi'}
+            </Text>
+            <Text style={styles.locationText}>
+              <Text style={styles.locationLabel}>Bölge: </Text>
+              {item.town.region || 'Belirtilmedi'}
+            </Text>
+          </>
+        )}
+        {item.addressDetail && (
+          <Text style={styles.locationText}>
+            <Text style={styles.locationLabel}>Adres: </Text>
+            {item.addressDetail}
+          </Text>
+        )}
+      </View>
 
-    <TouchableOpacity
-      style={[styles.button, { backgroundColor: '#f39c12' }]}
-      onPress={() => navigation.navigate('CompanyForm', { companyId: item.id })}
-    >
-      <Text style={styles.buttonText}>Düzenle</Text>
-    </TouchableOpacity>
+      <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: '#3498db' }]}
+        onPress={() => navigation.navigate('CompanyDetail', { id: item.id })}
+      >
+        <Text style={styles.buttonText}>Detay</Text>
+      </TouchableOpacity>
 
-    <TouchableOpacity
-      style={[styles.button, { backgroundColor: '#c0392b' }]}
-      onPress={() => handleDelete(item.id)}
-    >
-      <Text style={styles.buttonText}>Sil</Text>
-    </TouchableOpacity>
-  </View>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: '#f39c12' }]}
+        onPress={() => navigation.navigate('CompanyForm', { companyId: item.id })}
+      >
+        <Text style={styles.buttonText}>Düzenle</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: '#c0392b' }]}
+        onPress={() => handleDelete(item.id)}
+      >
+        <Text style={styles.buttonText}>Sil</Text>
+      </TouchableOpacity>
+    </View>
     </View>
   );
 
@@ -143,5 +173,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  locationInfo: {
+    marginTop: 8,
+    padding: 8,
+    backgroundColor: '#fff',
+    borderRadius: 4,
+  },
+  locationText: {
+    marginBottom: 4,
+    fontSize: 14,
+  },
+  locationLabel: {
+    fontWeight: 'bold',
+    color: '#666',
   },
 });

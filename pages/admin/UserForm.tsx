@@ -20,49 +20,56 @@ const UserForm = () => {
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [departmentId, setDepartmentId] = useState<number | null>(null);
-  const [roleId, setRoleId] = useState<number>(3); // Default: USER
+  const [roleId, setRoleId] = useState<number>(6); 
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(!!userId);
 
 
   const roles = [
-    { id: 1, label: 'Admin' },
-    { id: 2, label: 'Manager' },
-    { id: 3, label: 'User' },
+    { id: 4, label: 'Admin' },
+    { id: 5, label: 'Manager' },
+    { id: 6, label: 'User' },
   ];
 
-  useEffect(() => {
-    const fetchDepartments = async () => {
+useEffect(() => {
+  const fetchDepartments = async () => {
+    try {
+      const response = await api.get('/api/departments');
+      setDepartments(response.data);
+      // Eğer departman varsa ilk departmanın ID'sini set et
+      if (response.data.length > 0) {
+        setDepartmentId(response.data[0].id);
+      }
+    } catch (error) {
+      Alert.alert('Hata', 'Departmanlar alınamadı');
+    }
+  };
+
+  fetchDepartments();
+}, []);
+
+useEffect(() => {
+  if (userId) {
+    const fetchUser = async () => {
       try {
-        const response = await api.get('/api/departments');
-        setDepartments(response.data);
+        const response = await api.get(`/api/user/get-user-detail/${userId}`);
+        const user = response.data;
+        setName(user.name);
+        setSurname(user.surname);
+        setEmail(user.email);
+        if (user.departmentId) {
+          setDepartmentId(user.departmentId);
+        }
       } catch (error) {
-        Alert.alert('Hata', 'Departmanlar alınamadı');
+        Alert.alert('Hata', 'Kullanıcı bilgisi alınamadı');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchDepartments();
-  }, []);
-
-  useEffect(() => {
-    if (userId) {
-      const fetchUser = async () => {
-        try {
-          const response = await api.get(`/api/user/get-user-detail/${userId}`);
-          const user = response.data;
-          setName(user.name);
-          setSurname(user.surname);
-          setEmail(user.email);
-        } catch (error) {
-          Alert.alert('Hata', 'Kullanıcı bilgisi alınamadı');
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchUser();
-    }
-  }, [userId]);
+    fetchUser();
+  }
+}, [userId]);
 
   const handleSave = async () => {
     if (!departmentId) {

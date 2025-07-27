@@ -12,7 +12,7 @@ const AdminDashboard = () => {
     await AsyncStorage.removeItem('accessToken');
     navigation.reset({
       index: 0,
-      routes: [{ name: 'LoginScreen' }],
+      routes: [{ name: 'Login' }],
     });
   };
 

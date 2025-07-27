@@ -7,6 +7,7 @@ import { useNavigation} from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../../navigation/types';
+import ForgotPasswordScreen from './ForgotPasswordScreen';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -25,31 +26,51 @@ const LoginScreen = () => {
   clearTokens();
 }, []);
   const handleLogin = async () => {
-    try {
-      const response = await api.post('/api/auth/login', {
-        email,
-        password,
+  try {
+    const response = await api.post('/api/auth/login', {
+      email,
+      password,
+    });
+
+    console.log("Gelen login cevabı:", response.data);
+    const { accessToken } = response.data;
+    await AsyncStorage.setItem('accessToken', accessToken);
+
+    // Biraz bekle
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    const userResponse = await api.get('/api/user/get-self');
+    const role = userResponse.data?.role?.name;
+
+    if (role === 'ADMIN') {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Tabs' }],
       });
-
-      console.log("Gelen login cevabı:", response.data);
-      const { accessToken } = response.data;
-      await AsyncStorage.setItem('accessToken', accessToken);
-
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      const userResponse = await api.get('/api/user/get-self');
-      const role = userResponse.data?.role?.name;
-
-      if (role === 'ADMIN') {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Tabs' }], // ✅ BottomTabs'a yönlendirme
-        });
-      } else {
-        Alert.alert('Erişim Engellendi', 'Bu kullanıcı admin değil.');
-      }
-    } catch (error) {
-      Alert.alert('Giriş başarısız', 'Lütfen bilgilerinizi kontrol edin.');
+    } else if (role === 'MANAGER') {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'ManagerDashboard' }],
+      });
+    } else if (role === 'USER') {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'UserDashboard' }], // henüz yapmadık ama iskeleti koyuyoruz
+      });
+    } else {
+      Alert.alert('Yetki Hatası', 'Yetkiniz tanımlı değil.');
     }
+  } catch (error) {
+    Alert.alert('Giriş başarısız', 'Lütfen bilgilerinizi kontrol edin.');
+  }
+};
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
+  const handleActivation = () => {
+    navigation.navigate('Activation');
   };
 
   return (
@@ -74,10 +95,16 @@ const LoginScreen = () => {
       </TouchableOpacity>
 
       <Text style={styles.linkText}>
-        Şifremi unuttum, <Text style={styles.link}>Şifre sıfırla</Text>
+        Şifremi unuttum,{' '}
+        <Text style={styles.link} onPress={handleForgotPassword}>
+          Şifre sıfırla
+        </Text>
       </Text>
       <Text style={styles.linkText}>
-        Hesabını aktive etmek için, <Text style={styles.link}>Aktive et</Text>
+        Hesabını aktive etmek için,{' '}
+        <Text style={styles.link} onPress={handleActivation}>
+          Aktive et
+        </Text>
       </Text>
     </View>
   );

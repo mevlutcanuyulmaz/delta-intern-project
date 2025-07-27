@@ -1,4 +1,26 @@
 {
   "name": "DeltaCompanyApp",
-  "displayName": "DeltaCompanyApp"
+  "displayName": "DeltaCompanyApp",
+  "expo": {
+    "scheme": "myapp",
+    "ios": {
+      "associatedDomains": ["applinks:frontend-url"]
+    },
+    "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "frontend-url",
+              "pathPrefix": "/activate"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    }
+  }
 }

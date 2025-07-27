@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import CompanyList from '../pages/company/CompanyList';
-import UserList from '../pages/user/UserList';
+import UserList from '../pages/admin/UserList';
 
 const Tab = createBottomTabNavigator();
 
