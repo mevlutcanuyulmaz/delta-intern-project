@@ -2,9 +2,15 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, ScrollView, RefreshControl, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserInfo } from '../../types/types';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { RootStackParamList } from '../../navigation/types';
+
+type ManagerDashboardNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ManagerDashboard'>;
 
 interface DepartmentStats {
   totalEmployees: number;
@@ -13,7 +19,8 @@ interface DepartmentStats {
 }
 
 const ManagerDashboard = () => {
-  const navigation = useNavigation<any>();
+  const { t } = useLanguage();
+  const navigation = useNavigation<ManagerDashboardNavigationProp>();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [stats, setStats] = useState<DepartmentStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,12 +37,15 @@ const ManagerDashboard = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={handleLogout} style={{ marginRight: 16 }}>
-          <Text style={{ color: 'red', fontWeight: 'bold' }}>Çıkış</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
+          </TouchableOpacity>
+        </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, handleLogout, t]);
 
   const fetchDashboardData = async () => {
     try {
@@ -79,13 +89,13 @@ const ManagerDashboard = () => {
 
   const quickActions = [
     {
-      title: 'Departman Çalışanları',
+      title: t.managerDashboard.departmentEmployees,
       icon: 'account-group',
       color: '#4CAF50',
       onPress: () => navigation.navigate('ManagerUserList')
     },
     {
-      title: 'Profil Ayarları',
+      title: t.managerDashboard.profileSettings,
       icon: 'account-cog',
       color: '#2196F3',
       onPress: () => navigation.navigate('ManagerProfile')
@@ -113,7 +123,7 @@ const ManagerDashboard = () => {
         <View style={styles.welcomeHeader}>
           <Icon name="account-tie" size={40} color="#4b5c75" />
           <View style={styles.welcomeText}>
-            <Text style={styles.welcomeTitle}>Hoş Geldin!</Text>
+            <Text style={styles.welcomeTitle}>{t.managerDashboard.welcome}</Text>
             <Text style={styles.welcomeName}>{userInfo?.name} {userInfo?.surname}</Text>
             <Text style={styles.welcomeRole}>{userInfo?.role?.name}</Text>
             <Text style={styles.welcomeDepartment}>Departman: {userInfo?.departmentName}</Text>
@@ -129,13 +139,13 @@ const ManagerDashboard = () => {
              <View style={[styles.statCard, { backgroundColor: '#E3F2FD' }]}>
                <Icon name="account-group" size={30} color="#1976D2" />
                <Text style={styles.statNumber}>{stats.totalEmployees}</Text>
-               <Text style={styles.statLabel}>Toplam Çalışan</Text>
+               <Text style={styles.statLabel}>{t.managerDashboard.totalEmployees}</Text>
              </View>
              
              <View style={[styles.statCard, { backgroundColor: '#F3E5F5' }]}>
                <Icon name="domain" size={30} color="#7B1FA2" />
                <Text style={styles.statNumber}>{stats.managedDepartments}</Text>
-               <Text style={styles.statLabel}>Yönetilen Departman</Text>
+               <Text style={styles.statLabel}>{t.managerDashboard.managedDepartments}</Text>
              </View>
            </View>
          </View>
@@ -143,7 +153,7 @@ const ManagerDashboard = () => {
 
       {/* Hızlı İşlemler */}
       <View style={styles.quickActionsSection}>
-        <Text style={styles.sectionTitle}>Hızlı İşlemler</Text>
+        <Text style={styles.sectionTitle}>{t.managerDashboard.quickActions}</Text>
         <View style={styles.quickActionsGrid}>
           {quickActions.map((action, index) => (
             <TouchableOpacity

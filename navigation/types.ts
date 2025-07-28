@@ -16,6 +16,7 @@ export type RootStackParamList = {
   UserBottomTabs: undefined;
   ManagerDashboard: undefined;
   ManagerProfile: undefined;
+  ManagerUserList: undefined;
   ManagerBottomTabs: undefined;
   
   

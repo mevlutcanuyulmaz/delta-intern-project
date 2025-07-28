@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import api from '../../services/api';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { RootStackParamList } from '../../navigation/types';
+
+type ManagerUserListNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface UserDetail {
   id: number;
@@ -15,9 +23,30 @@ interface UserDetail {
 }
 
 const ManagerUserList = () => {
+  const { t } = useLanguage();
+  const navigation = useNavigation<ManagerUserListNavigationProp>();
   const [users, setUsers] = useState<UserDetail[]>([]);
   const [loading, setLoading] = useState(true);
   const [managerDepartment, setManagerDepartment] = useState<string>('');
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity
+            style={{ marginLeft: 15 }}
+            onPress={() => {
+              // Logout logic here
+              navigation.navigate('Login');
+            }}
+          >
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation, t]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +67,7 @@ const ManagerUserList = () => {
         
         setUsers(filteredUsers);
       } catch (err) {
-        console.error('Kullanıcılar getirilemedi:', err);
+        console.error(t.managerUserList.usersLoadError, err);
       } finally {
         setLoading(false);
       }
@@ -49,22 +78,22 @@ const ManagerUserList = () => {
 
   const handleDeleteUser = async (userId: number, userName: string) => {
     Alert.alert(
-      'Kullanıcı Silme',
-      `${userName} kullanıcısını silmek istediğinize emin misiniz?`,
+      t.managerUserList.deleteUser,
+      `${userName} ${t.managerUserList.deleteConfirmation}`,
       [
-        { text: 'İptal', style: 'cancel' },
+        { text: t.managerUserList.cancel, style: 'cancel' },
         {
-          text: 'Sil',
+          text: t.managerUserList.delete,
           style: 'destructive',
           onPress: async () => {
             try {
               await api.delete(`/api/user/delete-user/${userId}`);
               // Başarılı silme işleminden sonra listeyi güncelle
               setUsers(users.filter(user => user.id !== userId));
-              Alert.alert('Başarılı', 'Kullanıcı başarıyla silindi.');
+              Alert.alert(t.common.success, t.managerUserList.deleteSuccess);
             } catch (err) {
               console.error('Silme hatası:', err);
-              Alert.alert('Hata', 'Kullanıcı silinirken bir hata oluştu.');
+              Alert.alert(t.common.error, t.managerUserList.deleteError);
             }
           }
         }
@@ -72,11 +101,16 @@ const ManagerUserList = () => {
     );
   };
 
-  if (loading) return <ActivityIndicator size="large" />;
+  if (loading) return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size="large" />
+      <Text style={{ marginTop: 10 }}>{t.managerUserList.loading}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Departman: {managerDepartment}</Text>
+      <Text style={styles.header}>{t.managerUserList.department}: {managerDepartment}</Text>
       <FlatList
         data={users}
         keyExtractor={(item) => item.id.toString()}
@@ -85,18 +119,18 @@ const ManagerUserList = () => {
             <View style={styles.cardContent}>
               <Text style={styles.name}>{item.name} {item.surname}</Text>
               <Text style={styles.email}>{item.email}</Text>
-              <Text style={styles.info}>Rol: {item.role.name}</Text>
+              <Text style={styles.info}>{t.managerUserList.role}: {item.role.name}</Text>
             </View>
             <TouchableOpacity 
               style={styles.deleteButton}
               onPress={() => handleDeleteUser(item.id, `${item.name} ${item.surname}`)}
             >
-              <Text style={styles.deleteButtonText}>Sil</Text>
+              <Text style={styles.deleteButtonText}>{t.managerUserList.delete}</Text>
             </TouchableOpacity>
           </View>
         )}
         ListEmptyComponent={() => (
-          <Text style={styles.emptyText}>Bu departmanda henüz kullanıcı bulunmuyor.</Text>
+          <Text style={styles.emptyText}>{t.managerUserList.emptyList}</Text>
         )}
       />
     </View>

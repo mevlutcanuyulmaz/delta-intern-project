@@ -103,6 +103,56 @@ export interface Translations {
     employeeCount: string;
   };
 
+  // Manager Dashboard translations
+  managerDashboard: {
+    loading: string;
+    welcome: string;
+    departmentStats: string;
+    totalEmployees: string;
+    managedDepartments: string;
+    quickActions: string;
+    departmentEmployees: string;
+    profileSettings: string;
+    department: string;
+  };
+
+  // Manager Profile translations
+  managerProfile: {
+    loading: string;
+    title: string;
+    generalInfo: string;
+    personalInfo: string;
+    changePassword: string;
+    department: string;
+    role: string;
+    name: string;
+    surname: string;
+    email: string;
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+    changePasswordButton: string;
+    passwordMismatch: string;
+    passwordChangeSuccess: string;
+    passwordChangeError: string;
+    profileLoadError: string;
+  };
+
+  // Manager User List translations
+  managerUserList: {
+    loading: string;
+    department: string;
+    role: string;
+    deleteUser: string;
+    deleteConfirmation: string;
+    cancel: string;
+    delete: string;
+    deleteSuccess: string;
+    deleteError: string;
+    emptyList: string;
+    usersLoadError: string;
+  };
+
   // Common translations
   common: {
     loading: string;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,15 @@ import {
   Alert,
   ScrollView
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import api from '../../services/api';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { RootStackParamList } from '../../navigation/types';
+
+type ManagerProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ManagerProfile'>;
 
 interface UserProfile {
   id: number;
@@ -23,11 +31,32 @@ interface UserProfile {
 }
 
 const ManagerProfile = () => {
+  const { t } = useLanguage();
+  const navigation = useNavigation<ManagerProfileNavigationProp>();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity
+            style={{ marginLeft: 15 }}
+            onPress={() => {
+              // Logout logic here
+              navigation.navigate('Login');
+            }}
+          >
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation, t]);
 
   useEffect(() => {
     fetchProfile();
@@ -38,7 +67,7 @@ const ManagerProfile = () => {
       const response = await api.get('/api/user/get-self');
       setProfile(response.data);
     } catch (error) {
-      Alert.alert('Hata', 'Profil bilgileri alınamadı');
+      Alert.alert(t.common.error, t.managerProfile.profileLoadError);
     } finally {
       setLoading(false);
     }
@@ -46,7 +75,7 @@ const ManagerProfile = () => {
 
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
-      Alert.alert('Hata', 'Yeni şifreler eşleşmiyor');
+      Alert.alert(t.common.error, t.managerProfile.passwordMismatch);
       return;
     }
 
@@ -56,68 +85,73 @@ const ManagerProfile = () => {
         newPassword,
         confirmPassword
       });
-      Alert.alert('Başarılı', 'Şifre başarıyla güncellendi');
+      Alert.alert(t.common.success, t.managerProfile.passwordChangeSuccess);
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      Alert.alert('Hata', 'Şifre değiştirme başarısız');
+      Alert.alert(t.common.error, t.managerProfile.passwordChangeError);
     }
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" />;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+        <Text style={{ marginTop: 10 }}>{t.managerProfile.loading}</Text>
+      </View>
+    );
   }
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Profil Bilgileri</Text>
+      <Text style={styles.title}>{t.managerProfile.title}</Text>
       
       <View style={styles.infoSection}>
-        <Text style={styles.label}>Departman</Text>
+        <Text style={styles.label}>{t.managerProfile.department}</Text>
         <Text style={styles.value}>{profile?.departmentName}</Text>
         
-        <Text style={styles.label}>Rol</Text>
+        <Text style={styles.label}>{t.managerProfile.role}</Text>
         <Text style={styles.value}>{profile?.role.name}</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Kişisel Bilgiler</Text>
-        <Text style={styles.label}>Ad</Text>
+        <Text style={styles.sectionTitle}>{t.managerProfile.personalInfo}</Text>
+        <Text style={styles.label}>{t.managerProfile.name}</Text>
         <Text style={styles.value}>{profile?.name}</Text>
         
-        <Text style={styles.label}>Soyad</Text>
+        <Text style={styles.label}>{t.managerProfile.surname}</Text>
         <Text style={styles.value}>{profile?.surname}</Text>
         
-        <Text style={styles.label}>E-posta</Text>
+        <Text style={styles.label}>{t.managerProfile.email}</Text>
         <Text style={styles.value}>{profile?.email}</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Şifre Değiştir</Text>
+        <Text style={styles.sectionTitle}>{t.managerProfile.changePassword}</Text>
         <TextInput
           style={styles.input}
           value={currentPassword}
           onChangeText={setCurrentPassword}
-          placeholder="Mevcut Şifre"
+          placeholder={t.managerProfile.currentPassword}
           secureTextEntry
         />
         <TextInput
           style={styles.input}
           value={newPassword}
           onChangeText={setNewPassword}
-          placeholder="Yeni Şifre"
+          placeholder={t.managerProfile.newPassword}
           secureTextEntry
         />
         <TextInput
           style={styles.input}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
-          placeholder="Yeni Şifre (Tekrar)"
+          placeholder={t.managerProfile.confirmPassword}
           secureTextEntry
         />
         <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
-          <Text style={styles.buttonText}>Şifre Değiştir</Text>
+          <Text style={styles.buttonText}>{t.managerProfile.changePasswordButton}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

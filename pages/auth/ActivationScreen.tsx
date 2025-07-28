@@ -66,7 +66,9 @@ const ActivationScreen = () => {
 
   return (
     <View style={styles.wrapper}>
-      <LanguageSwitcher />
+      <View style={styles.header}>
+        <LanguageSwitcher />
+      </View>
       
       <View style={styles.container}>
         <Text style={styles.title}>{t.auth.activation.title}</Text>
@@ -111,6 +113,12 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+  },
+  header: {
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    alignItems: 'flex-end',
+    paddingBottom: 20,
   },
   container: {
     flex: 1,
