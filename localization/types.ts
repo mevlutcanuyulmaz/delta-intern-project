@@ -43,6 +43,66 @@ export interface Translations {
     };
   };
   
+  // User Dashboard translations
+  userDashboard: {
+    loading: string;
+    welcome: string;
+    myInfo: string;
+    department: string;
+    company: string;
+    joinDate: string;
+    email: string;
+  };
+
+  // User Profile translations
+  userProfile: {
+    loading: string;
+    title: string;
+    generalInfo: string;
+    personalInfo: string;
+    changePassword: string;
+    department: string;
+    company: string;
+    role: string;
+    joinDate: string;
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+    changePasswordButton: string;
+    unassigned: string;
+    unknown: string;
+  };
+
+  // User Company Info translations
+  userCompanyInfo: {
+    loading: string;
+    error: string;
+    retry: string;
+    companyInfo: string;
+    departmentInfo: string;
+    noCompanyTitle: string;
+    noCompanyText: string;
+    noDepartmentTitle: string;
+    noDepartmentText: string;
+    active: string;
+    departmentName: string;
+    userRole: string;
+    joinDate: string;
+    notSpecified: string;
+    companyName: string;
+    companyCode: string;
+    companyAddress: string;
+    companyPhone: string;
+    companyEmail: string;
+    companyWebsite: string;
+    establishedDate: string;
+    employeeCount: string;
+  };
+
   // Common translations
   common: {
     loading: string;

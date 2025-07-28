@@ -12,8 +12,11 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import api from '../../services/api';
 import { UserInfo } from '../../types/types';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 const UserProfile = () => {
+  const { t } = useLanguage();
   const [profile, setProfile] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPassword, setCurrentPassword] = useState('');
@@ -77,116 +80,126 @@ const UserProfile = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Profil yükleniyor...</Text>
+      <View style={styles.wrapper}>
+        <LanguageSwitcher />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4b5c75" />
+          <Text style={styles.loadingText}>{t.userProfile.loading}</Text>
+        </View>
       </View>
     );
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Profil Bilgileri</Text>
-      
-      {/* Genel Bilgiler */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Icon name="account-circle" size={24} color="#4b5c75" />
-          <Text style={styles.sectionTitle}>Genel Bilgiler</Text>
-        </View>
+    <View style={styles.wrapper}>
+      <LanguageSwitcher />
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>{t.userProfile.title}</Text>
         
-        <View style={styles.infoItem}>
-          <Text style={styles.label}>Departman</Text>
-          <Text style={styles.value}>{profile?.departmentName || profile?.department?.name || 'Atanmamış'}</Text>
-        </View>
-        
-        <View style={styles.infoItem}>
-          <Text style={styles.label}>Şirket</Text>
-          <Text style={styles.value}>{profile?.company?.name || 'Bilinmiyor'}</Text>
-        </View>
-        
-        <View style={styles.infoItem}>
-          <Text style={styles.label}>Rol</Text>
-          <Text style={styles.value}>{profile?.role?.name}</Text>
-        </View>
-
-        <View style={styles.infoItem}>
-          <Text style={styles.label}>Katılım Tarihi</Text>
-          <Text style={styles.value}>{formatJoinDate(profile?.createdAt || '')}</Text>
-        </View>
-      </View>
-
-      {/* Kişisel Bilgiler */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Icon name="account-edit" size={24} color="#4b5c75" />
-          <Text style={styles.sectionTitle}>Kişisel Bilgiler</Text>
-        </View>
-        
-        <View style={styles.infoItem}>
-          <Text style={styles.label}>Ad</Text>
-          <Text style={styles.value}>{profile?.name}</Text>
-        </View>
-        
-        <View style={styles.infoItem}>
-          <Text style={styles.label}>Soyad</Text>
-          <Text style={styles.value}>{profile?.surname}</Text>
-        </View>
-        
-        <View style={styles.infoItem}>
-          <Text style={styles.label}>E-posta</Text>
-          <Text style={styles.value}>{profile?.email}</Text>
-        </View>
-
-        {profile?.phone && (
-          <View style={styles.infoItem}>
-            <Text style={styles.label}>Telefon</Text>
-            <Text style={styles.value}>{profile.phone}</Text>
+        {/* Genel Bilgiler */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Icon name="account-circle" size={24} color="#4b5c75" />
+            <Text style={styles.sectionTitle}>{t.userProfile.generalInfo}</Text>
           </View>
-        )}
-      </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.department}</Text>
+            <Text style={styles.value}>{profile?.departmentName || profile?.department?.name || t.userProfile.unassigned}</Text>
+          </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.company}</Text>
+            <Text style={styles.value}>{profile?.company?.name || t.userProfile.unknown}</Text>
+          </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.role}</Text>
+            <Text style={styles.value}>{profile?.role?.name}</Text>
+          </View>
 
-      {/* Şifre Değiştir */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Icon name="lock-reset" size={24} color="#4b5c75" />
-          <Text style={styles.sectionTitle}>Şifre Değiştir</Text>
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.joinDate}</Text>
+            <Text style={styles.value}>{formatJoinDate(profile?.createdAt || '')}</Text>
+          </View>
         </View>
-        
-        <TextInput
-          style={styles.input}
-          value={currentPassword}
-          onChangeText={setCurrentPassword}
-          placeholder="Mevcut Şifre"
-          secureTextEntry
-          placeholderTextColor="#999"
-        />
-        <TextInput
-          style={styles.input}
-          value={newPassword}
-          onChangeText={setNewPassword}
-          placeholder="Yeni Şifre (En az 6 karakter)"
-          secureTextEntry
-          placeholderTextColor="#999"
-        />
-        <TextInput
-          style={styles.input}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          placeholder="Yeni Şifre (Tekrar)"
-          secureTextEntry
-          placeholderTextColor="#999"
-        />
-        <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
-          <Icon name="check" size={20} color="#fff" style={styles.buttonIcon} />
-          <Text style={styles.buttonText}>Şifre Değiştir</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+
+        {/* Kişisel Bilgiler */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Icon name="account-edit" size={24} color="#4b5c75" />
+            <Text style={styles.sectionTitle}>{t.userProfile.personalInfo}</Text>
+          </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.name}</Text>
+            <Text style={styles.value}>{profile?.name}</Text>
+          </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.surname}</Text>
+            <Text style={styles.value}>{profile?.surname}</Text>
+          </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.email}</Text>
+            <Text style={styles.value}>{profile?.email}</Text>
+          </View>
+
+          {profile?.phone && (
+            <View style={styles.infoItem}>
+              <Text style={styles.label}>{t.userProfile.phone}</Text>
+              <Text style={styles.value}>{profile.phone}</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Şifre Değiştir */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Icon name="lock-reset" size={24} color="#4b5c75" />
+            <Text style={styles.sectionTitle}>{t.userProfile.changePassword}</Text>
+          </View>
+          
+          <TextInput
+            style={styles.input}
+            value={currentPassword}
+            onChangeText={setCurrentPassword}
+            placeholder={t.userProfile.currentPassword}
+            secureTextEntry
+            placeholderTextColor="#999"
+          />
+          <TextInput
+            style={styles.input}
+            value={newPassword}
+            onChangeText={setNewPassword}
+            placeholder={t.userProfile.newPassword}
+            secureTextEntry
+            placeholderTextColor="#999"
+          />
+          <TextInput
+            style={styles.input}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            placeholder={t.userProfile.confirmPassword}
+            secureTextEntry
+            placeholderTextColor="#999"
+          />
+          <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+            <Icon name="check" size={20} color="#fff" style={styles.buttonIcon} />
+            <Text style={styles.buttonText}>{t.userProfile.changePasswordButton}</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',

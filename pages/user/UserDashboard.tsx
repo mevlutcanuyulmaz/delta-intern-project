@@ -5,8 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserInfo, UserStats } from '../../types/types';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 const UserDashboard = () => {
+  const { t } = useLanguage();
   const navigation = useNavigation<any>();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [stats, setStats] = useState<UserStats | null>(null);
@@ -91,61 +94,71 @@ const UserDashboard = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Dashboard yükleniyor...</Text>
+      <View style={styles.wrapper}>
+        <LanguageSwitcher />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4b5c75" />
+          <Text style={styles.loadingText}>{t.userDashboard.loading}</Text>
+        </View>
       </View>
     );
   }
 
   return (
-    <ScrollView 
-      style={styles.container}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      {/* Hoş Geldin Bölümü */}
-      <View style={styles.welcomeSection}>
-        <View style={styles.welcomeHeader}>
-          <Icon name="account-circle" size={40} color="#4b5c75" />
-          <View style={styles.welcomeText}>
-            <Text style={styles.welcomeTitle}>Hoş Geldin!</Text>
-            <Text style={styles.welcomeName}>{userInfo?.name} {userInfo?.surname}</Text>
-            <Text style={styles.welcomeRole}>{userInfo?.role?.name}</Text>
-            <Text style={styles.welcomeCompany}>{stats?.companyName}</Text>
+    <View style={styles.wrapper}>
+      <LanguageSwitcher />
+      <ScrollView 
+        style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {/* Hoş Geldin Bölümü */}
+        <View style={styles.welcomeSection}>
+          <View style={styles.welcomeHeader}>
+            <Icon name="account-circle" size={40} color="#4b5c75" />
+            <View style={styles.welcomeText}>
+              <Text style={styles.welcomeTitle}>{t.userDashboard.welcome}</Text>
+              <Text style={styles.welcomeName}>{userInfo?.name} {userInfo?.surname}</Text>
+              <Text style={styles.welcomeRole}>{userInfo?.role?.name}</Text>
+              <Text style={styles.welcomeCompany}>{stats?.companyName}</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* Bilgilerim */}
-      <View style={styles.infoSection}>
-        <Text style={styles.sectionTitle}>Bilgilerim</Text>
-        <View style={styles.infoCard}>
-          <View style={styles.infoItem}>
-            <Icon name="domain" size={20} color="#4b5c75" />
-            <Text style={styles.infoText}>Departman: {stats?.departmentName}</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Icon name="office-building" size={20} color="#4b5c75" />
-            <Text style={styles.infoText}>Şirket: {stats?.companyName}</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Icon name="calendar" size={20} color="#4b5c75" />
-            <Text style={styles.infoText}>Katılım: {formatJoinDate(stats?.joinDate || '')}</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Icon name="email" size={20} color="#4b5c75" />
-            <Text style={styles.infoText}>E-posta: {userInfo?.email}</Text>
+        {/* Bilgilerim */}
+        <View style={styles.infoSection}>
+          <Text style={styles.sectionTitle}>{t.userDashboard.myInfo}</Text>
+          <View style={styles.infoCard}>
+            <View style={styles.infoItem}>
+              <Icon name="domain" size={20} color="#4b5c75" />
+              <Text style={styles.infoText}>{t.userDashboard.department}: {stats?.departmentName}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Icon name="office-building" size={20} color="#4b5c75" />
+              <Text style={styles.infoText}>{t.userDashboard.company}: {stats?.companyName}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Icon name="calendar" size={20} color="#4b5c75" />
+              <Text style={styles.infoText}>{t.userDashboard.joinDate}: {formatJoinDate(stats?.joinDate || '')}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Icon name="email" size={20} color="#4b5c75" />
+              <Text style={styles.infoText}>{t.userDashboard.email}: {userInfo?.email}</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',

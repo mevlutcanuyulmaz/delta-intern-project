@@ -14,8 +14,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import { CompanyInfo, UserInfo, DepartmentInfo } from '../../types/types';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 const UserCompanyInfo = () => {
+  const { t } = useLanguage();
   const navigation = useNavigation<any>();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
@@ -83,168 +86,182 @@ const UserCompanyInfo = () => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Şirket bilgileri yükleniyor...</Text>
+      <View style={styles.wrapper}>
+        <LanguageSwitcher />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4b5c75" />
+          <Text style={styles.loadingText}>{t.userCompanyInfo.loading}</Text>
+        </View>
       </View>
     );
   }
 
   if (!userInfo) {
     return (
-      <View style={styles.errorContainer}>
-        <Icon name="alert-circle" size={48} color="#f44336" />
-        <Text style={styles.errorText}>Kullanıcı bilgileri bulunamadı</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={fetchUserInfo}>
-          <Text style={styles.retryButtonText}>Tekrar Dene</Text>
-        </TouchableOpacity>
+      <View style={styles.wrapper}>
+        <LanguageSwitcher />
+        <View style={styles.errorContainer}>
+          <Icon name="alert-circle" size={48} color="#f44336" />
+          <Text style={styles.errorText}>{t.userCompanyInfo.error}</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={fetchUserInfo}>
+            <Text style={styles.retryButtonText}>{t.userCompanyInfo.retry}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
   return (
-    <ScrollView 
-      style={styles.container}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      {/* Şirket Bilgileri */}
-      {companyInfo ? (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            <Icon name="office-building" size={20} color="#4b5c75" /> Şirket Bilgileri
-          </Text>
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>{companyInfo.name || 'Şirket adı belirtilmemiş'}</Text>
-              <View style={[styles.statusBadge, { backgroundColor: companyInfo.active ? '#4CAF50' : '#f44336' }]}>
-                <Text style={styles.statusText}>{companyInfo.active ? 'Aktif' : 'Pasif'}</Text>
-              </View>
-            </View>
-            
-            <View style={styles.infoGrid}>
-              <View style={styles.infoItem}>
-                <Icon name="tag" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Kısa Ad:</Text>
-                <Text style={styles.infoValue}>{companyInfo.shortName || 'Belirtilmemiş'}</Text>
-              </View>
-              
-              <View style={styles.infoItem}>
-                <Icon name="domain" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Şirket Türü:</Text>
-                <Text style={styles.infoValue}>{companyInfo.companyType?.name || 'Belirtilmemiş'}</Text>
-              </View>
-              
-              <View style={styles.infoItem}>
-                <Icon name="map-marker" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Adres:</Text>
-                <Text style={styles.infoValue}>{formatAddress(companyInfo)}</Text>
-              </View>
-              
-              <View style={styles.infoItem}>
-                <Icon name="calendar-plus" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Kuruluş Tarihi:</Text>
-                <Text style={styles.infoValue}>{companyInfo.createdAt ? formatDate(companyInfo.createdAt) : 'Belirtilmemiş'}</Text>
-              </View>
-
-              <View style={styles.infoItem}>
-                <Icon name="account-circle" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Kullanıcı:</Text>
-                <Text style={styles.infoValue}>{userInfo?.name || 'İsim'} {userInfo?.surname || 'Soyisim'}</Text>
-              </View>
-
-              <View style={styles.infoItem}>
-                <Icon name="email" size={16} color="#666" />
-                <Text style={styles.infoLabel}>E-posta:</Text>
-                <Text style={styles.infoValue}>{userInfo?.email || 'E-posta belirtilmemiş'}</Text>
-              </View>
-
-              <View style={styles.infoItem}>
-                <Icon name="shield-account" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Rol:</Text>
-                <Text style={styles.infoValue}>{userInfo?.role?.name || 'Rol belirtilmemiş'}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      ) : (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            <Icon name="office-building" size={20} color="#4b5c75" /> Şirket Bilgileri
-          </Text>
-          <View style={styles.warningCard}>
-            <Text style={styles.warningCardTitle}>
-              <Icon name="information" size={20} color="#f57c00" /> Şirket Bilgisi Bulunamadı
+    <View style={styles.wrapper}>
+      <LanguageSwitcher />
+      <ScrollView 
+        style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {/* Şirket Bilgileri */}
+        {companyInfo ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              <Icon name="office-building" size={20} color="#4b5c75" /> {t.userCompanyInfo.companyInfo}
             </Text>
-            <Text style={styles.warningCardText}>
-              Henüz bir şirkete bağlı değilsiniz. Şirket ataması için yöneticinizle iletişime geçin.
-            </Text>
-          </View>
-        </View>
-      )}
-      
-      {/* Departman Bilgileri - departmentName varsa göster */}
-      {userInfo.departmentName && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            <Icon name="domain" size={20} color="#4b5c75" /> Departman Bilgileri
-          </Text>
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>{userInfo.departmentName}</Text>
-              <View style={[styles.statusBadge, { backgroundColor: '#4CAF50' }]}>
-                <Text style={styles.statusText}>Aktif</Text>
-              </View>
-            </View>
-            
-            <View style={styles.infoGrid}>
-              <View style={styles.infoItem}>
-                <Icon name="account-group" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Departman Adı:</Text>
-                <Text style={styles.infoValue}>{userInfo.departmentName}</Text>
+            <View style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.cardTitle}>{companyInfo.name || t.userCompanyInfo.notSpecified}</Text>
+                <View style={[styles.statusBadge, { backgroundColor: companyInfo.active ? '#4CAF50' : '#f44336' }]}>
+                  <Text style={styles.statusText}>{companyInfo.active ? t.userCompanyInfo.active : 'Pasif'}</Text>
+                </View>
               </View>
               
-              <View style={styles.infoItem}>
-                <Icon name="shield-account" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Kullanıcı Rolü:</Text>
-                <Text style={styles.infoValue}>{userInfo.role?.name || 'USER'}</Text>
-              </View>
-              
-              <View style={styles.infoItem}>
-                <Icon name="calendar-account" size={16} color="#666" />
-                <Text style={styles.infoLabel}>Katılım Tarihi:</Text>
-                <Text style={styles.infoValue}>{userInfo.createdAt ? formatDate(userInfo.createdAt) : 'Belirtilmemiş'}</Text>
+              <View style={styles.infoGrid}>
+                <View style={styles.infoItem}>
+                  <Icon name="tag" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.companyCode}:</Text>
+                  <Text style={styles.infoValue}>{companyInfo.shortName || t.userCompanyInfo.notSpecified}</Text>
+                </View>
+                
+                <View style={styles.infoItem}>
+                  <Icon name="domain" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>Şirket Türü:</Text>
+                  <Text style={styles.infoValue}>{companyInfo.companyType?.name || t.userCompanyInfo.notSpecified}</Text>
+                </View>
+                
+                <View style={styles.infoItem}>
+                  <Icon name="map-marker" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.companyAddress}:</Text>
+                  <Text style={styles.infoValue}>{formatAddress(companyInfo)}</Text>
+                </View>
+                
+                <View style={styles.infoItem}>
+                  <Icon name="calendar-plus" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.establishedDate}:</Text>
+                  <Text style={styles.infoValue}>{companyInfo.createdAt ? formatDate(companyInfo.createdAt) : t.userCompanyInfo.notSpecified}</Text>
+                </View>
+
+                <View style={styles.infoItem}>
+                  <Icon name="account-circle" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>Kullanıcı:</Text>
+                  <Text style={styles.infoValue}>{userInfo?.name || 'İsim'} {userInfo?.surname || 'Soyisim'}</Text>
+                </View>
+
+                <View style={styles.infoItem}>
+                  <Icon name="email" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>E-posta:</Text>
+                  <Text style={styles.infoValue}>{userInfo?.email || 'E-posta belirtilmemiş'}</Text>
+                </View>
+
+                <View style={styles.infoItem}>
+                  <Icon name="shield-account" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>Rol:</Text>
+                  <Text style={styles.infoValue}>{userInfo?.role?.name || 'Rol belirtilmemiş'}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      )}
-
-      {/* Departman bilgisi yoksa bilgilendirme mesajı */}
-      {!userInfo.departmentName && !userInfo.department && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            <Icon name="domain" size={20} color="#4b5c75" /> Departman Bilgileri
-          </Text>
-          <View style={styles.warningCard}>
-            <Text style={styles.warningCardTitle}>
-              <Icon name="information" size={20} color="#f57c00" /> Departman Bilgisi Bulunamadı
+        ) : (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              <Icon name="office-building" size={20} color="#4b5c75" /> {t.userCompanyInfo.companyInfo}
             </Text>
-            <Text style={styles.warningCardText}>
-              Henüz bir departmana atanmadınız. Departman ataması için yöneticinizle iletişime geçin.
-            </Text>
+            <View style={styles.warningCard}>
+              <Text style={styles.warningCardTitle}>
+                <Icon name="information" size={20} color="#f57c00" /> {t.userCompanyInfo.noCompanyTitle}
+              </Text>
+              <Text style={styles.warningCardText}>
+                {t.userCompanyInfo.noCompanyText}
+              </Text>
+            </View>
           </View>
-        </View>
-      )}
-    </ScrollView>
+        )}
+        
+        {/* Departman Bilgileri - departmentName varsa göster */}
+        {userInfo.departmentName && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              <Icon name="domain" size={20} color="#4b5c75" /> {t.userCompanyInfo.departmentInfo}
+            </Text>
+            <View style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.cardTitle}>{userInfo.departmentName}</Text>
+                <View style={[styles.statusBadge, { backgroundColor: '#4CAF50' }]}>
+                  <Text style={styles.statusText}>{t.userCompanyInfo.active}</Text>
+                </View>
+              </View>
+              
+              <View style={styles.infoGrid}>
+                <View style={styles.infoItem}>
+                  <Icon name="account-group" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.departmentName}:</Text>
+                  <Text style={styles.infoValue}>{userInfo.departmentName}</Text>
+                </View>
+                
+                <View style={styles.infoItem}>
+                  <Icon name="shield-account" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.userRole}:</Text>
+                  <Text style={styles.infoValue}>{userInfo.role?.name || 'USER'}</Text>
+                </View>
+                
+                <View style={styles.infoItem}>
+                  <Icon name="calendar-account" size={16} color="#666" />
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.joinDate}:</Text>
+                  <Text style={styles.infoValue}>{userInfo.createdAt ? formatDate(userInfo.createdAt) : t.userCompanyInfo.notSpecified}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* Departman bilgisi yoksa bilgilendirme mesajı */}
+        {!userInfo.departmentName && !userInfo.department && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              <Icon name="domain" size={20} color="#4b5c75" /> {t.userCompanyInfo.departmentInfo}
+            </Text>
+            <View style={styles.warningCard}>
+              <Text style={styles.warningCardTitle}>
+                <Icon name="information" size={20} color="#f57c00" /> {t.userCompanyInfo.noDepartmentTitle}
+              </Text>
+              <Text style={styles.warningCardText}>
+                {t.userCompanyInfo.noDepartmentText}
+              </Text>
+            </View>
+          </View>
+        )}
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+    padding: 16,
   },
   loadingContainer: {
     flex: 1,
