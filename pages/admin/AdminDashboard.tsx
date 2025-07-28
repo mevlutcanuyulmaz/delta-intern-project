@@ -1,9 +1,15 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { RootStackParamList } from '../../navigation/types';
+
+type AdminDashboardNavigationProp = NativeStackNavigationProp<RootStackParamList, 'AdminDashboard'>;
 
 interface DashboardStats {
   totalUsers: number;
@@ -14,11 +20,12 @@ interface DashboardStats {
 }
 
 const AdminDashboard = () => {
+  const { t } = useLanguage();
   const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<AdminDashboardNavigationProp>();
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('accessToken');
@@ -31,12 +38,18 @@ const AdminDashboard = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={handleLogout} style={{ marginRight: 16 }}>
-          <Text style={{ color: 'red', fontWeight: 'bold' }}>Çıkış</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <LanguageSwitcher />
+          <TouchableOpacity 
+            onPress={handleLogout} 
+            style={{ marginLeft: 16, marginRight: 16 }}
+          >
+            <Icon name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, t]);
 
   const fetchDashboardData = async () => {
     try {
@@ -66,7 +79,7 @@ const AdminDashboard = () => {
       setStats(dashboardStats);
     } catch (error) {
       console.error('Dashboard verileri alınamadı:', error);
-      Alert.alert('Hata', 'Dashboard verileri yüklenirken bir hata oluştu');
+      Alert.alert(t.common.error, t.adminDashboard.dataLoadError);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -86,7 +99,7 @@ const AdminDashboard = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Dashboard yükleniyor...</Text>
+        <Text style={styles.loadingText}>{t.adminDashboard.loading}</Text>
       </View>
     );
   }
@@ -103,7 +116,7 @@ const AdminDashboard = () => {
         <View style={styles.welcomeHeader}>
           <Icon name="shield-account" size={40} color="#4b5c75" />
           <View style={styles.welcomeText}>
-            <Text style={styles.welcomeTitle}>Hoş Geldin!</Text>
+            <Text style={styles.welcomeTitle}>{t.adminDashboard.welcome}</Text>
             <Text style={styles.welcomeName}>{user?.name} {user?.surname}</Text>
             <Text style={styles.welcomeRole}>{user?.role?.name}</Text>
           </View>
@@ -113,30 +126,30 @@ const AdminDashboard = () => {
       {/* İstatistik Kartları */}
       {stats && (
         <View style={styles.statsSection}>
-          <Text style={styles.sectionTitle}>Sistem İstatistikleri</Text>
+          <Text style={styles.sectionTitle}>{t.adminDashboard.systemStats}</Text>
           <View style={styles.statsGrid}>
             <View style={[styles.statCard, { backgroundColor: '#E3F2FD' }]}>
               <Icon name="account-group" size={30} color="#1976D2" />
               <Text style={styles.statNumber}>{stats.totalUsers}</Text>
-              <Text style={styles.statLabel}>Toplam Kullanıcı</Text>
+              <Text style={styles.statLabel}>{t.adminDashboard.totalUsers}</Text>
             </View>
             
             <View style={[styles.statCard, { backgroundColor: '#E8F5E8' }]}>
               <Icon name="office-building" size={30} color="#388E3C" />
               <Text style={styles.statNumber}>{stats.totalCompanies}</Text>
-              <Text style={styles.statLabel}>Toplam Şirket</Text>
+              <Text style={styles.statLabel}>{t.adminDashboard.totalCompanies}</Text>
             </View>
             
             <View style={[styles.statCard, { backgroundColor: '#FFF3E0' }]}>
               <Icon name="domain" size={30} color="#F57C00" />
               <Text style={styles.statNumber}>{stats.totalDepartments}</Text>
-              <Text style={styles.statLabel}>Toplam Departman</Text>
+              <Text style={styles.statLabel}>{t.adminDashboard.totalDepartments}</Text>
             </View>
             
             <View style={[styles.statCard, { backgroundColor: '#F3E5F5' }]}>
               <Icon name="account-check" size={30} color="#7B1FA2" />
               <Text style={styles.statNumber}>{stats.activeUsers}</Text>
-              <Text style={styles.statLabel}>Aktif Kullanıcı</Text>
+              <Text style={styles.statLabel}>{t.adminDashboard.activeUsers}</Text>
             </View>
           </View>
         </View>

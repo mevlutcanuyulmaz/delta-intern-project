@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Switch } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import api from '../../services/api';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { TouchableOpacity } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../../services/api';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { RootStackParamList } from '../../navigation/types';
 
-type UserFormRouteProp = RouteProp<{ params: { userId?: number } }, 'params'>;
+type UserFormRouteProp = RouteProp<RootStackParamList, 'UserForm'>;
+type UserFormNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface Department {
   id: number;
@@ -12,94 +20,111 @@ interface Department {
 }
 
 const UserForm = () => {
-  const { params } = useRoute<UserFormRouteProp>();
-  const navigation = useNavigation<any>();
-  const userId = params?.userId;
+  const { t } = useLanguage();
+  const route = useRoute<UserFormRouteProp>();
+  const navigation = useNavigation<UserFormNavigationProp>();
+  const { userId } = route.params || {};
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('accessToken');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <LanguageSwitcher />
+          <TouchableOpacity 
+            onPress={handleLogout} 
+            style={{ marginLeft: 16, marginRight: 16 }}
+          >
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation, t]);
 
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [departmentId, setDepartmentId] = useState<number | null>(null);
-  const [roleId, setRoleId] = useState<number>(6); 
+  const [role, setRole] = useState<string>('USER');
+  const [isActive, setIsActive] = useState<boolean>(true);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(!!userId);
 
-
   const roles = [
-    { id: 4, label: 'Admin' },
-    { id: 5, label: 'Manager' },
-    { id: 6, label: 'User' },
+    { value: 'ADMIN', label: 'Admin' },
+    { value: 'MANAGER', label: 'Manager' },
+    { value: 'USER', label: 'User' },
   ];
 
-useEffect(() => {
-  const fetchDepartments = async () => {
-    try {
-      const response = await api.get('/api/departments');
-      setDepartments(response.data);
-      // Eğer departman varsa ilk departmanın ID'sini set et
-      if (response.data.length > 0) {
-        setDepartmentId(response.data[0].id);
-      }
-    } catch (error) {
-      Alert.alert('Hata', 'Departmanlar alınamadı');
-    }
-  };
+const fetchDepartments = async () => {
+  try {
+    const response = await api.get('/api/department/get-departments');
+    setDepartments(response.data);
+  } catch (error) {
+    console.error(t.adminUserForm.departmentsLoadError, error);
+  }
+};
 
+const fetchUser = async () => {
+  if (!userId) return;
+  try {
+    const response = await api.get(`/api/user/get-user/${userId}`);
+    const user = response.data;
+    setName(user.name);
+    setSurname(user.surname);
+    setEmail(user.email);
+    setDepartmentId(user.departmentId);
+    setRole(user.role);
+    setIsActive(user.isActive);
+  } catch (error) {
+    console.error(t.adminUserForm.userLoadError, error);
+  }
+};
+
+useEffect(() => {
   fetchDepartments();
 }, []);
 
 useEffect(() => {
   if (userId) {
-    const fetchUser = async () => {
-      try {
-        const response = await api.get(`/api/user/get-user-detail/${userId}`);
-        const user = response.data;
-        setName(user.name);
-        setSurname(user.surname);
-        setEmail(user.email);
-        if (user.departmentId) {
-          setDepartmentId(user.departmentId);
-        }
-      } catch (error) {
-        Alert.alert('Hata', 'Kullanıcı bilgisi alınamadı');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUser();
+    setLoading(false);
   }
 }, [userId]);
 
   const handleSave = async () => {
     if (!departmentId) {
-      Alert.alert('Uyarı', 'Lütfen bir departman seçiniz.');
+      Alert.alert(t.common.error, t.adminUserForm.selectDepartment);
       return;
     }
 
+    const userData = {
+      name,
+      surname,
+      email,
+      departmentId,
+      role,
+      isActive,
+    };
+
     try {
       if (userId) {
-        await api.put('/api/user/update-user', {
-          id: userId,
-          name,
-          surname,
-          email,
-          departmentId,
-        });
+        await api.put(`/api/user/update-user/${userId}`, userData);
       } else {
-        await api.post('/api/user/create-user', {
-          name,
-          surname,
-          email,
-          departmentId,
-          roleId,
-        });
+        await api.post('/api/user/create-user', userData);
       }
-
-      Alert.alert('Başarılı', 'Kullanıcı kaydedildi');
+      Alert.alert(t.common.success, t.adminUserForm.saveSuccess);
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Hata', 'Kullanıcı kaydedilemedi');
+      Alert.alert(t.common.error, t.adminUserForm.saveError);
     }
   };
 
@@ -107,40 +132,55 @@ useEffect(() => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Ad</Text>
-      <TextInput style={styles.input} value={name} onChangeText={setName} />
+      <Text style={styles.label}>{t.adminUserForm.name}</Text>
+      <TextInput
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+        placeholder={t.adminUserForm.name}
+      />
 
-      <Text style={styles.label}>Soyad</Text>
-      <TextInput style={styles.input} value={surname} onChangeText={setSurname} />
+      <Text style={styles.label}>{t.adminUserForm.surname}</Text>
+      <TextInput
+        style={styles.input}
+        value={surname}
+        onChangeText={setSurname}
+        placeholder={t.adminUserForm.surname}
+      />
 
-      <Text style={styles.label}>E-posta</Text>
-      <TextInput style={styles.input} value={email} onChangeText={setEmail} autoCapitalize="none" />
+      <Text style={styles.label}>{t.adminUserForm.email}</Text>
+      <TextInput
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholder={t.adminUserForm.email}
+        keyboardType="email-address"
+      />
 
-      <Text style={styles.label}>Departman</Text>
+      <Text style={styles.label}>{t.adminUserForm.department}</Text>
       <Picker
         selectedValue={departmentId}
-        onValueChange={(value) => setDepartmentId(value)}
+        onValueChange={(itemValue) => setDepartmentId(itemValue)}
         style={styles.picker}
       >
-        <Picker.Item label="Departman Seçin" value={null} />
+        <Picker.Item label={t.adminUserForm.selectDepartment} value="" />
         {departments.map((dept) => (
           <Picker.Item key={dept.id} label={dept.name} value={dept.id} />
         ))}
       </Picker>
 
-      <Text style={styles.label}>Rol</Text>
+      <Text style={styles.label}>{t.adminUserForm.role}</Text>
       <Picker
-        selectedValue={roleId}
-        onValueChange={(value) => setRoleId(value)}
+        selectedValue={role}
+        onValueChange={(itemValue) => setRole(itemValue)}
         style={styles.picker}
       >
-        {roles.map((role) => (
-          <Picker.Item key={role.id} label={role.label} value={role.id} />
+        {roles.map((roleItem) => (
+          <Picker.Item key={roleItem.value} label={roleItem.label} value={roleItem.value} />
         ))}
       </Picker>
 
-
-      <Button title="Kaydet" onPress={handleSave} color="#4b5c75" />
+      <Button title={t.adminUserForm.save} onPress={handleSave} color="#4b5c75" />
     </View>
   );
 };

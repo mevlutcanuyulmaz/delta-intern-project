@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, TouchableOpacity, Button,Alert } from 'react-native';
-import api from '../../services/api';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../../services/api';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { RootStackParamList } from '../../navigation/types';
+
+type UserListNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface User {
   id: number;
@@ -15,16 +23,41 @@ interface User {
 }
 
 const UserList = () => {
+  const { t } = useLanguage();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<UserListNavigationProp>();
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('accessToken');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <LanguageSwitcher />
+          <TouchableOpacity 
+            onPress={handleLogout} 
+            style={{ marginLeft: 16, marginRight: 16 }}
+          >
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation, t]);
 
   const fetchUsers = async () => {
     try {
       const response = await api.get('/api/user/get-users-of-detailed');
       setUsers(response.data);
     } catch (error) {
-      console.error('Kullanıcılar alınamadı', error);
+      console.error(t.adminUserList.usersLoadError, error);
     } finally {
       setLoading(false);
     }
@@ -32,20 +65,20 @@ const UserList = () => {
 
   const deleteUser = async (id: number) => {
   Alert.alert(
-    'Kullanıcıyı Sil',
-    'Bu kullanıcıyı silmek istediğinizden emin misiniz?',
+    t.adminUserList.deleteUser,
+    t.adminUserList.deleteConfirmation,
     [
-      { text: 'İptal', style: 'cancel' },
+      { text: t.adminUserList.cancel, style: 'cancel' },
       {
-        text: 'Sil',
+        text: t.adminUserList.delete,
         style: 'destructive',
         onPress: async () => {
           try {
             await api.delete(`/api/user/delete-user/${id}`);
-            Alert.alert('Başarılı', 'Kullanıcı silindi');
+            Alert.alert(t.common.success, t.adminUserList.deleteSuccess);
             fetchUsers(); // listeyi güncelle
           } catch (error) {
-            Alert.alert('Hata', 'Kullanıcı silinemedi');
+            Alert.alert(t.common.error, t.adminUserList.deleteError);
           }
         },
       },
@@ -70,14 +103,14 @@ const UserList = () => {
           style={[styles.button, { backgroundColor: '#4b5c75', marginRight: 8 }]}
           onPress={() => navigation.navigate('UserForm', { userId: item.id })}
         >
-          <Text style={styles.buttonText}>Düzenle</Text>
+          <Text style={styles.buttonText}>{t.adminUserList.edit}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, { backgroundColor: 'red' }]}
           onPress={() => deleteUser(item.id)}
         >
-          <Text style={styles.buttonText}>Sil</Text>
+          <Text style={styles.buttonText}>{t.adminUserList.delete}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -88,7 +121,7 @@ const UserList = () => {
   return (
     <View style={styles.container}>
       <Button
-        title="Yeni Kullanıcı Ekle"
+        title={t.adminUserList.addNewUser}
         onPress={() => navigation.navigate('UserForm')}
         color="#4b5c75"
       />

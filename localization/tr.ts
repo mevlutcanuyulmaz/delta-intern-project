@@ -162,4 +162,43 @@ export const tr: Translations = {
     no: 'Hayır',
     logout: 'Çıkış',
   },
+  adminDashboard: {
+    loading: 'Dashboard yükleniyor...',
+    welcome: 'Hoş Geldin!',
+    systemStats: 'Sistem İstatistikleri',
+    totalUsers: 'Toplam Kullanıcı',
+    totalCompanies: 'Toplam Şirket',
+    totalDepartments: 'Toplam Departman',
+    activeUsers: 'Aktif Kullanıcı',
+    pendingUsers: 'Bekleyen Kullanıcı',
+    dataLoadError: 'Dashboard verileri yüklenirken bir hata oluştu'
+  },
+  adminUserList: {
+    loading: 'Yükleniyor...',
+    addNewUser: 'Yeni Kullanıcı Ekle',
+    edit: 'Düzenle',
+    delete: 'Sil',
+    deleteUser: 'Kullanıcıyı Sil',
+    deleteConfirmation: 'Bu kullanıcıyı silmek istediğinizden emin misiniz?',
+    cancel: 'İptal',
+    deleteSuccess: 'Kullanıcı silindi',
+    deleteError: 'Kullanıcı silinemedi',
+    usersLoadError: 'Kullanıcılar alınamadı'
+  },
+  adminUserForm: {
+    loading: 'Yükleniyor...',
+    name: 'Ad',
+    surname: 'Soyad',
+    email: 'E-posta',
+    department: 'Departman',
+    role: 'Rol',
+    selectDepartment: 'Departman Seçin',
+    save: 'Kaydet',
+    warning: 'Uyarı',
+    selectDepartmentWarning: 'Lütfen bir departman seçiniz.',
+    saveSuccess: 'Kullanıcı kaydedildi',
+    saveError: 'Kullanıcı kaydedilemedi',
+    userLoadError: 'Kullanıcı bilgisi alınamadı',
+    departmentsLoadError: 'Departmanlar alınamadı'
+  },
 };

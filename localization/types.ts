@@ -153,6 +153,51 @@ export interface Translations {
     usersLoadError: string;
   };
 
+  // Admin Dashboard translations
+  adminDashboard: {
+    loading: string;
+    welcome: string;
+    systemStats: string;
+    totalUsers: string;
+    totalCompanies: string;
+    totalDepartments: string;
+    activeUsers: string;
+    pendingUsers: string;
+    dataLoadError: string;
+  };
+
+  // Admin User List translations
+  adminUserList: {
+    loading: string;
+    addNewUser: string;
+    edit: string;
+    delete: string;
+    deleteUser: string;
+    deleteConfirmation: string;
+    cancel: string;
+    deleteSuccess: string;
+    deleteError: string;
+    usersLoadError: string;
+  };
+
+  // Admin User Form translations
+  adminUserForm: {
+    loading: string;
+    name: string;
+    surname: string;
+    email: string;
+    department: string;
+    role: string;
+    selectDepartment: string;
+    save: string;
+    warning: string;
+    selectDepartmentWarning: string;
+    saveSuccess: string;
+    saveError: string;
+    userLoadError: string;
+    departmentsLoadError: string;
+  };
+
   // Common translations
   common: {
     loading: string;

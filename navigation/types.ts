@@ -5,7 +5,7 @@ export type RootStackParamList = {
   CompanyForm: undefined;
   CreateCompany: undefined;
   UserList: undefined;
-  UserForm: undefined;
+  UserForm: { userId?: number } | undefined;
   Tabs: undefined;
   DepartmentList: undefined;
   DepartmentForm: undefined;
