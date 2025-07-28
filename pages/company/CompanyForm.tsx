@@ -25,6 +25,12 @@ const CompanyForm = () => {
     region: string | null;
   } | null>(null);
   const [towns, setTowns] = useState<{ id: number; name: string }[]>([]);
+  
+  // Yeni state'ler
+  const [regions, setRegions] = useState<{ id: number; name: string }[]>([]);
+  const [cities, setCities] = useState<{ id: number; name: string }[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<number | undefined>(undefined);
+  const [selectedCity, setSelectedCity] = useState<number | undefined>(undefined);
 
   // Şirket bilgilerini çek
   useEffect(() => {
@@ -37,6 +43,59 @@ const CompanyForm = () => {
         setActive(data.active);
         setAddressDetail(data.addressDetail || '');
         setTown(data.town || null);
+        
+        // Eğer town bilgisi varsa, ilgili bölge ve şehir bilgilerini de set et
+        if (data.town) {
+          try {
+            // İlçe detayını çek
+            const townResponse = await api.get(`/api/location/town/${data.town.id}`);
+            const townDetail = townResponse.data;
+            
+            // Bölgeleri çek
+            const regionResponse = await api.get('/api/location/region');
+            const regionList = regionResponse.data;
+            setRegions(regionList);
+            
+            // Bölge eşleşmesini bul
+            const matchedRegion = regionList.find((r: any) => r.name === townDetail.region);
+            if (matchedRegion) {
+              setSelectedRegion(matchedRegion.id);
+              
+              // Şehirleri çek (bölgeye göre filtrelenmiş)
+              try {
+                const cityResponse = await api.get(`/api/location/city?regionId=${matchedRegion.id}`);
+                setCities(cityResponse.data);
+                
+                // Şehir eşleşmesini bul
+                const matchedCity = cityResponse.data.find((c: any) => c.name === townDetail.city);
+                if (matchedCity) {
+                  setSelectedCity(matchedCity.id);
+                  
+                  // İlçeleri çek (şehre göre filtrelenmiş)
+                  try {
+                    const townListResponse = await api.get(`/api/location/town?cityId=${matchedCity.id}`);
+                    setTowns(townListResponse.data);
+                  } catch (err) {
+                    // Filtreleme desteklenmiyorsa tüm ilçeleri çek
+                    const allTownsResponse = await api.get('/api/location/town');
+                    setTowns(allTownsResponse.data);
+                  }
+                }
+              } catch (err) {
+                // Filtreleme desteklenmiyorsa tüm şehirleri çek
+                const allCitiesResponse = await api.get('/api/location/city');
+                setCities(allCitiesResponse.data);
+                
+                const matchedCity = allCitiesResponse.data.find((c: any) => c.name === townDetail.city);
+                if (matchedCity) {
+                  setSelectedCity(matchedCity.id);
+                }
+              }
+            }
+          } catch (townError) {
+            console.error('İlçe detayları alınamadı', townError);
+          }
+        }
       } catch (error) {
         Alert.alert('Hata', 'Şirket bilgisi alınamadı');
       } finally {
@@ -47,25 +106,81 @@ const CompanyForm = () => {
     fetchCompany();
   }, [companyId]);
 
-  // İlçeleri çek
+  // İlçeleri çek (başlangıçta boş liste)
   useEffect(() => {
-  const fetchTowns = async () => {
-    try {
-      const token = await AsyncStorage.getItem('accessToken');
-      if (!token) {
-        console.error('Token bulunamadı, ilçe verisi çekilemedi');
-        return;
-      }
+    const fetchInitialData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('accessToken');
+        if (!token) {
+          console.error('Token bulunamadı, ilçe verisi çekilemedi');
+          return;
+        }
 
-      const response = await api.get('/api/location/town');
-      setTowns(response.data);
+        // Eğer bölgeler henüz yüklenmemişse (şirket verisi yoksa), bölgeleri çek
+        if (regions.length === 0) {
+          try {
+            const regionResponse = await api.get('/api/location/region');
+            setRegions(regionResponse.data);
+          } catch (err) {
+            console.error('Bölgeler alınamadı', err);
+          }
+        }
+      } catch (err) {
+        console.error('Başlangıç verileri alınamadı', err);
+      }
+    };
+
+    // Sadece regions boşsa çek
+    if (regions.length === 0) {
+      fetchInitialData();
+    }
+  }, [regions]);
+
+  // Bölge değiştiğinde şehirleri çek
+  const handleRegionChange = async (regionId: number) => {
+    setSelectedRegion(regionId);
+    setSelectedCity(undefined); // Şehir seçimini sıfırla
+    setTown(null); // İlçe seçimini sıfırla
+    setTowns([]); // İlçe listesini temizle
+    
+    try {
+      const response = await api.get(`/api/location/city?regionId=${regionId}`);
+      setCities(response.data);
     } catch (err) {
-      console.error('İlçeler alınamadı', err);
+      console.error('Şehirler alınamadı', err);
+      // Eğer filtreleme desteklenmiyorsa tüm şehirleri çek ve client-side filtrele
+      try {
+        const allCitiesResponse = await api.get('/api/location/city');
+        const allCities = allCitiesResponse.data;
+        // Burada bölgeye göre filtreleme yapılabilir (API'den gelen veriye göre)
+        setCities(allCities);
+      } catch (err2) {
+        console.error('Tüm şehirler de alınamadı', err2);
+      }
     }
   };
 
-  fetchTowns();
-}, []);
+  // Şehir değiştiğinde ilçeleri çek
+  const handleCityChange = async (cityId: number) => {
+    setSelectedCity(cityId);
+    setTown(null); // İlçe seçimini sıfırla
+    
+    try {
+      const response = await api.get(`/api/location/town?cityId=${cityId}`);
+      setTowns(response.data);
+    } catch (err) {
+      console.error('İlçeler alınamadı', err);
+      // Eğer filtreleme desteklenmiyorsa tüm ilçeleri çek ve client-side filtrele
+      try {
+        const allTownsResponse = await api.get('/api/location/town');
+        const allTowns = allTownsResponse.data;
+        // Burada şehre göre filtreleme yapılabilir (API'den gelen veriye göre)
+        setTowns(allTowns);
+      } catch (err2) {
+        console.error('Tüm ilçeler de alınamadı', err2);
+      }
+    }
+  };
 
   // İlçe değişince detaylarını getir (şehir ve bölge)
   const handleTownChange = async (townId: number) => {
@@ -89,9 +204,102 @@ const handleUpdate = async () => {
       townId: town?.id || 1, // 🔧 İlçe seçilmemişse 1 gönder
     };
 
+    console.log("📤 Gönderilen payload:", payload);
+    console.log("🏢 Mevcut town:", town);
+    console.log("🌍 Seçilen bölge:", selectedRegion);
+    console.log("🏙️ Seçilen şehir:", selectedCity);
+
     const response = await api.put('/api/companies', payload);
     console.log("✅ Şirket güncellendi:", response.data);
-    Alert.alert('Başarılı', 'Şirket güncellendi');
+    
+    Alert.alert('Başarılı', 'Şirket güncellendi', [
+      {
+        text: 'Tamam',
+        onPress: () => {
+          // Güncelleme sonrası sayfayı yeniden yükle
+          setLoading(true);
+          // fetchCompany fonksiyonunu tekrar çağır
+           const refetchCompany = async () => {
+             try {
+               const response = await api.get(`/api/companies/${companyId}`);
+               const data = response.data;
+               setName(data.name);
+               setShortName(data.shortName);
+               setActive(data.active);
+               setAddressDetail(data.addressDetail || '');
+               setTown(data.town || null);
+               
+               console.log("🔄 Yeniden yüklenen şirket verisi:", data);
+               
+               // Eğer town bilgisi varsa, ilgili bölge ve şehir bilgilerini de set et
+               if (data.town && data.town.id) {
+                 try {
+                   // Önce tüm bölgeleri çek
+                   const regionResponse = await api.get('/api/location/region');
+                   const regionList = regionResponse.data;
+                   setRegions(regionList);
+                   
+                   // Tüm şehirleri çek
+                   const allCitiesResponse = await api.get('/api/location/city');
+                   const allCities = allCitiesResponse.data;
+                   
+                   // Tüm ilçeleri çek
+                   const allTownsResponse = await api.get('/api/location/town');
+                   const allTowns = allTownsResponse.data;
+                   setTowns(allTowns);
+                   
+                   // Seçili ilçeyi bul
+                   const selectedTownData = allTowns.find((t: any) => t.id === data.town.id);
+                   console.log("🏘️ Seçili ilçe verisi:", selectedTownData);
+                   
+                   if (selectedTownData) {
+                     // Bu ilçenin hangi şehirde olduğunu bul
+                     const townCity = allCities.find((c: any) => c.name === selectedTownData.city);
+                     console.log("🏙️ İlçenin şehri:", townCity);
+                     
+                     if (townCity) {
+                       setSelectedCity(townCity.id);
+                       
+                       // Şehre göre filtrelenmiş şehirleri set et
+                       const cityRegion = regionList.find((r: any) => r.name === selectedTownData.region);
+                       console.log("🌍 Şehrin bölgesi:", cityRegion);
+                       
+                       if (cityRegion) {
+                         setSelectedRegion(cityRegion.id);
+                         
+                         // Bölgeye göre filtrelenmiş şehirleri set et
+                         const filteredCities = allCities.filter((c: any) => c.region === cityRegion.name);
+                         setCities(filteredCities);
+                         
+                         // Şehre göre filtrelenmiş ilçeleri set et
+                         const filteredTowns = allTowns.filter((t: any) => t.city === townCity.name);
+                         setTowns(filteredTowns);
+                       }
+                     }
+                   }
+                 } catch (locationError) {
+                   console.error('Lokasyon bilgileri alınamadı', locationError);
+                 }
+               } else {
+                 // Town bilgisi yoksa sadece bölgeleri yükle
+                 try {
+                   const regionResponse = await api.get('/api/location/region');
+                   setRegions(regionResponse.data);
+                 } catch (regionError) {
+                   console.error('Bölgeler alınamadı', regionError);
+                 }
+               }
+             } catch (error) {
+               console.error('Şirket bilgisi yeniden alınamadı', error);
+             } finally {
+               setLoading(false);
+             }
+           };
+          
+          refetchCompany();
+        }
+      }
+    ]);
   } catch (error: any) {
     console.error("❌ Güncelleme hatası:", error.response?.data || error.message);
     Alert.alert('Hata', 'Şirket güncellenemedi');
@@ -117,22 +325,40 @@ const handleUpdate = async () => {
         numberOfLines={3}
       />
 
+      <Text style={styles.label}>Bölge</Text>
+      <Picker
+        selectedValue={selectedRegion}
+        onValueChange={handleRegionChange}
+      >
+        <Picker.Item label="Lütfen bölge seçin" value={undefined} />
+        {regions.map((region) => (
+          <Picker.Item key={region.id} label={region.name} value={region.id} />
+        ))}
+      </Picker>
+
+      <Text style={styles.label}>İl</Text>
+      <Picker
+        selectedValue={selectedCity}
+        onValueChange={handleCityChange}
+        enabled={selectedRegion !== undefined}
+      >
+        <Picker.Item label="Lütfen il seçin" value={undefined} />
+        {cities.map((city) => (
+          <Picker.Item key={city.id} label={city.name} value={city.id} />
+        ))}
+      </Picker>
+
       <Text style={styles.label}>İlçe</Text>
       <Picker
         selectedValue={town?.id}
         onValueChange={handleTownChange}
+        enabled={selectedCity !== undefined}
       >
         <Picker.Item label="Lütfen ilçe seçin" value={undefined} />
         {towns.map((t) => (
           <Picker.Item key={t.id} label={t.name} value={t.id} />
         ))}
       </Picker>
-
-      <Text style={styles.label}>İl</Text>
-      <Text style={styles.infoText}>{town?.city || 'Belirtilmedi'}</Text>
-
-      <Text style={styles.label}>Bölge</Text>
-      <Text style={styles.infoText}>{town?.region || 'Belirtilmedi'}</Text>
 
       <View style={styles.switchRow}>
         <Text style={styles.label}>Aktif mi?</Text>

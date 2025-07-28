@@ -1,78 +1,313 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, ScrollView, RefreshControl, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserInfo } from '../../types/types';
+
+interface DepartmentStats {
+  totalEmployees: number;
+  managedDepartments: number;
+  departmentName: string;
+}
 
 const ManagerDashboard = () => {
   const navigation = useNavigation<any>();
-  const [userInfo, setUserInfo] = useState<any>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [stats, setStats] = useState<DepartmentStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('accessToken');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={handleLogout} style={{ marginRight: 16 }}>
+          <Text style={{ color: 'red', fontWeight: 'bold' }}>Çıkış</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
+  const fetchDashboardData = async () => {
+    try {
+      // Kullanıcı bilgilerini al
+      const userResponse = await api.get('/api/user/get-self');
+      setUserInfo(userResponse.data);
+
+      // Departman çalışanlarını al
+      const usersResponse = await api.get('/api/users');
+      const allUsers = usersResponse.data;
+      
+      // Manager'ın departmanındaki çalışanları filtrele
+      const departmentEmployees = allUsers.filter((user: any) => 
+        user.departmentId === userResponse.data.departmentId
+      );
+
+      const departmentStats: DepartmentStats = {
+        totalEmployees: departmentEmployees.length,
+        managedDepartments: 1, // Manager sadece bir departman yönetir
+        departmentName: userResponse.data.departmentName || 'Bilinmiyor',
+      };
+
+      setStats(departmentStats);
+    } catch (error) {
+      console.error('Dashboard verileri alınamadı:', error);
+      Alert.alert('Hata', 'Dashboard verileri yüklenirken bir hata oluştu');
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get('/api/user/get-self');
-        setUserInfo(res.data);
-        console.log("Kullanıcı bilgisi:", res.data);
-      } catch (err) {
-        console.error('Kullanıcı bilgisi alınamadı:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchDashboardData();
   }, []);
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchDashboardData();
+  };
+
+  const quickActions = [
+    {
+      title: 'Departman Çalışanları',
+      icon: 'account-group',
+      color: '#4CAF50',
+      onPress: () => navigation.navigate('ManagerUserList')
+    },
+    {
+      title: 'Profil Ayarları',
+      icon: 'account-cog',
+      color: '#2196F3',
+      onPress: () => navigation.navigate('ManagerProfile')
+    }
+  ];
+
   if (loading) {
-    return <ActivityIndicator size="large" />;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4b5c75" />
+        <Text style={styles.loadingText}>Dashboard yükleniyor...</Text>
+      </View>
+    );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hoş geldin, {userInfo?.name}</Text>
-      <Text style={styles.info}>Rol: {userInfo?.role?.name}</Text>
-      <Text style={styles.info}>Departman: {userInfo?.departmentName}</Text>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={() => navigation.navigate('ManagerUserList')}
-        >
-          <Text style={styles.buttonText}>Kullanıcı Listesi</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-          style={[styles.button, { backgroundColor: '#2ecc71' }]}
-          onPress={() => navigation.navigate('ManagerProfile')}
-        >
-          <Text style={styles.buttonText}>Profil</Text>
-        </TouchableOpacity>
+    <ScrollView 
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      {/* Hoş Geldin Bölümü */}
+      <View style={styles.welcomeSection}>
+        <View style={styles.welcomeHeader}>
+          <Icon name="account-tie" size={40} color="#4b5c75" />
+          <View style={styles.welcomeText}>
+            <Text style={styles.welcomeTitle}>Hoş Geldin!</Text>
+            <Text style={styles.welcomeName}>{userInfo?.name} {userInfo?.surname}</Text>
+            <Text style={styles.welcomeRole}>{userInfo?.role?.name}</Text>
+            <Text style={styles.welcomeDepartment}>Departman: {userInfo?.departmentName}</Text>
+          </View>
+        </View>
       </View>
-    </View>
+
+      {/* Departman İstatistikleri */}
+       {stats && (
+         <View style={styles.statsSection}>
+           <Text style={styles.sectionTitle}>Departman İstatistikleri</Text>
+           <View style={styles.statsGrid}>
+             <View style={[styles.statCard, { backgroundColor: '#E3F2FD' }]}>
+               <Icon name="account-group" size={30} color="#1976D2" />
+               <Text style={styles.statNumber}>{stats.totalEmployees}</Text>
+               <Text style={styles.statLabel}>Toplam Çalışan</Text>
+             </View>
+             
+             <View style={[styles.statCard, { backgroundColor: '#F3E5F5' }]}>
+               <Icon name="domain" size={30} color="#7B1FA2" />
+               <Text style={styles.statNumber}>{stats.managedDepartments}</Text>
+               <Text style={styles.statLabel}>Yönetilen Departman</Text>
+             </View>
+           </View>
+         </View>
+       )}
+
+      {/* Hızlı İşlemler */}
+      <View style={styles.quickActionsSection}>
+        <Text style={styles.sectionTitle}>Hızlı İşlemler</Text>
+        <View style={styles.quickActionsGrid}>
+          {quickActions.map((action, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.quickActionCard, { borderLeftColor: action.color }]}
+              onPress={action.onPress}
+            >
+              <Icon name={action.icon} size={24} color={action.color} />
+              <Text style={styles.quickActionText}>{action.title}</Text>
+              <Icon name="chevron-right" size={16} color="#999" />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
-  info: { fontSize: 18, marginBottom: 8 },
-  button: {
-    backgroundColor: '#4b5c75',
-    padding: 15,
-    borderRadius: 8,
-    marginTop: 20,
-    width: '80%',
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#666',
+  },
+  welcomeSection: {
+    backgroundColor: 'white',
+    margin: 16,
+    borderRadius: 12,
+    padding: 20,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  welcomeHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  welcomeText: {
+    marginLeft: 16,
+    flex: 1,
   },
-  buttonContainer: {
-    marginTop: 20,
-    gap: 12,
+  welcomeTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  welcomeName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4b5c75',
+    marginTop: 4,
+  },
+  welcomeRole: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 2,
+  },
+  welcomeDepartment: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 2,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 16,
+  },
+  statsSection: {
+    margin: 16,
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  statCard: {
+    width: '48%',
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    marginBottom: 12,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  statNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: 8,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 4,
+  },
+  quickActionsSection: {
+    margin: 16,
+  },
+  quickActionsGrid: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  quickActionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    borderLeftWidth: 4,
+  },
+  quickActionText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+    marginLeft: 12,
+  },
+  departmentInfoSection: {
+    margin: 16,
+    marginBottom: 32,
+  },
+  infoCard: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#333',
+    marginLeft: 12,
+    flex: 1,
   },
 });
 

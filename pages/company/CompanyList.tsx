@@ -4,22 +4,10 @@ import api from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
-
-interface Company {
-  id: number;
-  name: string;
-  shortName: string;
-  town?: {
-    id: number;
-    name: string;
-    city: string | null;
-    region: string | null;
-  };
-  addressDetail?: string;
-}
+import { CompanyInfo } from '../../types/types';
 
 const CompanyList = () => {
-  const [companies, setCompanies] = useState<Company[]>([]);
+  const [companies, setCompanies] = useState<CompanyInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<any>();
   useFocusEffect(
@@ -54,7 +42,7 @@ const CompanyList = () => {
     fetchCompanies();
   }, []);
 
-  const renderCompany = ({ item }: { item: Company }) => (
+  const renderCompany = ({ item }: { item: CompanyInfo }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.name}</Text>
       <Text style={styles.subtitle}>{item.shortName}</Text>
@@ -69,11 +57,11 @@ const CompanyList = () => {
             </Text>
             <Text style={styles.locationText}>
               <Text style={styles.locationLabel}>İl: </Text>
-              {item.town.city || 'Belirtilmedi'}
+              {item.town.city?.name || 'Belirtilmedi'}
             </Text>
             <Text style={styles.locationText}>
               <Text style={styles.locationLabel}>Bölge: </Text>
-              {item.town.region || 'Belirtilmedi'}
+              {item.town.region?.name || 'Belirtilmedi'}
             </Text>
           </>
         )}

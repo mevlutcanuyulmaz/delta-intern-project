@@ -12,6 +12,8 @@ export type RootStackParamList = {
   ForgotPassword: undefined;
   Activation: undefined;
   UserDashboard: undefined;
+  UserCompanyInfo: undefined;
+  UserBottomTabs: undefined;
   ManagerDashboard: undefined;
   ManagerProfile: undefined;
   ManagerBottomTabs: undefined;

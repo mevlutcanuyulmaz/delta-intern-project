@@ -50,12 +50,12 @@ const LoginScreen = () => {
     } else if (role === 'MANAGER') {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'ManagerDashboard' }],
+        routes: [{ name: 'ManagerBottomTabs' }],
       });
     } else if (role === 'USER') {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'UserDashboard' }], // henüz yapmadık ama iskeleti koyuyoruz
+        routes: [{ name: 'UserBottomTabs' }],
       });
     } else {
       Alert.alert('Yetki Hatası', 'Yetkiniz tanımlı değil.');

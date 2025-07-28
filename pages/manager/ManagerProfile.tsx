@@ -17,7 +17,6 @@ interface UserProfile {
   surname: string;
   email: string;
   departmentName: string;
-  departmentId: number;  // Eksik olan alan eklendi
   role: {
     name: string;
   };
@@ -26,9 +25,6 @@ interface UserProfile {
 const ManagerProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -41,29 +37,10 @@ const ManagerProfile = () => {
     try {
       const response = await api.get('/api/user/get-self');
       setProfile(response.data);
-      setName(response.data.name);
-      setSurname(response.data.surname);
-      setEmail(response.data.email);
     } catch (error) {
       Alert.alert('Hata', 'Profil bilgileri alınamadı');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleUpdateProfile = async () => {
-    try {
-      await api.put('/api/user/update-user', {
-        id: profile?.id,
-        name,
-        surname,
-        email,
-        departmentId: profile?.departmentId
-      });
-      Alert.alert('Başarılı', 'Profil bilgileri güncellendi');
-      fetchProfile();
-    } catch (error) {
-      Alert.alert('Hata', 'Güncelleme başarısız');
     }
   };
 
@@ -106,28 +83,14 @@ const ManagerProfile = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Kişisel Bilgiler</Text>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={setName}
-          placeholder="Ad"
-        />
-        <TextInput
-          style={styles.input}
-          value={surname}
-          onChangeText={setSurname}
-          placeholder="Soyad"
-        />
-        <TextInput
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-          placeholder="E-posta"
-          keyboardType="email-address"
-        />
-        <TouchableOpacity style={styles.button} onPress={handleUpdateProfile}>
-          <Text style={styles.buttonText}>Bilgileri Güncelle</Text>
-        </TouchableOpacity>
+        <Text style={styles.label}>Ad</Text>
+        <Text style={styles.value}>{profile?.name}</Text>
+        
+        <Text style={styles.label}>Soyad</Text>
+        <Text style={styles.value}>{profile?.surname}</Text>
+        
+        <Text style={styles.label}>E-posta</Text>
+        <Text style={styles.value}>{profile?.email}</Text>
       </View>
 
       <View style={styles.section}>
