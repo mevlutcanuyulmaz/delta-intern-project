@@ -116,5 +116,6 @@ export const tr: Translations = {
     confirm: 'Onayla',
     yes: 'Evet',
     no: 'Hayır',
+    logout: 'Çıkış',
   },
 };

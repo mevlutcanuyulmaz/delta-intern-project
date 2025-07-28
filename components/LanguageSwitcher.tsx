@@ -29,14 +29,10 @@ const LanguageSwitcher: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
     flexDirection: 'row',
     backgroundColor: '#f0f0f0',
     borderRadius: 20,
     padding: 2,
-    zIndex: 1000,
   },
   button: {
     paddingHorizontal: 16,

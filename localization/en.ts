@@ -116,5 +116,6 @@ export const en: Translations = {
     confirm: 'Confirm',
     yes: 'Yes',
     no: 'No',
+    logout: 'Logout',
   },
 };

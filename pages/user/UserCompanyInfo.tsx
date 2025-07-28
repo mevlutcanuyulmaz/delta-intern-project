@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -24,6 +24,31 @@ const UserCompanyInfo = () => {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('userToken');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    } catch (error) {
+      console.error('Çıkış yapılırken hata:', error);
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation, handleLogout, t]);
 
   const fetchUserInfo = async () => {
     try {
@@ -86,40 +111,32 @@ const UserCompanyInfo = () => {
 
   if (loading) {
     return (
-      <View style={styles.wrapper}>
-        <LanguageSwitcher />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4b5c75" />
-          <Text style={styles.loadingText}>{t.userCompanyInfo.loading}</Text>
-        </View>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4b5c75" />
+        <Text style={styles.loadingText}>{t.userCompanyInfo.loading}</Text>
       </View>
     );
   }
 
   if (!userInfo) {
     return (
-      <View style={styles.wrapper}>
-        <LanguageSwitcher />
-        <View style={styles.errorContainer}>
-          <Icon name="alert-circle" size={48} color="#f44336" />
-          <Text style={styles.errorText}>{t.userCompanyInfo.error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={fetchUserInfo}>
-            <Text style={styles.retryButtonText}>{t.userCompanyInfo.retry}</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.errorContainer}>
+        <Icon name="alert-circle" size={48} color="#f44336" />
+        <Text style={styles.errorText}>{t.userCompanyInfo.error}</Text>
+        <TouchableOpacity style={styles.retryButton} onPress={fetchUserInfo}>
+          <Text style={styles.retryButtonText}>{t.userCompanyInfo.retry}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
   return (
-    <View style={styles.wrapper}>
-      <LanguageSwitcher />
-      <ScrollView 
-        style={styles.container}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+    <ScrollView 
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
         {/* Şirket Bilgileri */}
         {companyInfo ? (
           <View style={styles.section}>
@@ -249,7 +266,6 @@ const UserCompanyInfo = () => {
           </View>
         )}
       </ScrollView>
-    </View>
   );
 };
 

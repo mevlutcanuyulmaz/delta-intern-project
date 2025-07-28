@@ -123,5 +123,6 @@ export interface Translations {
     confirm: string;
     yes: string;
     no: string;
+    logout: string;
   };
 }

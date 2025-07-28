@@ -31,12 +31,15 @@ const UserDashboard = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={handleLogout} style={{ marginRight: 16 }}>
-          <Text style={{ color: 'red', fontWeight: 'bold' }}>Çıkış</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
+          </TouchableOpacity>
+        </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, handleLogout, t]);
 
   const calculateProfileCompletion = (user: any) => {
     const fields = [
@@ -94,25 +97,20 @@ const UserDashboard = () => {
 
   if (loading) {
     return (
-      <View style={styles.wrapper}>
-        <LanguageSwitcher />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4b5c75" />
-          <Text style={styles.loadingText}>{t.userDashboard.loading}</Text>
-        </View>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4b5c75" />
+        <Text style={styles.loadingText}>{t.userDashboard.loading}</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.wrapper}>
-      <LanguageSwitcher />
-      <ScrollView 
-        style={styles.container}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+    <ScrollView 
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
         {/* Hoş Geldin Bölümü */}
         <View style={styles.welcomeSection}>
           <View style={styles.welcomeHeader}>
@@ -149,8 +147,7 @@ const UserDashboard = () => {
           </View>
         </View>
 
-      </ScrollView>
-    </View>
+    </ScrollView>
   );
 };
 

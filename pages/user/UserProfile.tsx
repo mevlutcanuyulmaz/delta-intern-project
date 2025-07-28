@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -15,13 +15,37 @@ import { UserInfo } from '../../types/types';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 
-const UserProfile = () => {
+const UserProfile = ({ navigation }: any) => {
   const { t } = useLanguage();
   const [profile, setProfile] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Çıkış',
+      'Çıkış yapmak istediğinizden emin misiniz?',
+      [
+        { text: 'İptal', style: 'cancel' },
+        { text: 'Çıkış', style: 'destructive', onPress: () => navigation.navigate('Login') }
+      ]
+    );
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation, handleLogout, t]);
 
   useEffect(() => {
     fetchProfile();
@@ -80,20 +104,15 @@ const UserProfile = () => {
 
   if (loading) {
     return (
-      <View style={styles.wrapper}>
-        <LanguageSwitcher />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#4b5c75" />
-          <Text style={styles.loadingText}>{t.userProfile.loading}</Text>
-        </View>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4b5c75" />
+        <Text style={styles.loadingText}>{t.userProfile.loading}</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.wrapper}>
-      <LanguageSwitcher />
-      <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}>
         <Text style={styles.title}>{t.userProfile.title}</Text>
         
         {/* Genel Bilgiler */}
@@ -191,7 +210,6 @@ const UserProfile = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
   );
 };
 
