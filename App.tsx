@@ -15,6 +15,7 @@ import UserCompanyInfo from './pages/user/UserCompanyInfo';
 import ManagerUserList from './pages/manager/ManagerUserList';
 import ManagerProfile from './pages/manager/ManagerProfile';
 import UserProfile from './pages/user/UserProfile';
+import { LanguageProvider } from './localization';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,37 +35,39 @@ const linking: LinkingOptions<any> = {
 
 const App = () => {
   return (
-    <NavigationContainer linking={linking}>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Tabs" component={AdminBottomTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="UserForm" component={UserForm} options={{ title: 'Kullanıcı Formu' }} />
-        <Stack.Screen name="CompanyForm" component={CompanyForm} options={{ title: 'Şirket Formu' }} />
-        <Stack.Screen name="CreateCompany" component={CreateCompany} options={{ title: 'Şirket Oluştur' }} />
-        <Stack.Screen name="CompanyDetail" component={CompanyDetail} options={{ title: 'Şirket Detayı' }} />
-        <Stack.Screen name="DepartmentDetail" component={DepartmentDetailPage} options={{ title: 'Departman Detayı' }} />
-        <Stack.Screen name="Activation" component={ActivationScreen} options={{ title: 'Hesap Aktivasyonu' }} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ title: 'Şifre Sıfırlama' }} />
-        <Stack.Screen name="ManagerDashboard" component={ManagerDashboard} options={{ title: 'Yönetici Paneli' }} />
-        <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ title: 'Kullanıcı Paneli' }} />
-        <Stack.Screen name="UserCompanyInfo" component={UserCompanyInfo} options={{ title: 'Şirket Bilgileri' }} />
-        <Stack.Screen name="ManagerUserList" component={ManagerUserList} options={{ title: 'Kullanıcı Listesi' }} />
-        <Stack.Screen name="ManagerBottomTabs" component={ManagerBottomTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="UserBottomTabs" component={UserBottomTabs} options={{ headerShown: false }} />
+    <LanguageProvider>
+      <NavigationContainer linking={linking}>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Tabs" component={AdminBottomTabs} options={{ headerShown: false }} />
+          <Stack.Screen name="UserForm" component={UserForm} options={{ title: 'Kullanıcı Formu' }} />
+          <Stack.Screen name="CompanyForm" component={CompanyForm} options={{ title: 'Şirket Formu' }} />
+          <Stack.Screen name="CreateCompany" component={CreateCompany} options={{ title: 'Şirket Oluştur' }} />
+          <Stack.Screen name="CompanyDetail" component={CompanyDetail} options={{ title: 'Şirket Detayı' }} />
+          <Stack.Screen name="DepartmentDetail" component={DepartmentDetailPage} options={{ title: 'Departman Detayı' }} />
+          <Stack.Screen name="Activation" component={ActivationScreen} options={{ title: 'Hesap Aktivasyonu' }} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ title: 'Şifre Sıfırlama' }} />
+          <Stack.Screen name="ManagerDashboard" component={ManagerDashboard} options={{ title: 'Yönetici Paneli' }} />
+          <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ title: 'Kullanıcı Paneli' }} />
+          <Stack.Screen name="UserCompanyInfo" component={UserCompanyInfo} options={{ title: 'Şirket Bilgileri' }} />
+          <Stack.Screen name="ManagerUserList" component={ManagerUserList} options={{ title: 'Kullanıcı Listesi' }} />
+          <Stack.Screen name="ManagerBottomTabs" component={ManagerBottomTabs} options={{ headerShown: false }} />
+          <Stack.Screen name="UserBottomTabs" component={UserBottomTabs} options={{ headerShown: false }} />
+          
         
-      
-        <Stack.Screen 
-          name="ManagerProfile" 
-          component={ManagerProfile} 
-          options={{ title: 'Profil' }}
-        />
-        <Stack.Screen 
-          name="UserProfile" 
-          component={UserProfile} 
-          options={{ title: 'Profil' }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen 
+            name="ManagerProfile" 
+            component={ManagerProfile} 
+            options={{ title: 'Profil' }}
+          />
+          <Stack.Screen 
+            name="UserProfile" 
+            component={UserProfile} 
+            options={{ title: 'Profil' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LanguageProvider>
   );
 };
 

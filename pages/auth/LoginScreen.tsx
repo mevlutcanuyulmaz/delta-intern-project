@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
 import { useNavigation} from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 import { RootStackParamList } from '../../navigation/types';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
@@ -13,6 +15,7 @@ type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const LoginScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -58,10 +61,10 @@ const LoginScreen = () => {
         routes: [{ name: 'UserBottomTabs' }],
       });
     } else {
-      Alert.alert('Yetki Hatası', 'Yetkiniz tanımlı değil.');
+      Alert.alert(t.auth.login.authError, t.auth.login.roleNotDefined);
     }
   } catch (error) {
-    Alert.alert('Giriş başarısız', 'Lütfen bilgilerinizi kontrol edin.');
+    Alert.alert(t.auth.login.loginError, t.auth.login.checkCredentials);
   }
 };
 
@@ -74,38 +77,42 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="E-Posta"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        autoCapitalize="none"
-      />
-      <TextInput
-        placeholder="Şifre"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
-      />
+    <View style={styles.wrapper}>
+      <LanguageSwitcher />
+      
+      <View style={styles.container}>
+        <TextInput
+          placeholder={t.auth.login.email}
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+          autoCapitalize="none"
+        />
+        <TextInput
+          placeholder={t.auth.login.password}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Giriş</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>{t.auth.login.loginButton}</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.linkText}>
-        Şifremi unuttum,{' '}
-        <Text style={styles.link} onPress={handleForgotPassword}>
-          Şifre sıfırla
+        <Text style={styles.linkText}>
+          {t.auth.login.forgotPassword}{' '}
+          <Text style={styles.link} onPress={handleForgotPassword}>
+            {t.auth.login.resetPassword}
+          </Text>
         </Text>
-      </Text>
-      <Text style={styles.linkText}>
-        Hesabını aktive etmek için,{' '}
-        <Text style={styles.link} onPress={handleActivation}>
-          Aktive et
+        <Text style={styles.linkText}>
+          {t.auth.login.activateAccount}{' '}
+          <Text style={styles.link} onPress={handleActivation}>
+            {t.auth.login.activate}
+          </Text>
         </Text>
-      </Text>
+      </View>
     </View>
   );
 };
@@ -113,37 +120,50 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 24,
-    backgroundColor: '#fff',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: '#f5f5f5',
   },
   input: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#444',
-    marginBottom: 16,
+    width: '100%',
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: '#fff',
     fontSize: 16,
-    paddingVertical: 8,
   },
   button: {
+    width: '100%',
+    height: 50,
     backgroundColor: '#4b5c75',
-    padding: 12,
     borderRadius: 8,
-    marginVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    textAlign: 'center',
+    fontWeight: '600',
   },
   linkText: {
+    fontSize: 14,
+    color: '#666',
     textAlign: 'center',
-    color: '#444',
-    marginTop: 8,
+    marginBottom: 10,
   },
   link: {
-    color: '#3f51b5',
-    fontWeight: 'bold',
+    color: '#4b5c75',
+    fontWeight: '600',
   },
 });
