@@ -9,6 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import api from '../../services/api';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { CompanyType } from '../../types/types';
 
 const CreateCompany = () => {
   const navigation = useNavigation<any>();
@@ -18,7 +19,9 @@ const CreateCompany = () => {
   const [active, setActive] = useState(true);
   const [addressDetail, setAddressDetail] = useState('');
   const [townId, setTownId] = useState<number | null>(null);
+  const [companyTypeId, setCompanyTypeId] = useState<number | null>(null);
   const [towns, setTowns] = useState<{ id: number; name: string }[]>([]);
+  const [companyTypes, setCompanyTypes] = useState<CompanyType[]>([]);
   const [loading, setLoading] = useState(false);
 
   useLayoutEffect(() => {
@@ -52,7 +55,17 @@ const CreateCompany = () => {
       }
     };
 
+    const fetchCompanyTypes = async () => {
+      try {
+        const response = await api.get('/api/company-types');
+        setCompanyTypes(response.data);
+      } catch (err) {
+        console.error(t.createCompany.companyTypesLoadError, err);
+      }
+    };
+
     fetchTowns();
+    fetchCompanyTypes();
   }, []);
 
   const handleCreate = async () => {
@@ -69,6 +82,7 @@ const CreateCompany = () => {
         active,
         addressDetail,
         townId: townId || 1, // 🔧 İlçe seçilmediyse 1 gönder
+        companyTypeId: companyTypeId || 1, // 🔧 Şirket türü seçilmediyse 1 gönder
       };
 
       const response = await api.post('/api/companies', payload);
@@ -108,6 +122,17 @@ const CreateCompany = () => {
         <Picker.Item label={t.createCompany.selectDistrict} value={undefined} />
         {towns.map((t) => (
           <Picker.Item key={t.id} label={t.name} value={t.id} />
+        ))}
+      </Picker>
+
+      <Text style={styles.label}>{t.createCompany.companyType}</Text>
+      <Picker
+        selectedValue={companyTypeId}
+        onValueChange={(itemValue) => setCompanyTypeId(itemValue)}
+      >
+        <Picker.Item label={t.createCompany.selectCompanyType} value={undefined} />
+        {companyTypes.map((ct) => (
+          <Picker.Item key={ct.id} label={ct.name} value={ct.id} />
         ))}
       </Picker>
 

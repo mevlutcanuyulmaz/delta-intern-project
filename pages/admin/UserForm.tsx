@@ -53,20 +53,31 @@ const UserForm = () => {
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [departmentId, setDepartmentId] = useState<number | null>(null);
-  const [role, setRole] = useState<string>('USER');
+  const [roleId, setRoleId] = useState<number>(4); // Default: USER (4)
   const [isActive, setIsActive] = useState<boolean>(true);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(!!userId);
 
   const roles = [
-    { value: 'ADMIN', label: 'Admin' },
-    { value: 'MANAGER', label: 'Manager' },
-    { value: 'USER', label: 'User' },
+    { value: 6, label: 'Admin' },
+    { value: 5, label: 'Manager' },
+    { value: 4, label: 'User' },
   ];
+
+  // Role string'den ID'ye çevirme fonksiyonu
+  const getRoleIdFromString = (roleString: string): number => {
+    switch (roleString) {
+      case 'ADMIN': return 6;
+      case 'MANAGER': return 5;
+      case 'USER': return 4;
+      default: return 4;
+    }
+  };
+
 
 const fetchDepartments = async () => {
   try {
-    const response = await api.get('/api/department/get-departments');
+    const response = await api.get('/api/departments');
     setDepartments(response.data);
   } catch (error) {
     console.error(t.adminUserForm.departmentsLoadError, error);
@@ -76,13 +87,22 @@ const fetchDepartments = async () => {
 const fetchUser = async () => {
   if (!userId) return;
   try {
-    const response = await api.get(`/api/user/get-user/${userId}`);
+    const response = await api.get(`/api/user/get-user-detail/${userId}`);
     const user = response.data;
     setName(user.name);
     setSurname(user.surname);
     setEmail(user.email);
     setDepartmentId(user.departmentId);
-    setRole(user.role);
+    
+    // Role string'i ID'ye çevir
+    if (user.role && typeof user.role === 'string') {
+      setRoleId(getRoleIdFromString(user.role));
+    } else if (user.role && user.role.name) {
+      setRoleId(getRoleIdFromString(user.role.name));
+    } else if (user.roleId) {
+      setRoleId(user.roleId);
+    }
+    
     setIsActive(user.isActive);
   } catch (error) {
     console.error(t.adminUserForm.userLoadError, error);
@@ -102,28 +122,45 @@ useEffect(() => {
 
   const handleSave = async () => {
     if (!departmentId) {
-      Alert.alert(t.common.error, t.adminUserForm.selectDepartment);
+      Alert.alert(t.adminUserForm.warning, t.adminUserForm.selectDepartmentWarning);
       return;
     }
 
-    const userData = {
-      name,
-      surname,
-      email,
-      departmentId,
-      role,
-      isActive,
-    };
-
     try {
+      // Token kontrolü
+      const token = await AsyncStorage.getItem('accessToken');
+      console.log('🔑 Token mevcut mu?', token ? 'Evet' : 'Hayır');
+      
       if (userId) {
-        await api.put(`/api/user/update-user/${userId}`, userData);
+        // Kullanıcı güncelleme - userId'yi body'de gönder
+        const updateData = {
+          id: userId,
+          name,
+          surname,
+          email,
+          departmentId,
+          roleId, // roleId gönder
+          isActive,
+        };
+        console.log('📤 Update Data:', updateData);
+        await api.put('/api/user/update-user', updateData);
       } else {
-        await api.post('/api/user/create-user', userData);
+        // Yeni kullanıcı oluşturma
+        const createData = {
+          name,
+          surname,
+          email,
+          departmentId,
+          roleId, // roleId gönder
+          isActive,
+        };
+        console.log('📤 Create Data:', createData);
+        await api.post('/api/user/create-user', createData);
       }
       Alert.alert(t.common.success, t.adminUserForm.saveSuccess);
       navigation.goBack();
     } catch (error) {
+      console.error('API Error:', error);
       Alert.alert(t.common.error, t.adminUserForm.saveError);
     }
   };
@@ -171,14 +208,24 @@ useEffect(() => {
 
       <Text style={styles.label}>{t.adminUserForm.role}</Text>
       <Picker
-        selectedValue={role}
-        onValueChange={(itemValue) => setRole(itemValue)}
+        selectedValue={roleId}
+        onValueChange={(itemValue) => setRoleId(itemValue)}
         style={styles.picker}
       >
         {roles.map((roleItem) => (
           <Picker.Item key={roleItem.value} label={roleItem.label} value={roleItem.value} />
         ))}
       </Picker>
+
+      <View style={styles.switchRow}>
+        <Text style={styles.label}>{t.adminUserForm.isActiveLabel}</Text>
+        <Switch
+          value={isActive}
+          onValueChange={setIsActive}
+          trackColor={{ false: '#767577', true: '#4b5c75' }}
+          thumbColor={isActive ? '#f4f3f4' : '#f4f3f4'}
+        />
+      </View>
 
       <Button title={t.adminUserForm.save} onPress={handleSave} color="#4b5c75" />
     </View>

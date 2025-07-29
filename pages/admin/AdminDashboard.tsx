@@ -15,8 +15,6 @@ interface DashboardStats {
   totalUsers: number;
   totalCompanies: number;
   totalDepartments: number;
-  activeUsers: number;
-  pendingUsers: number;
 }
 
 const AdminDashboard = () => {
@@ -71,9 +69,7 @@ const AdminDashboard = () => {
       const dashboardStats: DashboardStats = {
         totalUsers: users.length,
         totalCompanies: companies.length,
-        totalDepartments: departments.length,
-        activeUsers: users.filter((u: any) => u.isActive).length,
-        pendingUsers: users.filter((u: any) => !u.isActive).length,
+        totalDepartments: departments.length
       };
 
       setStats(dashboardStats);
@@ -145,15 +141,49 @@ const AdminDashboard = () => {
               <Text style={styles.statNumber}>{stats.totalDepartments}</Text>
               <Text style={styles.statLabel}>{t.adminDashboard.totalDepartments}</Text>
             </View>
-            
-            <View style={[styles.statCard, { backgroundColor: '#F3E5F5' }]}>
-              <Icon name="account-check" size={30} color="#7B1FA2" />
-              <Text style={styles.statNumber}>{stats.activeUsers}</Text>
-              <Text style={styles.statLabel}>{t.adminDashboard.activeUsers}</Text>
-            </View>
           </View>
         </View>
        )}
+
+      {/* Yönetim Butonları */}
+      <View style={styles.managementSection}>
+        <Text style={styles.sectionTitle}>Yönetim</Text>
+        <TouchableOpacity 
+          style={styles.managementButton}
+          onPress={() => navigation.navigate('DepartmentTypeList')}
+        >
+          <Icon name="format-list-bulleted-type" size={24} color="#4b5c75" />
+          <Text style={styles.managementButtonText}>Departman Türleri</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.managementButton}
+          onPress={() => navigation.navigate('RegionList')}
+        >
+          <Icon name="map-outline" size={24} color="#4b5c75" />
+          <Text style={styles.managementButtonText}>{t.locationManagement.regionList.title}</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.managementButton}
+          onPress={() => navigation.navigate('CityList')}
+        >
+          <Icon name="city" size={24} color="#4b5c75" />
+          <Text style={styles.managementButtonText}>{t.locationManagement.cityList.title}</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.managementButton}
+          onPress={() => navigation.navigate('TownList')}
+        >
+          <Icon name="home-city-outline" size={24} color="#4b5c75" />
+          <Text style={styles.managementButtonText}>{t.locationManagement.townList.title}</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
+      </View>
      </ScrollView>
   );
 };
@@ -250,5 +280,29 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
     marginTop: 4,
+  },
+  managementSection: {
+    margin: 16,
+    marginBottom: 32,
+  },
+  managementButton: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  managementButtonText: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginLeft: 12,
   },
 });

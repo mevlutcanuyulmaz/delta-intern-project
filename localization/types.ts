@@ -228,6 +228,8 @@ export interface Translations {
     saveError: string;
     userLoadError: string;
     departmentsLoadError: string;
+    isActive: string;
+    isActiveLabel: string;
   };
 
   // Company List translations
@@ -279,6 +281,8 @@ export interface Translations {
     addressDetail: string;
     district: string;
     selectDistrict: string;
+    companyType: string;
+    selectCompanyType: string;
     active: string;
     create: string;
     missingInfo: string;
@@ -286,6 +290,7 @@ export interface Translations {
     createSuccess: string;
     createError: string;
     districtsLoadError: string;
+    companyTypesLoadError: string;
   };
 
   // Company Detail translations
@@ -335,6 +340,112 @@ export interface Translations {
     noManager: string;
     departmentEmployees: string;
     noEmployees: string;
+  };
+
+  // Location Management translations
+  locationManagement: {
+    // Region translations
+    regionList: {
+      title: string;
+      loading: string;
+      addNewRegion: string;
+      edit: string;
+      delete: string;
+      deleteRegion: string;
+      deleteConfirmation: string;
+      cancel: string;
+      deleteSuccess: string;
+      deleteError: string;
+      regionsLoadError: string;
+      emptyList: string;
+      regionName: string;
+      
+    };
+    regionForm: {
+      title: string;
+      editTitle: string;
+      regionName: string;
+      regionNamePlaceholder: string;
+      save: string;
+      loading: string;
+      saveSuccess: string;
+      saveError: string;
+      regionLoadError: string;
+      nameRequired: string;
+    };
+    // City translations
+    cityList: {
+      title: string;
+      loading: string;
+      addNewCity: string;
+      edit: string;
+      delete: string;
+      deleteCity: string;
+      deleteConfirmation: string;
+      cancel: string;
+      deleteSuccess: string;
+      deleteError: string;
+      citiesLoadError: string;
+      emptyList: string;
+      cityName: string;
+      region: string;
+      deleteTitle: string;
+    };
+    cityForm: {
+      title: string;
+      editTitle: string;
+      cityName: string;
+      cityNamePlaceholder: string;
+      region: string;
+      selectRegion: string;
+      save: string;
+      loading: string;
+      saveSuccess: string;
+      saveError: string;
+      cityLoadError: string;
+      regionsLoadError: string;
+      nameRequired: string;
+      regionRequired: string;
+    };
+    // Town translations
+    townList: {
+      title: string;
+      loading: string;
+      addNewTown: string;
+      edit: string;
+      delete: string;
+      deleteTown: string;
+      deleteTitle: string;
+      deleteConfirmation: string;
+      cancel: string;
+      deleteSuccess: string;
+      deleteError: string;
+      townsLoadError: string;
+      emptyList: string;
+      townName: string;
+      city: string;
+      region: string;
+    };
+    townForm: {
+      title: string;
+      editTitle: string;
+      townName: string;
+      townNamePlaceholder: string;
+      region: string;
+      selectRegion: string;
+      city: string;
+      selectCity: string;
+      save: string;
+      loading: string;
+      saveSuccess: string;
+      updateSuccess: string;
+      saveError: string;
+      townLoadError: string;
+      regionsLoadError: string;
+      citiesLoadError: string;
+      nameRequired: string;
+      
+    };
   };
 
   // Common translations

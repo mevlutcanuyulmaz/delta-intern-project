@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, FlatList, Modal } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -5,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import api from '../../services/api';
-import { DepartmentInfo, Town } from '../../types/types';
+import { DepartmentInfo, Town, DepartmentType } from '../../types/types';
 import { useLanguage } from '../../localization';
 
 type DepartmentListNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -17,7 +18,9 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
   const [nameInput, setNameInput] = useState('');
   const [addressDetailInput, setAddressDetailInput] = useState('');
   const [selectedTownId, setSelectedTownId] = useState<number>(1);
+  const [selectedDepartmentTypeId, setSelectedDepartmentTypeId] = useState<number>(1);
   const [towns, setTowns] = useState<Town[]>([]);
+  const [departmentTypes, setDepartmentTypes] = useState<DepartmentType[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -40,15 +43,26 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
     }
   };
 
+  const fetchDepartmentTypes = async () => {
+    try {
+      const response = await api.get('/api/department-types');
+      setDepartmentTypes(response.data);
+    } catch (err) {
+      console.error('Departman türleri yüklenirken hata:', err);
+    }
+  };
+
   useEffect(() => {
     fetchDepartments();
     fetchTowns();
+    fetchDepartmentTypes();
   }, []);
 
   const openModal = () => {
     setNameInput('');
     setAddressDetailInput('');
     setSelectedTownId(1);
+    setSelectedDepartmentTypeId(1);
     setEditingId(null);
     setModalVisible(true);
   };
@@ -58,6 +72,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
     setNameInput('');
     setAddressDetailInput('');
     setSelectedTownId(1);
+    setSelectedDepartmentTypeId(1);
     setEditingId(null);
   };
 
@@ -70,6 +85,14 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       Alert.alert(t.common.error, t.departmentList.addressRequired);
       return;
     }
+    if (selectedTownId === 0) {
+      Alert.alert(t.common.error, 'Lütfen bir ilçe seçin');
+      return;
+    }
+    if (selectedDepartmentTypeId === 0) {
+      Alert.alert(t.common.error, 'Lütfen bir departman türü seçin');
+      return;
+    }
 
     if (editingId === null) {
       // Ekleme işlemi
@@ -77,7 +100,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
         await api.post('/api/departments', {
           name: nameInput,
           companyId,
-          departmentTypeId: 1,
+          departmentTypeId: selectedDepartmentTypeId,
           townId: selectedTownId,
           addressDetail: addressDetailInput,
         });
@@ -94,7 +117,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
           id: editingId,
           name: nameInput,
           companyId,
-          departmentTypeId: 1,
+          departmentTypeId: selectedDepartmentTypeId,
           townId: selectedTownId,
           addressDetail: addressDetailInput,
         });
@@ -109,21 +132,35 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
 
   const handleDelete = async (id: number) => {
     try {
-      await api.delete(`/api/department/delete/${id}`);
+      await api.delete(`/api/departments/soft/${id}`);
       fetchDepartments();
     } catch (err) {
       Alert.alert(t.common.error, t.departmentList.deleteError);
     }
   };
 
-  const startEditing = (item: DepartmentInfo) => {
-    setNameInput(item.name || '');
-    // Not: DepartmentInfo interface'inde addressDetail ve townId yok, 
-    // bu yüzden varsayılan değerler kullanıyoruz
-    setAddressDetailInput('');
-    setSelectedTownId(1);
-    setEditingId(item.id || 0);
-    setModalVisible(true);
+  const startEditing = async (item: DepartmentInfo) => {
+    try {
+      // Departman detaylarını API'den al
+      const response = await api.get(`/api/departments/${item.id}`);
+      const departmentDetail = response.data;
+      
+      setNameInput(departmentDetail.name || '');
+      setAddressDetailInput(departmentDetail.addressDetail || '');
+      setSelectedTownId(departmentDetail.town?.id || 1);
+      setSelectedDepartmentTypeId(departmentDetail.departmentType?.id || 1);
+      setEditingId(item.id || 0);
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Departman detayları alınırken hata:', error);
+      // Hata durumunda mevcut bilgilerle devam et
+      setNameInput(item.name || '');
+      setAddressDetailInput(item.addressDetail || '');
+      setSelectedTownId(item.townId || 1);
+      setSelectedDepartmentTypeId(item.departmentTypeId || 1);
+      setEditingId(item.id || 0);
+      setModalVisible(true);
+    }
   };
 
   const navigateToDepartmentDetail = (departmentId: number) => {
@@ -205,6 +242,20 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
                 <Picker.Item label={t.departmentList.selectDistrictPlaceholder} value={0} />
                 {towns.map((town) => (
                   <Picker.Item key={town.id} label={town.name} value={town.id} />
+                ))}
+              </Picker>
+            </View>
+
+            <Text style={styles.label}>Departman Türü</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedDepartmentTypeId}
+                onValueChange={(itemValue) => setSelectedDepartmentTypeId(itemValue)}
+                style={styles.picker}
+              >
+                <Picker.Item label="Departman türü seçin" value={0} />
+                {departmentTypes.map((type) => (
+                  <Picker.Item key={type.id} label={type.name} value={type.id} />
                 ))}
               </Picker>
             </View>

@@ -29,6 +29,13 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
     tabBarActiveTintColor: '#4b5c75',
     tabBarInactiveTintColor: 'gray',
     headerShown: true,
+    headerStyle: {
+      backgroundColor: '#4b5c75',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold' as 'bold',
+    },
   };
 
   if (userRole === 'admin') {

@@ -18,7 +18,7 @@ const UserDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('userToken');
+      await AsyncStorage.removeItem('accessToken');
       navigation.reset({
         index: 0,
         routes: [{ name: 'Login' }],

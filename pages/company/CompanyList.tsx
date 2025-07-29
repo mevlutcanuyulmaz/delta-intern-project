@@ -54,7 +54,7 @@ const CompanyList = () => {
   };
   const handleDelete = async (id: number) => {
   try {
-    await api.delete(`/api/companies/${id}`);
+    await api.delete(`/api/companies/soft/${id}`);
     Alert.alert(t.common.success, t.companyList.deleteSuccess);
     // Listeyi güncelle
     setCompanies((prev) => prev.filter((c) => c.id !== id));

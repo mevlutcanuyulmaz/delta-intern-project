@@ -2,6 +2,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './pages/auth/LoginScreen';
 import  { AdminBottomTabs, ManagerBottomTabs, UserBottomTabs } from './navigation/BottomTabs';
 import UserForm from './pages/admin/UserForm';
+import DepartmentTypeList from './pages/admin/DepartmentTypeList';
+import DepartmentTypeForm from './pages/admin/DepartmentTypeForm';
+import RegionList from './pages/admin/RegionList';
+import RegionForm from './pages/admin/RegionForm';
+import CityList from './pages/admin/CityList';
+import CityForm from './pages/admin/CityForm';
+import TownList from './pages/admin/TownList';
+import TownForm from './pages/admin/TownForm';
 import CompanyForm from './pages/company/CompanyForm';
 import CreateCompany from './pages/company/CreateCompany';
 import CompanyDetail from './pages/company/CompanyDetail';
@@ -37,10 +45,29 @@ const App = () => {
   return (
     <LanguageProvider>
       <NavigationContainer linking={linking}>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator 
+          initialRouteName="Login"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#4b5c75',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        >
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Tabs" component={AdminBottomTabs} options={{ headerShown: false }} />
           <Stack.Screen name="UserForm" component={UserForm} options={{ title: 'Kullanıcı Formu' }} />
+          <Stack.Screen name="DepartmentTypeList" component={DepartmentTypeList} options={{ title: 'Departman Türleri' }} />
+          <Stack.Screen name="DepartmentTypeForm" component={DepartmentTypeForm} options={{ title: 'Departman Türü Formu' }} />
+          <Stack.Screen name="RegionList" component={RegionList} options={{ title: 'Bölge Yönetimi' }} />
+          <Stack.Screen name="RegionForm" component={RegionForm} options={{ title: 'Bölge Formu' }} />
+          <Stack.Screen name="CityList" component={CityList} options={{ title: 'Şehir Yönetimi' }} />
+          <Stack.Screen name="CityForm" component={CityForm} options={{ title: 'Şehir Formu' }} />
+          <Stack.Screen name="TownList" component={TownList} options={{ title: 'İlçe Yönetimi' }} />
+          <Stack.Screen name="TownForm" component={TownForm} options={{ title: 'İlçe Formu' }} />
           <Stack.Screen name="CompanyForm" component={CompanyForm} options={{ title: 'Şirket Formu' }} />
           <Stack.Screen name="CreateCompany" component={CreateCompany} options={{ title: 'Şirket Oluştur' }} />
           <Stack.Screen name="CompanyDetail" component={CompanyDetail} options={{ title: 'Şirket Detayı' }} />

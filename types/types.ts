@@ -32,11 +32,24 @@ export interface DepartmentInfo {
   name?: string;
   active?: boolean;
   companyId?: number;
+  departmentTypeId?: number;
+  townId?: number;
+  addressDetail?: string;
   createdAt?: string;
   company?: { 
     id: number;
     name?: string;
     shortName?: string;
+  };
+  departmentType?: {
+    id: number;
+    name: string;
+  };
+  town?: {
+    id: number;
+    name: string;
+    city?: string;
+    region?: string;
   };
 }
 
@@ -152,4 +165,19 @@ export interface UserForm {
   roleId: number;
   departmentId?: number;
   companyId?: number;
+}
+
+// Location Form tipleri
+export interface RegionForm {
+  name: string;
+}
+
+export interface CityForm {
+  name: string;
+}
+
+export interface TownForm {
+  name: string;
+  regionId?: number;
+  cityId?: number;
 }

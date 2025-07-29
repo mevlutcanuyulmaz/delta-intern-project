@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,9 +17,12 @@ interface User {
   surname: string;
   email: string;
   role: {
+    id: number;
     name: 'ADMIN' | 'MANAGER' | 'USER';
   };
   departmentName: string;
+  departmentId: number;
+  companyName: string;
 }
 
 const UserList = () => {
@@ -94,9 +97,10 @@ const UserList = () => {
   const renderUser = ({ item }: { item: User }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.name} {item.surname}</Text>
-      <Text>{item.email}</Text>
-      <Text>{item.role?.name}</Text>
-      <Text>{item.departmentName}</Text>
+      <Text style={styles.email}>Email: {item.email}</Text>
+      <Text style={styles.role}>Rol: {item.role?.name}</Text>
+      <Text style={styles.department}>Departman: {item.departmentName}</Text>
+      <Text style={styles.company}>Şirket: {item.companyName}</Text>
 
       <View style={styles.buttonRow}>
         <TouchableOpacity
@@ -120,18 +124,19 @@ const UserList = () => {
 
   return (
     <View style={styles.container}>
-      <Button
-        title={t.adminUserList.addNewUser}
-        onPress={() => navigation.navigate('UserForm')}
-        color="#4b5c75"
-      />
-
       <FlatList
         data={users}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderUser}
         contentContainerStyle={styles.list}
       />
+      
+      <TouchableOpacity
+        style={styles.createButton}
+        onPress={() => navigation.navigate('UserForm')}
+      >
+        <Text style={styles.createButtonText}>{t.adminUserList.addNewUser}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -155,19 +160,54 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  email: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 2,
+  },
+  role: {
+    fontSize: 14,
+    color: '#4b5c75',
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  department: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 2,
+  },
+  company: {
+    fontSize: 14,
+    color: '#2e7d32',
+    fontWeight: '500',
+    marginBottom: 8,
   },
   button: {
-  padding: 8,
-  borderRadius: 6,
-  alignItems: 'center',
-  marginRight: 8, // sadece "Düzenle" butonuna uygula
+    padding: 8,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginRight: 8,
   },
   buttonText: {
     color: '#fff',
   },
   buttonRow: {
-  flexDirection: 'row',
-  gap: 8, // Eğer desteklemiyorsa yerine marginRight kullan
-  marginTop: 8,
-},
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 8,
+  },
+  createButton: {
+    backgroundColor: '#4b5c75',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  createButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
