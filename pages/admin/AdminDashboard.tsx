@@ -147,13 +147,13 @@ const AdminDashboard = () => {
 
       {/* Yönetim Butonları */}
       <View style={styles.managementSection}>
-        <Text style={styles.sectionTitle}>Yönetim</Text>
+        <Text style={styles.sectionTitle}>{t.adminDashboard.management}</Text>
         <TouchableOpacity 
           style={styles.managementButton}
           onPress={() => navigation.navigate('DepartmentTypeList')}
         >
           <Icon name="format-list-bulleted-type" size={24} color="#4b5c75" />
-          <Text style={styles.managementButtonText}>Departman Türleri</Text>
+          <Text style={styles.managementButtonText}>{t.adminDashboard.departmentTypes}</Text>
           <Icon name="chevron-right" size={24} color="#666" />
         </TouchableOpacity>
 

@@ -21,6 +21,7 @@ import ManagerDashboard from './pages/manager/ManagerDashboard';
 import UserDashboard from './pages/user/UserDashboard';
 import UserCompanyInfo from './pages/user/UserCompanyInfo';
 import ManagerUserList from './pages/manager/ManagerUserList';
+import ManagerCompanyList from './pages/manager/ManagerCompanyList';
 import ManagerProfile from './pages/manager/ManagerProfile';
 import UserProfile from './pages/user/UserProfile';
 import { LanguageProvider } from './localization';
@@ -78,6 +79,7 @@ const App = () => {
           <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ title: 'Kullanıcı Paneli' }} />
           <Stack.Screen name="UserCompanyInfo" component={UserCompanyInfo} options={{ title: 'Şirket Bilgileri' }} />
           <Stack.Screen name="ManagerUserList" component={ManagerUserList} options={{ title: 'Kullanıcı Listesi' }} />
+          <Stack.Screen name="ManagerCompanyList" component={ManagerCompanyList} options={{ title: 'Şirket Listesi' }} />
           <Stack.Screen name="ManagerBottomTabs" component={ManagerBottomTabs} options={{ headerShown: false }} />
           <Stack.Screen name="UserBottomTabs" component={UserBottomTabs} options={{ headerShown: false }} />
           

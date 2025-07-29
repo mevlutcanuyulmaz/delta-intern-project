@@ -133,6 +133,7 @@ export const tr: Translations = {
     managedDepartments: 'Yönetilen Departmanlar',
     quickActions: 'Hızlı İşlemler',
     departmentEmployees: 'Departman Çalışanları',
+    companies: 'Şirketler',
     profileSettings: 'Profil Ayarları',
     department: 'Departman',
     unknown: 'Bilinmiyor',
@@ -173,6 +174,21 @@ export const tr: Translations = {
     emptyList: 'Bu departmanda henüz kullanıcı bulunmuyor.',
     usersLoadError: 'Kullanıcılar getirilemedi'
   },
+  managerCompanyList: {
+    loading: 'Şirketler yükleniyor...',
+    title: 'Şirket Listesi',
+    companiesCount: 'şirket',
+    active: 'Aktif',
+    inactive: 'Pasif',
+    companyType: 'Tür',
+    district: 'İlçe',
+    city: 'Şehir',
+    region: 'Bölge',
+    address: 'Adres',
+    createdDate: 'Oluşturulma',
+    viewDetails: 'Detayları Görüntüle',
+    companiesLoadError: 'Şirketler yüklenirken hata oluştu'
+  },
   common: {
     loading: 'Yükleniyor...',
     error: 'Hata',
@@ -206,7 +222,17 @@ export const tr: Translations = {
     totalDepartments: 'Toplam Departman',
     activeUsers: 'Aktif Kullanıcı',
     pendingUsers: 'Bekleyen Kullanıcı',
-    dataLoadError: 'Dashboard verileri yüklenirken bir hata oluştu'
+    dataLoadError: 'Dashboard verileri yüklenirken bir hata oluştu',
+    management: 'Yönetim',
+    departmentTypes: 'Departman Türleri'
+  },
+  bottomTabs: {
+    admin: 'Admin',
+    companies: 'Şirketler',
+    users: 'Kullanıcılar',
+    home: 'Ana Sayfa',
+    profile: 'Profil',
+    companyInfo: 'Şirket Bilgileri'
   },
   adminUserList: {
     loading: 'Yükleniyor...',
@@ -218,7 +244,11 @@ export const tr: Translations = {
     cancel: 'İptal',
     deleteSuccess: 'Kullanıcı silindi',
     deleteError: 'Kullanıcı silinemedi',
-    usersLoadError: 'Kullanıcılar alınamadı'
+    usersLoadError: 'Kullanıcılar alınamadı',
+    email: 'E-posta',
+    role: 'Rol',
+    department: 'Departman',
+    company: 'Şirket',
   },
   adminUserForm: {
     loading: 'Yükleniyor...',

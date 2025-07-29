@@ -140,6 +140,7 @@ export interface Translations {
     managedDepartments: string;
     quickActions: string;
     departmentEmployees: string;
+    companies: string;
     profileSettings: string;
     department: string;
     unknown: string;
@@ -185,6 +186,23 @@ export interface Translations {
     usersLoadError: string;
   };
 
+  // Manager Company List translations
+  managerCompanyList: {
+    loading: string;
+    title: string;
+    companiesCount: string;
+    active: string;
+    inactive: string;
+    companyType: string;
+    district: string;
+    city: string;
+    region: string;
+    address: string;
+    createdDate: string;
+    viewDetails: string;
+    companiesLoadError: string;
+  };
+
   // Admin Dashboard translations
   adminDashboard: {
     loading: string;
@@ -196,6 +214,18 @@ export interface Translations {
     activeUsers: string;
     pendingUsers: string;
     dataLoadError: string;
+    management: string;
+    departmentTypes: string;
+  };
+
+  // Bottom Tabs translations
+  bottomTabs: {
+    admin: string;
+    companies: string;
+    users: string;
+    home: string;
+    profile: string;
+    companyInfo: string;
   };
 
   // Admin User List translations
@@ -210,6 +240,10 @@ export interface Translations {
     deleteSuccess: string;
     deleteError: string;
     usersLoadError: string;
+    email: string;
+    role: string;
+    department:string;
+    company:string;
   };
 
   // Admin User Form translations

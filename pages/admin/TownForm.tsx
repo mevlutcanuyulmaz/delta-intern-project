@@ -9,7 +9,7 @@ import api from '../../services/api';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { RootStackParamList } from '../../navigation/types';
-import { TownForm as TownFormType, Region, City } from '../../types/types';
+import { TownForm as TownFormType, Region } from '../../types/types';
 
 type TownFormRouteProp = RouteProp<RootStackParamList, 'TownForm'>;
 type TownFormNavigationProp = NativeStackNavigationProp<RootStackParamList, 'TownForm'>;
@@ -22,9 +22,7 @@ const TownForm = () => {
 
   const [name, setName] = useState('');
   const [selectedRegionId, setSelectedRegionId] = useState<number | undefined>();
-  const [selectedCityId, setSelectedCityId] = useState<number | undefined>();
   const [regions, setRegions] = useState<Region[]>([]);
-  const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(!!townId);
 
@@ -63,16 +61,6 @@ const TownForm = () => {
     }
   };
 
-  const fetchCities = async () => {
-    try {
-      const response = await api.get('/api/location/city');
-      setCities(response.data);
-    } catch (error) {
-      console.error('Şehirler yüklenirken hata:', error);
-      Alert.alert(t.common.error, t.locationManagement.townForm.citiesLoadError);
-    }
-  };
-
   const fetchTown = async () => {
     if (!townId) return;
     
@@ -82,7 +70,6 @@ const TownForm = () => {
       const town = response.data;
       setName(town.name || '');
       setSelectedRegionId(town.region?.id);
-      setSelectedCityId(town.city?.id);
     } catch (error) {
       console.error('İlçe bilgileri yüklenirken hata:', error);
       Alert.alert(t.common.error, t.locationManagement.townForm.townLoadError);
@@ -97,12 +84,16 @@ const TownForm = () => {
       return;
     }
 
+    if (!selectedRegionId) {
+      Alert.alert(t.common.error, 'Lütfen bir bölge seçiniz');
+      return;
+    }
+
     try {
       setLoading(true);
       const townData: TownFormType = {
         name: name.trim(),
         regionId: selectedRegionId,
-        cityId: selectedCityId,
       };
 
       if (townId) {
@@ -124,7 +115,6 @@ const TownForm = () => {
 
   useEffect(() => {
     fetchRegions();
-    fetchCities();
     if (townId) {
       fetchTown();
     }
@@ -161,21 +151,6 @@ const TownForm = () => {
             <Picker.Item label={t.locationManagement.townForm.selectRegion} value={undefined} />
             {regions.map((region) => (
               <Picker.Item key={region.id} label={region.name} value={region.id} />
-            ))}
-          </Picker>
-        </View>
-
-        <Text style={styles.label}>{t.locationManagement.townForm.city}</Text>
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={selectedCityId}
-            onValueChange={(value) => setSelectedCityId(value)}
-            style={styles.picker}
-            enabled={!loading}
-          >
-            <Picker.Item label={t.locationManagement.townForm.selectCity} value={undefined} />
-            {cities.map((city) => (
-              <Picker.Item key={city.id} label={city.name} value={city.id} />
             ))}
           </Picker>
         </View>

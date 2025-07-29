@@ -133,6 +133,7 @@ export const en: Translations = {
     managedDepartments: 'Managed Departments',
     quickActions: 'Quick Actions',
     departmentEmployees: 'Department Employees',
+    companies: 'Companies',
     profileSettings: 'Profile Settings',
     department: 'Department',
     unknown: 'Unknown',
@@ -173,6 +174,21 @@ export const en: Translations = {
     emptyList: 'No users found in this department yet.',
     usersLoadError: 'Could not load users'
   },
+  managerCompanyList: {
+    loading: 'Loading companies...',
+    title: 'Company List',
+    companiesCount: 'companies',
+    active: 'Active',
+    inactive: 'Inactive',
+    companyType: 'Type',
+    district: 'District',
+    city: 'City',
+    region: 'Region',
+    address: 'Address',
+    createdDate: 'Created',
+    viewDetails: 'View Details',
+    companiesLoadError: 'Error loading companies'
+  },
   adminDashboard: {
     loading: 'Loading dashboard...',
     welcome: 'Welcome!',
@@ -182,7 +198,17 @@ export const en: Translations = {
     totalDepartments: 'Total Departments',
     activeUsers: 'Active Users',
     pendingUsers: 'Pending Users',
-    dataLoadError: 'An error occurred while loading dashboard data'
+    dataLoadError: 'An error occurred while loading dashboard data',
+    management: 'Management',
+    departmentTypes: 'Department Types'
+  },
+  bottomTabs: {
+    admin: 'Admin',
+    companies: 'Companies',
+    users: 'Users',
+    home: 'Home',
+    profile: 'Profile',
+    companyInfo: 'Company Info'
   },
   adminUserList: {
     loading: 'Loading...',
@@ -194,7 +220,11 @@ export const en: Translations = {
     cancel: 'Cancel',
     deleteSuccess: 'User deleted',
     deleteError: 'Could not delete user',
-    usersLoadError: 'Could not load users'
+    usersLoadError: 'Could not load users',
+    email: 'Email',
+    role: 'Role',
+    department: 'Department',
+    company: 'Company',
   },
   adminUserForm: {
     loading: 'Loading...',

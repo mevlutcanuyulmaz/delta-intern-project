@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import { useLanguage } from '../localization';
 
 // Admin pages
 import AdminDashboard from '../pages/admin/AdminDashboard';
@@ -25,6 +26,8 @@ interface BottomTabsProps {
 }
 
 const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
+  const { t } = useLanguage();
+  
   const commonScreenOptions = {
     tabBarActiveTintColor: '#4b5c75',
     tabBarInactiveTintColor: 'gray',
@@ -45,7 +48,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
           name="AdminDashboard"
           component={AdminDashboard}
           options={{
-            title: 'Admin',
+            title: t.bottomTabs.admin,
             tabBarIcon: ({ color, size }) => (
               <IoniconsIcon name="crown-outline" size={size} color={color} />
             ),
@@ -55,7 +58,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
           name="CompanyList"
           component={CompanyList}
           options={{
-            title: 'Şirketler',
+            title: t.bottomTabs.companies,
             tabBarIcon: ({ color, size }) => (
               <IoniconsIcon name="business-outline" size={size} color={color} />
             ),
@@ -65,7 +68,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
           name="UserList"
           component={UserList}
           options={{
-            title: 'Kullanıcılar',
+            title: t.bottomTabs.users,
             tabBarIcon: ({ color, size }) => (
               <IoniconsIcon name="people-outline" size={size} color={color} />
             ),
@@ -82,7 +85,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
           name="ManagerDashboard"
           component={ManagerDashboard}
           options={{
-            title: 'Ana Sayfa',
+            title: t.bottomTabs.home,
             tabBarIcon: ({ color, size }) => (
               <Icon name="home" size={size} color={color} />
             ),
@@ -92,7 +95,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
           name="ManagerUserList"
           component={ManagerUserList}
           options={{
-            title: 'Kullanıcılar',
+            title: t.bottomTabs.users,
             tabBarIcon: ({ color, size }) => (
               <Icon name="account-group" size={size} color={color} />
             ),
@@ -102,7 +105,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
           name="ManagerProfile"
           component={ManagerProfile}
           options={{
-            title: 'Profil',
+            title: t.bottomTabs.profile,
             tabBarIcon: ({ color, size }) => (
               <Icon name="account-circle" size={size} color={color} />
             ),
@@ -119,7 +122,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
         name="UserDashboard"
         component={UserDashboard}
         options={{
-          title: 'Ana Sayfa',
+          title: t.bottomTabs.home,
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
           ),
@@ -129,7 +132,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
         name="UserCompanyInfo"
         component={UserCompanyInfo}
         options={{
-          title: 'Şirket Bilgileri',
+          title: t.bottomTabs.companyInfo,
           tabBarIcon: ({ color, size }) => (
             <Icon name="office-building" size={size} color={color} />
           ),
@@ -139,7 +142,7 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
         name="UserProfile"
         component={UserProfile}
         options={{
-          title: 'Profil',
+          title: t.bottomTabs.profile,
           tabBarIcon: ({ color, size }) => (
             <Icon name="account" size={size} color={color} />
           ),

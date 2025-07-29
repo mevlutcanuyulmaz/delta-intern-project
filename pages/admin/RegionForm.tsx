@@ -7,17 +7,27 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { useLanguage } from '../../localization';
+import api from '../../services/api';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type RegionFormRouteProp = RouteProp<RootStackParamList, 'RegionForm'>;
 
+interface City {
+  id: number;
+  name: string;
+}
+
 const RegionForm: React.FC = () => {
   const [name, setName] = useState('');
+  const [cityId, setCityId] = useState<number | null>(null);
+  const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(false);
   const navigation = useNavigation<NavigationProp>();
@@ -28,17 +38,28 @@ const RegionForm: React.FC = () => {
   const isEditing = !!regionId;
 
   useEffect(() => {
+    fetchCities();
     if (isEditing) {
       fetchRegion();
     }
   }, [regionId]);
 
+  const fetchCities = async () => {
+    try {
+      const response = await api.get('/api/location/city');
+      setCities(response.data);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+      Alert.alert(t.common.error, 'Şehirler yüklenirken hata oluştu');
+    }
+  };
+
   const fetchRegion = async () => {
     try {
       setInitialLoading(true);
-      const response = await fetch(`http://localhost:8080/api/location/region/${regionId}`);
-      const data = await response.json();
-      setName(data.name);
+      const response = await api.get(`/api/location/region/${regionId}`);
+      setName(response.data.name);
+      setCityId(response.data.cityId);
     } catch (error) {
       console.error('Error fetching region:', error);
       Alert.alert(t.common.error, t.locationManagement.regionForm.regionLoadError);
@@ -53,28 +74,27 @@ const RegionForm: React.FC = () => {
       return;
     }
 
+    if (!cityId) {
+      Alert.alert(t.common.error, 'Lütfen bir şehir seçiniz');
+      return;
+    }
+
     try {
       setLoading(true);
-      const url = isEditing 
-        ? `http://localhost:8080/api/location/region/${regionId}`
-        : 'http://localhost:8080/api/location/region';
       
-      const method = isEditing ? 'PUT' : 'POST';
+      const regionData = { 
+        name: name.trim(),
+        cityId: cityId
+      };
       
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: name.trim() }),
-      });
-
-      if (response.ok) {
-        Alert.alert(t.common.success, t.locationManagement.regionForm.saveSuccess);
-        navigation.goBack();
+      if (isEditing) {
+        await api.put(`/api/location/region/${regionId}`, regionData);
       } else {
-        Alert.alert(t.common.error, t.locationManagement.regionForm.saveError);
+        await api.post('/api/location/region', regionData);
       }
+
+      Alert.alert(t.common.success, t.locationManagement.regionForm.saveSuccess);
+      navigation.goBack();
     } catch (error) {
       console.error('Error saving region:', error);
       Alert.alert(t.common.error, t.locationManagement.regionForm.saveError);
@@ -93,12 +113,26 @@ const RegionForm: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>
         {isEditing ? t.locationManagement.regionForm.editTitle : t.locationManagement.regionForm.title}
       </Text>
 
       <View style={styles.form}>
+        <Text style={styles.label}>Şehir</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={cityId}
+            onValueChange={(itemValue) => setCityId(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Şehir seçiniz..." value={null} />
+            {cities.map((city) => (
+              <Picker.Item key={city.id} label={city.name} value={city.id} />
+            ))}
+          </Picker>
+        </View>
+
         <Text style={styles.label}>{t.locationManagement.regionForm.regionName}</Text>
         <TextInput
           style={styles.input}
@@ -120,7 +154,7 @@ const RegionForm: React.FC = () => {
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -162,6 +196,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+  },
+  picker: {
+    height: 50,
   },
   input: {
     borderWidth: 1,

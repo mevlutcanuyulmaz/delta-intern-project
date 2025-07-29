@@ -179,5 +179,4 @@ export interface CityForm {
 export interface TownForm {
   name: string;
   regionId?: number;
-  cityId?: number;
 }

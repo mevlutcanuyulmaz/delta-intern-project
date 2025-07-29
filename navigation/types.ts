@@ -18,6 +18,7 @@ export type RootStackParamList = {
   DepartmentList: undefined;
   DepartmentForm: undefined;
   DepartmentDetail: { departmentId: number };
+  CompanyDetail: { id: number };
   ForgotPassword: undefined;
   Activation: undefined;
   UserDashboard: undefined;
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   ManagerDashboard: undefined;
   ManagerProfile: undefined;
   ManagerUserList: undefined;
+  ManagerCompanyList: undefined;
   ManagerBottomTabs: undefined;
   
   

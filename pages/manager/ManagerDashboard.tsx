@@ -40,7 +40,7 @@ const ManagerDashboard = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
           <LanguageSwitcher />
           <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
-            <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
+           <Icon name="logout" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       ),
@@ -93,6 +93,12 @@ const ManagerDashboard = () => {
       icon: 'account-group',
       color: '#4CAF50',
       onPress: () => navigation.navigate('ManagerUserList')
+    },
+    {
+      title: t.managerDashboard.companies,
+      icon: 'domain',
+      color: '#FF9800',
+      onPress: () => navigation.navigate('ManagerCompanyList')
     },
     {
       title: t.managerDashboard.profileSettings,
@@ -150,24 +156,6 @@ const ManagerDashboard = () => {
            </View>
          </View>
        )}
-
-      {/* Hızlı İşlemler */}
-      <View style={styles.quickActionsSection}>
-        <Text style={styles.sectionTitle}>{t.managerDashboard.quickActions}</Text>
-        <View style={styles.quickActionsGrid}>
-          {quickActions.map((action, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[styles.quickActionCard, { borderLeftColor: action.color }]}
-              onPress={action.onPress}
-            >
-              <Icon name={action.icon} size={24} color={action.color} />
-              <Text style={styles.quickActionText}>{action.title}</Text>
-              <Icon name="chevron-right" size={16} color="#999" />
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
     </ScrollView>
   );
 };

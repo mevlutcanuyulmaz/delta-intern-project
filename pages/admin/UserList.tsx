@@ -97,10 +97,10 @@ const UserList = () => {
   const renderUser = ({ item }: { item: User }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.name} {item.surname}</Text>
-      <Text style={styles.email}>Email: {item.email}</Text>
-      <Text style={styles.role}>Rol: {item.role?.name}</Text>
-      <Text style={styles.department}>Departman: {item.departmentName}</Text>
-      <Text style={styles.company}>Şirket: {item.companyName}</Text>
+      <Text style={styles.email}>{t.adminUserList.email}: {item.email}</Text>
+      <Text style={styles.role}>{t.adminUserList.role}: {item.role?.name}</Text>
+      <Text style={styles.department}>{t.adminUserList.department}: {item.departmentName}</Text>
+      <Text style={styles.company}>{t.adminUserList.company}: {item.companyName}</Text>
 
       <View style={styles.buttonRow}>
         <TouchableOpacity

@@ -7,25 +7,19 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import { useLanguage } from '../../localization';
+import api from '../../services/api';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type CityFormRouteProp = RouteProp<RootStackParamList, 'CityForm'>;
 
-interface Region {
-  id: number;
-  name: string;
-}
-
 const CityForm: React.FC = () => {
   const [name, setName] = useState('');
-  const [regionId, setRegionId] = useState<number | undefined>(undefined);
-  const [regions, setRegions] = useState<Region[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(false);
   const navigation = useNavigation<NavigationProp>();
@@ -36,30 +30,16 @@ const CityForm: React.FC = () => {
   const isEditing = !!cityId;
 
   useEffect(() => {
-    fetchRegions();
     if (isEditing) {
       fetchCity();
     }
   }, [cityId]);
 
-  const fetchRegions = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/location/region');
-      const data = await response.json();
-      setRegions(data);
-    } catch (error) {
-      console.error('Error fetching regions:', error);
-      Alert.alert(t.common.error, t.locationManagement.cityForm.regionsLoadError);
-    }
-  };
-
   const fetchCity = async () => {
     try {
       setInitialLoading(true);
-      const response = await fetch(`http://localhost:8080/api/location/city/${cityId}`);
-      const data = await response.json();
-      setName(data.name);
-      setRegionId(data.regionId);
+      const response = await api.get(`/api/location/city/${cityId}`);
+      setName(response.data.name);
     } catch (error) {
       console.error('Error fetching city:', error);
       Alert.alert(t.common.error, t.locationManagement.cityForm.cityLoadError);
@@ -76,29 +56,19 @@ const CityForm: React.FC = () => {
 
     try {
       setLoading(true);
-      const url = isEditing 
-        ? `http://localhost:8080/api/location/city/${cityId}`
-        : 'http://localhost:8080/api/location/city';
       
-      const method = isEditing ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          name: name.trim(),
-          regionId: regionId 
-        }),
-      });
+      const cityData = { 
+        name: name.trim()
+      };
 
-      if (response.ok) {
-        Alert.alert(t.common.success, t.locationManagement.cityForm.saveSuccess);
-        navigation.goBack();
+      if (isEditing) {
+        await api.put(`/api/location/city/${cityId}`, cityData);
       } else {
-        Alert.alert(t.common.error, t.locationManagement.cityForm.saveError);
+        await api.post('/api/location/city', cityData);
       }
+
+      Alert.alert(t.common.success, t.locationManagement.cityForm.saveSuccess);
+      navigation.goBack();
     } catch (error) {
       console.error('Error saving city:', error);
       Alert.alert(t.common.error, t.locationManagement.cityForm.saveError);
@@ -117,7 +87,7 @@ const CityForm: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>
         {isEditing ? t.locationManagement.cityForm.editTitle : t.locationManagement.cityForm.title}
       </Text>
@@ -132,20 +102,6 @@ const CityForm: React.FC = () => {
           placeholderTextColor="#999"
         />
 
-        <Text style={styles.label}>{t.locationManagement.cityForm.region}</Text>
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={regionId}
-            onValueChange={(value) => setRegionId(value)}
-            style={styles.picker}
-          >
-            <Picker.Item label={t.locationManagement.cityForm.selectRegion} value={undefined} />
-            {regions.map((region) => (
-              <Picker.Item key={region.id} label={region.name} value={region.id} />
-            ))}
-          </Picker>
-        </View>
-
         <TouchableOpacity
           style={[styles.saveButton, loading && styles.disabledButton]}
           onPress={saveCity}
@@ -158,7 +114,7 @@ const CityForm: React.FC = () => {
           )}
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -209,16 +165,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#fff',
     marginBottom: 20,
-  },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 6,
-    marginBottom: 20,
-    backgroundColor: '#fff',
-  },
-  picker: {
-    height: 50,
   },
   saveButton: {
     backgroundColor: '#4b5c75',
