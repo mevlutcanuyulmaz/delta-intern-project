@@ -65,13 +65,13 @@ const ManagerDashboard = () => {
       const departmentStats: DepartmentStats = {
         totalEmployees: departmentEmployees.length,
         managedDepartments: 1, // Manager sadece bir departman yönetir
-        departmentName: userResponse.data.departmentName || 'Bilinmiyor',
+        departmentName: userResponse.data.departmentName || t.managerDashboard.unknown,
       };
 
       setStats(departmentStats);
     } catch (error) {
-      console.error('Dashboard verileri alınamadı:', error);
-      Alert.alert('Hata', 'Dashboard verileri yüklenirken bir hata oluştu');
+      console.error(t.managerDashboard.dataLoadError, error);
+      Alert.alert(t.common.error, t.managerDashboard.dashboardDataError);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -105,8 +105,8 @@ const ManagerDashboard = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Dashboard yükleniyor...</Text>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={styles.loadingText}>{t.managerDashboard.loading}</Text>
       </View>
     );
   }
@@ -126,7 +126,7 @@ const ManagerDashboard = () => {
             <Text style={styles.welcomeTitle}>{t.managerDashboard.welcome}</Text>
             <Text style={styles.welcomeName}>{userInfo?.name} {userInfo?.surname}</Text>
             <Text style={styles.welcomeRole}>{userInfo?.role?.name}</Text>
-            <Text style={styles.welcomeDepartment}>Departman: {userInfo?.departmentName}</Text>
+            <Text style={styles.welcomeDepartment}>{t.managerDashboard.department}: {userInfo?.departmentName}</Text>
           </View>
         </View>
       </View>
@@ -134,7 +134,7 @@ const ManagerDashboard = () => {
       {/* Departman İstatistikleri */}
        {stats && (
          <View style={styles.statsSection}>
-           <Text style={styles.sectionTitle}>Departman İstatistikleri</Text>
+           <Text style={styles.sectionTitle}>{t.managerDashboard.departmentStats}</Text>
            <View style={styles.statsGrid}>
              <View style={[styles.statCard, { backgroundColor: '#E3F2FD' }]}>
                <Icon name="account-group" size={30} color="#1976D2" />

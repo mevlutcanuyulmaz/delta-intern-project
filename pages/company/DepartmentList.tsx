@@ -2,11 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, FlatList, Modal } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
 import api from '../../services/api';
 import { DepartmentInfo, Town } from '../../types/types';
+import { useLanguage } from '../../localization';
+
+type DepartmentListNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const DepartmentList = ({ companyId }: { companyId: number }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<DepartmentListNavigationProp>();
+  const { t } = useLanguage();
   const [departments, setDepartments] = useState<DepartmentInfo[]>([]);
   const [nameInput, setNameInput] = useState('');
   const [addressDetailInput, setAddressDetailInput] = useState('');
@@ -21,7 +27,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       const filtered = res.data.filter((d: DepartmentInfo) => d.company?.id === companyId);
       setDepartments(filtered);
     } catch (err) {
-      console.error('Departmanlar alınamadı', err);
+      console.error(t.departmentList.departmentsLoadError, err);
     }
   };
 
@@ -30,7 +36,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       const response = await api.get('/api/location/town');
       setTowns(response.data);
     } catch (err) {
-      console.error('İlçeler alınamadı', err);
+      console.error(t.departmentList.districtsLoadError, err);
     }
   };
 
@@ -57,11 +63,11 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
 
   const handleSave = async () => {
     if (!nameInput.trim()) {
-      Alert.alert('Hata', 'Departman adı boş olamaz');
+      Alert.alert(t.common.error, t.departmentList.nameRequired);
       return;
     }
     if (!addressDetailInput.trim()) {
-      Alert.alert('Hata', 'Adres detayı boş olamaz');
+      Alert.alert(t.common.error, t.departmentList.addressRequired);
       return;
     }
 
@@ -77,9 +83,9 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
         });
         closeModal();
         fetchDepartments();
-        Alert.alert('Başarılı', 'Departman başarıyla eklendi');
+        Alert.alert(t.common.success, t.departmentList.addSuccess);
       } catch (err) {
-        Alert.alert('Hata', 'Departman eklenemedi');
+        Alert.alert(t.common.error, t.departmentList.addError);
       }
     } else {
       // Güncelleme işlemi
@@ -94,9 +100,9 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
         });
         closeModal();
         fetchDepartments();
-        Alert.alert('Başarılı', 'Departman başarıyla güncellendi');
+        Alert.alert(t.common.success, t.departmentList.updateSuccess);
       } catch (err) {
-        Alert.alert('Hata', 'Departman güncellenemedi');
+        Alert.alert(t.common.error, t.departmentList.updateError);
       }
     }
   };
@@ -106,7 +112,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       await api.delete(`/api/department/delete/${id}`);
       fetchDepartments();
     } catch (err) {
-      Alert.alert('Hata', 'Silinemedi');
+      Alert.alert(t.common.error, t.departmentList.deleteError);
     }
   };
 
@@ -127,9 +133,9 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
   return (
     <View>
       <View style={styles.header}>
-        <Text style={styles.subtitle}>Departmanlar</Text>
+        <Text style={styles.subtitle}>{t.departmentList.title}</Text>
         <TouchableOpacity onPress={openModal} style={styles.addButton}>
-          <Text style={styles.addButtonText}>+ Departman Ekle</Text>
+          <Text style={styles.addButtonText}>{t.departmentList.addDepartment}</Text>
         </TouchableOpacity>
       </View>
 
@@ -144,19 +150,19 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
                 style={styles.detailButton}
                 onPress={() => navigateToDepartmentDetail(item.id || 0)}
               >
-                <Text style={styles.buttonText}>Detay</Text>
+                <Text style={styles.buttonText}>{t.departmentList.detail}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.editButton}
                 onPress={() => startEditing(item)}
               >
-                <Text style={styles.buttonText}>Düzenle</Text>
+                <Text style={styles.buttonText}>{t.departmentList.edit}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => handleDelete(item.id || 0)}
               >
-                <Text style={styles.buttonText}>Sil</Text>
+                <Text style={styles.buttonText}>{t.departmentList.delete}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -174,40 +180,40 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>
-                {editingId ? 'Departman Düzenle' : 'Yeni Departman Ekle'}
+                {editingId ? t.departmentList.editDepartment : t.departmentList.newDepartment}
               </Text>
               <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
                 <Text style={styles.closeButtonText}>✕</Text>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.label}>Departman Adı</Text>
+            <Text style={styles.label}>{t.departmentList.departmentName}</Text>
             <TextInput
               value={nameInput}
               onChangeText={setNameInput}
-              placeholder="Departman adı girin"
+              placeholder={t.departmentList.departmentNamePlaceholder}
               style={styles.input}
             />
 
-            <Text style={styles.label}>İlçe Seçin</Text>
+            <Text style={styles.label}>{t.departmentList.selectDistrict}</Text>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={selectedTownId}
                 onValueChange={(itemValue) => setSelectedTownId(itemValue)}
                 style={styles.picker}
               >
-                <Picker.Item label="İlçe seçin..." value={0} />
+                <Picker.Item label={t.departmentList.selectDistrictPlaceholder} value={0} />
                 {towns.map((town) => (
                   <Picker.Item key={town.id} label={town.name} value={town.id} />
                 ))}
               </Picker>
             </View>
 
-            <Text style={styles.label}>Adres Detayı</Text>
+            <Text style={styles.label}>{t.departmentList.addressDetail}</Text>
             <TextInput
               value={addressDetailInput}
               onChangeText={setAddressDetailInput}
-              placeholder="Adres detayı girin"
+              placeholder={t.departmentList.addressDetailPlaceholder}
               style={[styles.input, styles.textArea]}
               multiline
               numberOfLines={3}
@@ -215,11 +221,11 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
 
             <View style={styles.modalButtons}>
               <TouchableOpacity onPress={closeModal} style={styles.cancelButton}>
-                <Text style={styles.cancelButtonText}>İptal</Text>
+                <Text style={styles.cancelButtonText}>{t.common.cancel}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
                 <Text style={styles.saveButtonText}>
-                  {editingId ? 'Güncelle' : 'Ekle'}
+                  {editingId ? t.common.update : t.common.add}
                 </Text>
               </TouchableOpacity>
             </View>

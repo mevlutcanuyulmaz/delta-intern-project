@@ -25,11 +25,11 @@ const UserProfile = ({ navigation }: any) => {
 
   const handleLogout = () => {
     Alert.alert(
-      'Çıkış',
-      'Çıkış yapmak istediğinizden emin misiniz?',
+      t.userProfile.logoutTitle,
+      t.userProfile.logoutMessage,
       [
-        { text: 'İptal', style: 'cancel' },
-        { text: 'Çıkış', style: 'destructive', onPress: () => navigation.navigate('Login') }
+        { text: t.userProfile.cancel, style: 'cancel' },
+        { text: t.userProfile.logout, style: 'destructive', onPress: () => navigation.navigate('Login') }
       ]
     );
   };
@@ -56,7 +56,7 @@ const UserProfile = ({ navigation }: any) => {
       const response = await api.get('/api/user/get-self');
       setProfile(response.data);
     } catch (error) {
-      Alert.alert('Hata', 'Profil bilgileri alınamadı');
+      Alert.alert(t.userProfile.error, t.userProfile.profileLoadError);
     } finally {
       setLoading(false);
     }
@@ -64,17 +64,17 @@ const UserProfile = ({ navigation }: any) => {
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      Alert.alert(t.userProfile.error, t.userProfile.fillAllFields);
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      Alert.alert('Hata', 'Yeni şifreler eşleşmiyor');
+      Alert.alert(t.userProfile.error, t.userProfile.passwordMismatch);
       return;
     }
 
     if (newPassword.length < 6) {
-      Alert.alert('Hata', 'Yeni şifre en az 6 karakter olmalıdır');
+      Alert.alert(t.userProfile.error, t.userProfile.passwordMinLength);
       return;
     }
 
@@ -84,12 +84,12 @@ const UserProfile = ({ navigation }: any) => {
         newPassword,
         confirmPassword
       });
-      Alert.alert('Başarılı', 'Şifre başarıyla güncellendi');
+      Alert.alert(t.userProfile.success, t.userProfile.passwordChangeSuccess);
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      Alert.alert('Hata', 'Şifre değiştirme başarısız. Mevcut şifrenizi kontrol edin.');
+      Alert.alert(t.userProfile.error, t.userProfile.passwordChangeError);
     }
   };
 

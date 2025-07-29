@@ -24,7 +24,7 @@ const UserDashboard = () => {
         routes: [{ name: 'Login' }],
       });
     } catch (error) {
-      console.error('Çıkış yapılırken hata:', error);
+      console.error(t.common.logoutError, error);
     }
   };
 
@@ -41,18 +41,6 @@ const UserDashboard = () => {
     });
   }, [navigation, handleLogout, t]);
 
-  const calculateProfileCompletion = (user: any) => {
-    const fields = [
-      user.name,
-      user.surname,
-      user.email,
-      user.phone,
-      user.departmentId,
-      user.companyId
-    ];
-    const completedFields = fields.filter(field => field && field.toString().trim() !== '').length;
-    return Math.round((completedFields / fields.length) * 100);
-  };
 
   const fetchDashboardData = async () => {
     try {
@@ -62,15 +50,15 @@ const UserDashboard = () => {
       setUserInfo(userData);
 
       const userStats: UserStats = {
-        departmentName: userData.departmentName || 'Atanmamış',
-        companyName: userData.company?.name || 'Bilinmiyor',
+        departmentName: userData.departmentName || t.userDashboard.unassigned,
+        companyName: userData.company?.name || t.userDashboard.unknown,
         joinDate: userData.createdAt || new Date().toISOString(),
       };
 
       setStats(userStats);
     } catch (error) {
-      console.error('Dashboard verileri alınamadı:', error);
-      Alert.alert('Hata', 'Dashboard verileri yüklenirken bir hata oluştu');
+      console.error(t.userDashboard.dataLoadError, error);
+      Alert.alert(t.userDashboard.error, t.userDashboard.dashboardDataError);
     } finally {
       setLoading(false);
       setRefreshing(false);

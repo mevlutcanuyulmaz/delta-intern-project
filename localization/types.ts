@@ -52,6 +52,11 @@ export interface Translations {
     company: string;
     joinDate: string;
     email: string;
+    unassigned: string;
+    unknown: string;
+    error: string;
+    dataLoadError: string;
+    dashboardDataError: string;
   };
 
   // User Profile translations
@@ -75,6 +80,18 @@ export interface Translations {
     changePasswordButton: string;
     unassigned: string;
     unknown: string;
+    logoutTitle: string;
+    logoutMessage: string;
+    cancel: string;
+    logout: string;
+    error: string;
+    profileLoadError: string;
+    fillAllFields: string;
+    passwordMismatch: string;
+    passwordMinLength: string;
+    success: string;
+    passwordChangeSuccess: string;
+    passwordChangeError: string;
   };
 
   // User Company Info translations
@@ -101,6 +118,17 @@ export interface Translations {
     companyWebsite: string;
     establishedDate: string;
     employeeCount: string;
+    companyType: string;
+    user: string;
+    email: string;
+    role: string;
+    name: string;
+    surname: string;
+    emailNotSpecified: string;
+    roleNotSpecified: string;
+    addressNotSpecified: string;
+    inactive: string;
+    defaultRole: string;
   };
 
   // Manager Dashboard translations
@@ -114,6 +142,10 @@ export interface Translations {
     departmentEmployees: string;
     profileSettings: string;
     department: string;
+    unknown: string;
+    dataLoadError: string;
+    error: string;
+    dashboardDataError: string;
   };
 
   // Manager Profile translations
@@ -198,6 +230,113 @@ export interface Translations {
     departmentsLoadError: string;
   };
 
+  // Company List translations
+  companyList: {
+    loading: string;
+    companiesLoadError: string;
+    deleteSuccess: string;
+    deleteError: string;
+    addNewCompany: string;
+    detail: string;
+    edit: string;
+    delete: string;
+    district: string;
+    city: string;
+    region: string;
+    address: string;
+    notSpecified: string;
+  };
+
+  // Company Form translations
+  companyForm: {
+    loading: string;
+    companyName: string;
+    shortName: string;
+    addressDetail: string;
+    region: string;
+    city: string;
+    district: string;
+    selectRegion: string;
+    selectCity: string;
+    selectDistrict: string;
+    active: string;
+    companyInfoError: string;
+    regionsError: string;
+    citiesError: string;
+    allCitiesError: string;
+    districtsError: string;
+    allDistrictsError: string;
+    districtDetailsError: string;
+    updateSuccess: string;
+    updateError: string;
+  };
+
+  // Create Company translations
+  createCompany: {
+    title: string;
+    companyName: string;
+    shortName: string;
+    addressDetail: string;
+    district: string;
+    selectDistrict: string;
+    active: string;
+    create: string;
+    missingInfo: string;
+    enterCompanyNameAndShort: string;
+    createSuccess: string;
+    createError: string;
+    districtsLoadError: string;
+  };
+
+  // Company Detail translations
+  companyDetail: {
+    title: string;
+    departments: string;
+  };
+
+  // Department List translations
+  departmentList: {
+    title: string;
+    addDepartment: string;
+    detail: string;
+    edit: string;
+    delete: string;
+    departmentsLoadError: string;
+    districtsLoadError: string;
+    departmentName: string;
+    departmentNamePlaceholder: string;
+    selectDistrict: string;
+    selectDistrictPlaceholder: string;
+    addressDetail: string;
+    addressDetailPlaceholder: string;
+    newDepartment: string;
+    editDepartment: string;
+    nameRequired: string;
+    addressRequired: string;
+    addSuccess: string;
+    addError: string;
+    updateSuccess: string;
+    updateError: string;
+    deleteError: string;
+  };
+
+  // Department Detail translations
+  departmentDetail: {
+    loading: string;
+    departmentDetailsError: string;
+    departmentUsersError: string;
+    notFound: string;
+    departmentInfo: string;
+    departmentType: string;
+    cityRegion: string;
+    district: string;
+    address: string;
+    departmentManager: string;
+    noManager: string;
+    departmentEmployees: string;
+    noEmployees: string;
+  };
+
   // Common translations
   common: {
     loading: string;
@@ -208,6 +347,7 @@ export interface Translations {
     delete: string;
     edit: string;
     add: string;
+    update: string;
     search: string;
     filter: string;
     refresh: string;
@@ -218,6 +358,8 @@ export interface Translations {
     confirm: string;
     yes: string;
     no: string;
+    ok: string;
     logout: string;
+    logoutError: string;
   };
 }

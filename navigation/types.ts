@@ -9,6 +9,7 @@ export type RootStackParamList = {
   Tabs: undefined;
   DepartmentList: undefined;
   DepartmentForm: undefined;
+  DepartmentDetail: { departmentId: number };
   ForgotPassword: undefined;
   Activation: undefined;
   UserDashboard: undefined;

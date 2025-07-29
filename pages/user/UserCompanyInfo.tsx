@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
-import { CompanyInfo, UserInfo, DepartmentInfo } from '../../types/types';
+import { CompanyInfo, UserInfo, } from '../../types/types';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 
@@ -106,7 +106,7 @@ const UserCompanyInfo = () => {
       company.town?.region?.name
     ].filter(Boolean);
     
-    return parts.length > 0 ? parts.join(', ') : 'Adres belirtilmemiş';
+    return parts.length > 0 ? parts.join(', ') : t.userCompanyInfo.addressNotSpecified;
   };
 
   if (loading) {
@@ -147,7 +147,7 @@ const UserCompanyInfo = () => {
               <View style={styles.cardHeader}>
                 <Text style={styles.cardTitle}>{companyInfo.name || t.userCompanyInfo.notSpecified}</Text>
                 <View style={[styles.statusBadge, { backgroundColor: companyInfo.active ? '#4CAF50' : '#f44336' }]}>
-                  <Text style={styles.statusText}>{companyInfo.active ? t.userCompanyInfo.active : 'Pasif'}</Text>
+                  <Text style={styles.statusText}>{companyInfo.active ? t.userCompanyInfo.active : t.userCompanyInfo.inactive}</Text>
                 </View>
               </View>
               
@@ -160,7 +160,7 @@ const UserCompanyInfo = () => {
                 
                 <View style={styles.infoItem}>
                   <Icon name="domain" size={16} color="#666" />
-                  <Text style={styles.infoLabel}>Şirket Türü:</Text>
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.companyType}:</Text>
                   <Text style={styles.infoValue}>{companyInfo.companyType?.name || t.userCompanyInfo.notSpecified}</Text>
                 </View>
                 
@@ -178,20 +178,20 @@ const UserCompanyInfo = () => {
 
                 <View style={styles.infoItem}>
                   <Icon name="account-circle" size={16} color="#666" />
-                  <Text style={styles.infoLabel}>Kullanıcı:</Text>
-                  <Text style={styles.infoValue}>{userInfo?.name || 'İsim'} {userInfo?.surname || 'Soyisim'}</Text>
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.user}:</Text>
+                  <Text style={styles.infoValue}>{userInfo?.name || t.userCompanyInfo.name} {userInfo?.surname || t.userCompanyInfo.surname}</Text>
                 </View>
 
                 <View style={styles.infoItem}>
                   <Icon name="email" size={16} color="#666" />
-                  <Text style={styles.infoLabel}>E-posta:</Text>
-                  <Text style={styles.infoValue}>{userInfo?.email || 'E-posta belirtilmemiş'}</Text>
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.email}:</Text>
+                  <Text style={styles.infoValue}>{userInfo?.email || t.userCompanyInfo.emailNotSpecified}</Text>
                 </View>
 
                 <View style={styles.infoItem}>
                   <Icon name="shield-account" size={16} color="#666" />
-                  <Text style={styles.infoLabel}>Rol:</Text>
-                  <Text style={styles.infoValue}>{userInfo?.role?.name || 'Rol belirtilmemiş'}</Text>
+                  <Text style={styles.infoLabel}>{t.userCompanyInfo.role}:</Text>
+                  <Text style={styles.infoValue}>{userInfo?.role?.name || t.userCompanyInfo.roleNotSpecified}</Text>
                 </View>
               </View>
             </View>
@@ -236,7 +236,7 @@ const UserCompanyInfo = () => {
                 <View style={styles.infoItem}>
                   <Icon name="shield-account" size={16} color="#666" />
                   <Text style={styles.infoLabel}>{t.userCompanyInfo.userRole}:</Text>
-                  <Text style={styles.infoValue}>{userInfo.role?.name || 'USER'}</Text>
+                  <Text style={styles.infoValue}>{userInfo.role?.name || t.userCompanyInfo.defaultRole}</Text>
                 </View>
                 
                 <View style={styles.infoItem}>

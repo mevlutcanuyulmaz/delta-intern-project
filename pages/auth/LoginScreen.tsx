@@ -40,7 +40,7 @@ const LoginScreen = () => {
     await AsyncStorage.setItem('accessToken', accessToken);
 
     // Biraz bekle
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise<void>((resolve) => setTimeout(resolve, 100));
 
     const userResponse = await api.get('/api/user/get-self');
     const role = userResponse.data?.role?.name;

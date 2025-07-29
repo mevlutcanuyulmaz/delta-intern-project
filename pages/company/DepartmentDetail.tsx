@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert, FlatList, TouchableOpacity } from 'react-native';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import api from '../../services/api';
 import { DepartmentDetailData, UserInfo } from '../../types/types';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 type DepartmentDetailRouteProp = RouteProp<{ params: { departmentId: number } }, 'params'>;
 
 const DepartmentDetailPage = () => {
   const { params } = useRoute<DepartmentDetailRouteProp>();
+  const navigation = useNavigation();
+  const { t } = useLanguage();
   const departmentId = params.departmentId;
   
   const [department, setDepartment] = useState<DepartmentDetailData | null>(null);
@@ -16,12 +20,28 @@ const DepartmentDetailPage = () => {
   const [manager, setManager] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <LanguageSwitcher />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{ marginLeft: 10, marginRight: 15 }}
+          >
+            <Icon name="close" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
+
   const fetchDepartmentDetail = async () => {
     try {
       const response = await api.get(`/api/departments/${departmentId}`);
       setDepartment(response.data);
     } catch (error) {
-      Alert.alert('Hata', 'Departman detayları alınamadı');
+      Alert.alert(t.common.error, t.departmentDetail.departmentDetailsError);
     }
   };
 
@@ -43,7 +63,7 @@ const DepartmentDetailPage = () => {
       setManager(managerUser || null);
       setUsers(regularUsers);
     } catch (error) {
-      Alert.alert('Hata', 'Departman kullanıcıları alınamadı');
+      Alert.alert(t.common.error, t.departmentDetail.departmentUsersError);
     }
   };
 
@@ -64,7 +84,7 @@ const DepartmentDetailPage = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Departman bilgileri yükleniyor...</Text>
+        <Text style={styles.loadingText}>{t.departmentDetail.loading}</Text>
       </View>
     );
   }
@@ -72,7 +92,7 @@ const DepartmentDetailPage = () => {
   if (!department) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Departman bulunamadı</Text>
+        <Text style={styles.errorText}>{t.departmentDetail.notFound}</Text>
       </View>
     );
   }
@@ -99,23 +119,23 @@ const DepartmentDetailPage = () => {
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Icon name="information-outline" size={20} color="#333" />
-          <Text style={styles.sectionTitle}>Departman Bilgileri</Text>
+          <Text style={styles.sectionTitle}>{t.departmentDetail.departmentInfo}</Text>
         </View>
         <View style={styles.infoCard}>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Departman Türü:</Text>
+            <Text style={styles.infoLabel}>{t.departmentDetail.departmentType}</Text>
             <Text style={styles.infoValue}>{department.departmentType.name}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Şehir/Bölge:</Text>
+            <Text style={styles.infoLabel}>{t.departmentDetail.cityRegion}</Text>
             <Text style={styles.infoValue}>{department.town.city} / {department.town.region}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>İlçe:</Text>
+            <Text style={styles.infoLabel}>{t.departmentDetail.district}</Text>
             <Text style={styles.infoValue}>{department.town.name}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Adres:</Text>
+            <Text style={styles.infoLabel}>{t.departmentDetail.address}</Text>
             <Text style={styles.infoValue}>{department.addressDetail}</Text>
           </View>
         </View>
@@ -125,7 +145,7 @@ const DepartmentDetailPage = () => {
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Icon name="account-tie" size={20} color="#333" />
-          <Text style={styles.sectionTitle}>Departman Yöneticisi</Text>
+          <Text style={styles.sectionTitle}>{t.departmentDetail.departmentManager}</Text>
         </View>
         {manager ? (
           <View style={styles.managerCard}>
@@ -135,7 +155,7 @@ const DepartmentDetailPage = () => {
           </View>
         ) : (
           <View style={styles.noManagerCard}>
-            <Text style={styles.noManagerText}>Bu departmana henüz yönetici atanmamış</Text>
+            <Text style={styles.noManagerText}>{t.departmentDetail.noManager}</Text>
           </View>
         )}
       </View>
@@ -144,7 +164,7 @@ const DepartmentDetailPage = () => {
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Icon name="account-group" size={20} color="#333" />
-          <Text style={styles.sectionTitle}>Departman Çalışanları ({users.length})</Text>
+          <Text style={styles.sectionTitle}>{t.departmentDetail.departmentEmployees} ({users.length})</Text>
         </View>
         {users.length > 0 ? (
           <FlatList
@@ -155,7 +175,7 @@ const DepartmentDetailPage = () => {
           />
         ) : (
           <View style={styles.noUsersCard}>
-            <Text style={styles.noUsersText}>Bu departmanda henüz çalışan bulunmuyor</Text>
+            <Text style={styles.noUsersText}>{t.departmentDetail.noEmployees}</Text>
           </View>
         )}
       </View>

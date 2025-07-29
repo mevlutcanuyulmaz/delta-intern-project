@@ -1,5 +1,9 @@
 {
   "extends": "@react-native/typescript-config",
-  "include": ["src", "global.d.ts"]
-
+  "include": ["src", "global.d.ts", "pages", "components", "localization", "navigation", "services", "types"],
+  "compilerOptions": {
+    "jsx": "react-native",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  }
 }

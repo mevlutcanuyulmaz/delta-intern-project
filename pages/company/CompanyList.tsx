@@ -1,15 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import api from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import api from '../../services/api';
 import { CompanyInfo } from '../../types/types';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState<CompanyInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<any>();
+  const { t } = useLanguage();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={{ marginLeft: 15 }}
+          >
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
+
+  const handleLogout = () => {
+    // Çıkış işlemi burada yapılacak
+    navigation.navigate('Login');
+  };
+
   useFocusEffect(
         useCallback(() => {
         setLoading(true);
@@ -22,7 +47,7 @@ const CompanyList = () => {
       console.log('Şirketler:', response.data);
       setCompanies(response.data);
     } catch (error) {
-      console.error('Şirketler alınamadı', error);
+      console.error(t.companyList.companiesLoadError, error);
     } finally {
       setLoading(false);
     }
@@ -30,12 +55,12 @@ const CompanyList = () => {
   const handleDelete = async (id: number) => {
   try {
     await api.delete(`/api/companies/${id}`);
-    Alert.alert('Başarılı', 'Şirket silindi');
+    Alert.alert(t.common.success, t.companyList.deleteSuccess);
     // Listeyi güncelle
     setCompanies((prev) => prev.filter((c) => c.id !== id));
   } catch (error) {
     console.error('Silme hatası:', error);
-    Alert.alert('Hata', 'Şirket silinemedi');
+    Alert.alert(t.common.error, t.companyList.deleteError);
   }
 };
   useEffect(() => {
@@ -52,22 +77,22 @@ const CompanyList = () => {
         {item.town && (
           <>
             <Text style={styles.locationText}>
-              <Text style={styles.locationLabel}>İlçe: </Text>
+              <Text style={styles.locationLabel}>{t.companyList.district}: </Text>
               {item.town.name}
             </Text>
             <Text style={styles.locationText}>
-              <Text style={styles.locationLabel}>İl: </Text>
-              {item.town.city?.name || 'Belirtilmedi'}
+              <Text style={styles.locationLabel}>{t.companyList.city}: </Text>
+              {item.town.city?.name || t.companyList.notSpecified}
             </Text>
             <Text style={styles.locationText}>
-              <Text style={styles.locationLabel}>Bölge: </Text>
-              {item.town.region?.name || 'Belirtilmedi'}
+              <Text style={styles.locationLabel}>{t.companyList.region}: </Text>
+              {item.town.region?.name || t.companyList.notSpecified}
             </Text>
           </>
         )}
         {item.addressDetail && (
           <Text style={styles.locationText}>
-            <Text style={styles.locationLabel}>Adres: </Text>
+            <Text style={styles.locationLabel}>{t.companyList.address}: </Text>
             {item.addressDetail}
           </Text>
         )}
@@ -78,21 +103,21 @@ const CompanyList = () => {
         style={[styles.button, { backgroundColor: '#3498db' }]}
         onPress={() => navigation.navigate('CompanyDetail', { id: item.id })}
       >
-        <Text style={styles.buttonText}>Detay</Text>
+        <Text style={styles.buttonText}>{t.companyList.detail}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: '#f39c12' }]}
         onPress={() => navigation.navigate('CompanyForm', { companyId: item.id })}
       >
-        <Text style={styles.buttonText}>Düzenle</Text>
+        <Text style={styles.buttonText}>{t.companyList.edit}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: '#c0392b' }]}
         onPress={() => handleDelete(item.id)}
       >
-        <Text style={styles.buttonText}>Sil</Text>
+        <Text style={styles.buttonText}>{t.companyList.delete}</Text>
       </TouchableOpacity>
     </View>
     </View>
@@ -114,7 +139,7 @@ const CompanyList = () => {
         style={styles.createButton}
         onPress={() => navigation.navigate('CreateCompany')}
       >
-        <Text style={styles.createButtonText}>+ Yeni Şirket Ekle</Text>
+        <Text style={styles.createButtonText}>{t.companyList.addNewCompany}</Text>
       </TouchableOpacity>
     </View>
   );

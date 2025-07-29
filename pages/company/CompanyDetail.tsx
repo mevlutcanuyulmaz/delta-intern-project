@@ -1,6 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import React, { useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 import DepartmentList from './DepartmentList';
 
 type CompanyDetailRouteProp = RouteProp<{ params: { id: number } }, 'params'>;
@@ -8,10 +11,33 @@ type CompanyDetailRouteProp = RouteProp<{ params: { id: number } }, 'params'>;
 const CompanyDetail = () => {
   const { params } = useRoute<CompanyDetailRouteProp>();
   const companyId = params.id;
+  const navigation = useNavigation<any>();
+  const { t } = useLanguage();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={{ marginLeft: 15 }}
+          >
+            <Icon name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
+
+  const handleLogout = () => {
+    // Çıkış işlemi burada yapılacak
+    navigation.navigate('Login');
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🏢 Şirket Detay Sayfası</Text>
+      <Text style={styles.title}>{t.companyDetail.title}</Text>
 
       <DepartmentList companyId={companyId} />
     </View>

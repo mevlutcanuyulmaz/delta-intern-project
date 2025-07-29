@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { View, TextInput, Text, Switch, Button, StyleSheet, ActivityIndicator, Alert, ScrollView } from 'react-native';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+import { View, TextInput, Text, Switch, Button, StyleSheet, ActivityIndicator, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import api from '../../services/api';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLanguage } from '../../localization';
+import LanguageSwitcher from '../../components/LanguageSwitcher';
 
 type CompanyFormProps = {
   route: RouteProp<{ params: { companyId: number } }, 'params'>;
 };
 
 const CompanyForm = () => {
+  const navigation = useNavigation<any>();
+  const { t } = useLanguage();
   const { params } = useRoute<CompanyFormProps['route']>();
   const companyId = params.companyId;
 
@@ -31,6 +37,27 @@ const CompanyForm = () => {
   const [cities, setCities] = useState<{ id: number; name: string }[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<number | undefined>(undefined);
   const [selectedCity, setSelectedCity] = useState<number | undefined>(undefined);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
+          <LanguageSwitcher />
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={{ marginLeft: 15 }}
+          >
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
+
+  const handleLogout = () => {
+    // Çıkış işlemi burada yapılacak
+    navigation.navigate('Login');
+  };
 
   // Şirket bilgilerini çek
   useEffect(() => {
@@ -93,11 +120,11 @@ const CompanyForm = () => {
               }
             }
           } catch (townError) {
-            console.error('İlçe detayları alınamadı', townError);
+            console.error(t.companyForm.districtDetailsError, townError);
           }
         }
       } catch (error) {
-        Alert.alert('Hata', 'Şirket bilgisi alınamadı');
+        Alert.alert(t.common.error, t.companyForm.companyInfoError);
       } finally {
         setLoading(false);
       }
@@ -122,7 +149,7 @@ const CompanyForm = () => {
             const regionResponse = await api.get('/api/location/region');
             setRegions(regionResponse.data);
           } catch (err) {
-            console.error('Bölgeler alınamadı', err);
+            console.error(t.companyForm.regionsError, err);
           }
         }
       } catch (err) {
@@ -147,7 +174,7 @@ const CompanyForm = () => {
       const response = await api.get(`/api/location/city?regionId=${regionId}`);
       setCities(response.data);
     } catch (err) {
-      console.error('Şehirler alınamadı', err);
+      console.error(t.companyForm.citiesError, err);
       // Eğer filtreleme desteklenmiyorsa tüm şehirleri çek ve client-side filtrele
       try {
         const allCitiesResponse = await api.get('/api/location/city');
@@ -155,7 +182,7 @@ const CompanyForm = () => {
         // Burada bölgeye göre filtreleme yapılabilir (API'den gelen veriye göre)
         setCities(allCities);
       } catch (err2) {
-        console.error('Tüm şehirler de alınamadı', err2);
+        console.error(t.companyForm.allCitiesError, err2);
       }
     }
   };
@@ -169,7 +196,7 @@ const CompanyForm = () => {
       const response = await api.get(`/api/location/town?cityId=${cityId}`);
       setTowns(response.data);
     } catch (err) {
-      console.error('İlçeler alınamadı', err);
+      console.error(t.companyForm.districtsError, err);
       // Eğer filtreleme desteklenmiyorsa tüm ilçeleri çek ve client-side filtrele
       try {
         const allTownsResponse = await api.get('/api/location/town');
@@ -177,7 +204,7 @@ const CompanyForm = () => {
         // Burada şehre göre filtreleme yapılabilir (API'den gelen veriye göre)
         setTowns(allTowns);
       } catch (err2) {
-        console.error('Tüm ilçeler de alınamadı', err2);
+        console.error(t.companyForm.allDistrictsError, err2);
       }
     }
   };
@@ -188,7 +215,7 @@ const CompanyForm = () => {
       const response = await api.get(`/api/location/town/${townId}`);
       setTown(response.data);
     } catch (err) {
-      console.error('İlçe detayları alınamadı', err);
+      console.error(t.companyForm.districtDetailsError, err);
       setTown(null);
     }
   };
@@ -212,9 +239,9 @@ const handleUpdate = async () => {
     const response = await api.put('/api/companies', payload);
     console.log("✅ Şirket güncellendi:", response.data);
     
-    Alert.alert('Başarılı', 'Şirket güncellendi', [
+    Alert.alert(t.common.success, t.companyForm.updateSuccess, [
       {
-        text: 'Tamam',
+        text: t.common.ok,
         onPress: () => {
           // Güncelleme sonrası sayfayı yeniden yükle
           setLoading(true);
@@ -302,7 +329,7 @@ const handleUpdate = async () => {
     ]);
   } catch (error: any) {
     console.error("❌ Güncelleme hatası:", error.response?.data || error.message);
-    Alert.alert('Hata', 'Şirket güncellenemedi');
+    Alert.alert(t.common.error, t.companyForm.updateError);
   }
 };
 
@@ -310,13 +337,13 @@ const handleUpdate = async () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.label}>Şirket Adı</Text>
+      <Text style={styles.label}>{t.companyForm.companyName}</Text>
       <TextInput style={styles.input} value={name} onChangeText={setName} />
 
-      <Text style={styles.label}>Kısa Ad</Text>
+      <Text style={styles.label}>{t.companyForm.shortName}</Text>
       <TextInput style={styles.input} value={shortName} onChangeText={setShortName} />
 
-      <Text style={styles.label}>Adres Detayı</Text>
+      <Text style={styles.label}>{t.companyForm.addressDetail}</Text>
       <TextInput
         style={[styles.input, styles.textArea]}
         value={addressDetail}
@@ -325,47 +352,47 @@ const handleUpdate = async () => {
         numberOfLines={3}
       />
 
-      <Text style={styles.label}>Bölge</Text>
+      <Text style={styles.label}>{t.companyForm.region}</Text>
       <Picker
         selectedValue={selectedRegion}
         onValueChange={handleRegionChange}
       >
-        <Picker.Item label="Lütfen bölge seçin" value={undefined} />
-        {regions.map((region) => (
-          <Picker.Item key={region.id} label={region.name} value={region.id} />
+        <Picker.Item label={t.companyForm.selectRegion} value={undefined} />
+        {regions.map((region, index) => (
+          <Picker.Item key={`region-${region.id}-${index}`} label={region.name} value={region.id} />
         ))}
       </Picker>
 
-      <Text style={styles.label}>İl</Text>
+      <Text style={styles.label}>{t.companyForm.city}</Text>
       <Picker
         selectedValue={selectedCity}
         onValueChange={handleCityChange}
         enabled={selectedRegion !== undefined}
       >
-        <Picker.Item label="Lütfen il seçin" value={undefined} />
-        {cities.map((city) => (
-          <Picker.Item key={city.id} label={city.name} value={city.id} />
+        <Picker.Item label={t.companyForm.selectCity} value={undefined} />
+        {cities.map((city, index) => (
+          <Picker.Item key={`city-${city.id}-${index}`} label={city.name} value={city.id} />
         ))}
       </Picker>
 
-      <Text style={styles.label}>İlçe</Text>
+      <Text style={styles.label}>{t.companyForm.district}</Text>
       <Picker
         selectedValue={town?.id}
         onValueChange={handleTownChange}
         enabled={selectedCity !== undefined}
       >
-        <Picker.Item label="Lütfen ilçe seçin" value={undefined} />
-        {towns.map((t) => (
-          <Picker.Item key={t.id} label={t.name} value={t.id} />
+        <Picker.Item label={t.companyForm.selectDistrict} value={undefined} />
+        {towns.map((t, index) => (
+          <Picker.Item key={`town-${t.id}-${index}`} label={t.name} value={t.id} />
         ))}
       </Picker>
 
       <View style={styles.switchRow}>
-        <Text style={styles.label}>Aktif mi?</Text>
+        <Text style={styles.label}>{t.companyForm.active}</Text>
         <Switch value={active} onValueChange={setActive} />
       </View>
 
-      <Button title="Kaydet" onPress={handleUpdate} color="#4b5c75" />
+      <Button title={t.common.save} onPress={handleUpdate} color="#4b5c75" />
     </ScrollView>
   );
 };
