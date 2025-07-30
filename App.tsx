@@ -4,6 +4,8 @@ import  { AdminBottomTabs, ManagerBottomTabs, UserBottomTabs } from './navigatio
 import UserForm from './pages/admin/UserForm';
 import DepartmentTypeList from './pages/admin/DepartmentTypeList';
 import DepartmentTypeForm from './pages/admin/DepartmentTypeForm';
+import CompanyTypeList from './pages/admin/CompanyTypeList';
+import CompanyTypeForm from './pages/admin/CompanyTypeForm';
 import RegionList from './pages/admin/RegionList';
 import RegionForm from './pages/admin/RegionForm';
 import CityList from './pages/admin/CityList';
@@ -63,6 +65,8 @@ const App = () => {
           <Stack.Screen name="UserForm" component={UserForm} options={{ title: 'Kullanıcı Formu' }} />
           <Stack.Screen name="DepartmentTypeList" component={DepartmentTypeList} options={{ title: 'Departman Türleri' }} />
           <Stack.Screen name="DepartmentTypeForm" component={DepartmentTypeForm} options={{ title: 'Departman Türü Formu' }} />
+          <Stack.Screen name="CompanyTypeList" component={CompanyTypeList} options={{ title: 'Şirket Türleri' }} />
+          <Stack.Screen name="CompanyTypeForm" component={CompanyTypeForm} options={{ title: 'Şirket Türü Formu' }} />
           <Stack.Screen name="RegionList" component={RegionList} options={{ title: 'Bölge Yönetimi' }} />
           <Stack.Screen name="RegionForm" component={RegionForm} options={{ title: 'Bölge Formu' }} />
           <Stack.Screen name="CityList" component={CityList} options={{ title: 'Şehir Yönetimi' }} />

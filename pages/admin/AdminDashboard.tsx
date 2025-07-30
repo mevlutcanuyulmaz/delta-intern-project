@@ -159,6 +159,15 @@ const AdminDashboard = () => {
 
         <TouchableOpacity 
           style={styles.managementButton}
+          onPress={() => navigation.navigate('CompanyTypeList')}
+        >
+          <Icon name="office-building-outline" size={24} color="#4b5c75" />
+          <Text style={styles.managementButtonText}>Şirket Türleri</Text>
+          <Icon name="chevron-right" size={24} color="#666" />
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.managementButton}
           onPress={() => navigation.navigate('RegionList')}
         >
           <Icon name="map-outline" size={24} color="#4b5c75" />

@@ -8,6 +8,8 @@ export type RootStackParamList = {
   UserForm: { userId?: number } | undefined;
   DepartmentTypeList: undefined;
   DepartmentTypeForm: { departmentTypeId?: number } | undefined;
+  CompanyTypeList: undefined;
+  CompanyTypeForm: { companyTypeId?: number } | undefined;
   RegionList: undefined;
   RegionForm: { regionId?: number } | undefined;
   CityList: undefined;
