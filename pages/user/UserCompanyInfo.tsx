@@ -71,7 +71,7 @@ const UserCompanyInfo = () => {
 
   const fetchCompanyInfo = async (companyId: number) => {
     try {
-      const response = await api.get(`/api/company/${companyId}`);
+      const response = await api.get(`/api/companies/${companyId}`);
       console.log('🔍 API Response - Company Info:', JSON.stringify(response.data, null, 2));
       setCompanyInfo(response.data);
     } catch (error) {

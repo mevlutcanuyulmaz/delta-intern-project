@@ -48,16 +48,75 @@ const ManagerCompanyList = () => {
       // Önce kullanıcı bilgilerini al
       const userResponse = await api.get('/api/user/get-self');
       const userData = userResponse.data;
+      console.log('Manager kullanıcı bilgileri:', userData);
       setUserInfo(userData);
 
-      // Eğer kullanıcının companyId'si varsa, sadece o şirketi getir
+      // Backend'den companyId gelecek şekilde hazırlandı
       if (userData.companyId) {
-        const companyResponse = await api.get(`/api/company/${userData.companyId}`);
-        console.log('Manager\'ın şirketi:', companyResponse.data);
-        setCompanies([companyResponse.data]);
+        // CompanyId ile direkt şirket bilgisini çek
+        try {
+          const companyResponse = await api.get(`/api/companies/${userData.companyId}`);
+          const userCompany = companyResponse.data;
+          console.log('Manager\'ın şirketi bulundu (companyId ile):', userCompany);
+          setCompanies([userCompany]);
+        } catch (companyError) {
+          console.error('Şirket bilgisi alınamadı (companyId ile):', companyError);
+          // Eğer tek şirket çekilemezse, tüm şirketler listesinden bul
+          try {
+            const companiesResponse = await api.get('/api/companies');
+            const allCompanies = companiesResponse.data;
+            const userCompany = allCompanies.find((company: CompanyInfo) => 
+              company.id === userData.companyId
+            );
+            
+            if (userCompany) {
+              console.log('Manager\'ın şirketi tüm listeden bulundu:', userCompany);
+              setCompanies([userCompany]);
+            } else {
+              console.log('Manager\'ın şirketi bulunamadı');
+              setCompanies([]);
+            }
+          } catch (allCompaniesError) {
+            console.error('Tüm şirketler listesi alınamadı:', allCompaniesError);
+            setCompanies([]);
+          }
+        }
+      } else if (userData.companyName && userData.departmentName) {
+        // Geçici: companyName ile çalışma (backend güncellenene kadar)
+        try {
+          const companiesResponse = await api.get('/api/companies');
+          const allCompanies = companiesResponse.data;
+          
+          // Kullanıcının şirketini bul
+          const userCompany = allCompanies.find((company: CompanyInfo) => 
+            company.name === userData.companyName
+          );
+          
+          if (userCompany) {
+            console.log('Manager\'ın şirketi bulundu (companyName ile - geçici):', userCompany);
+            setCompanies([userCompany]);
+          } else {
+            console.log('Manager\'ın şirketi bulunamadı, tüm şirketler aranıyor...');
+            // Eğer tam eşleşme bulunamazsa, benzer isimli şirketi ara
+            const similarCompany = allCompanies.find((company: CompanyInfo) => 
+              company.name.toLowerCase().includes(userData.companyName.toLowerCase()) ||
+              userData.companyName.toLowerCase().includes(company.name.toLowerCase())
+            );
+            
+            if (similarCompany) {
+              console.log('Benzer şirket bulundu:', similarCompany);
+              setCompanies([similarCompany]);
+            } else {
+              setCompanies([]);
+            }
+          }
+        } catch (companyError) {
+          console.error('Şirket listesi alınamadı:', companyError);
+          setCompanies([]);
+        }
       } else {
-        // CompanyId yoksa boş liste göster
-        console.log('Manager\'ın şirket bilgisi bulunamadı');
+        // Şirket bilgisi yoksa boş liste göster
+        console.log('Manager\'ın şirket bilgisi bulunamadı - companyId, companyName veya departmentName eksik');
         setCompanies([]);
       }
     } catch (error) {
