@@ -45,18 +45,18 @@ export interface Translations {
   
   // User Dashboard translations
   userDashboard: {
-    loading: string;
-    welcome: string;
+    loading:string;
+    welcome:string;
     myInfo: string;
-    department: string;
-    company: string;
+    department:string;
+    company:string;
     joinDate: string;
     email: string;
     unassigned: string;
     unknown: string;
     error: string;
     dataLoadError: string;
-    dashboardDataError: string;
+    dashboardDataError:string;
   };
 
   // User Profile translations
@@ -80,8 +80,8 @@ export interface Translations {
     changePasswordButton: string;
     unassigned: string;
     unknown: string;
-    logoutTitle: string;
-    logoutMessage: string;
+    logoutTitle:string;
+    logoutMessage:string;
     cancel: string;
     logout: string;
     error: string;
@@ -203,86 +203,6 @@ export interface Translations {
     companiesLoadError: string;
   };
 
-  // Admin Dashboard translations
-  adminDashboard: {
-    loading: string;
-    welcome: string;
-    systemStats: string;
-    totalUsers: string;
-    totalCompanies: string;
-    totalDepartments: string;
-    activeUsers: string;
-    pendingUsers: string;
-    dataLoadError: string;
-    management: string;
-    departmentTypes: string;
-  };
-
-  // Bottom Tabs translations
-  bottomTabs: {
-    admin: string;
-    companies: string;
-    users: string;
-    home: string;
-    profile: string;
-    companyInfo: string;
-  };
-
-  // Admin User List translations
-  adminUserList: {
-    loading: string;
-    addNewUser: string;
-    edit: string;
-    delete: string;
-    deleteUser: string;
-    deleteConfirmation: string;
-    cancel: string;
-    deleteSuccess: string;
-    deleteError: string;
-    usersLoadError: string;
-    email: string;
-    role: string;
-    department:string;
-    company:string;
-  };
-
-  // Admin User Form translations
-  adminUserForm: {
-    loading: string;
-    name: string;
-    surname: string;
-    email: string;
-    department: string;
-    role: string;
-    selectDepartment: string;
-    save: string;
-    warning: string;
-    selectDepartmentWarning: string;
-    saveSuccess: string;
-    saveError: string;
-    userLoadError: string;
-    departmentsLoadError: string;
-    isActive: string;
-    isActiveLabel: string;
-  };
-
-  // Company List translations
-  companyList: {
-    loading: string;
-    companiesLoadError: string;
-    deleteSuccess: string;
-    deleteError: string;
-    addNewCompany: string;
-    detail: string;
-    edit: string;
-    delete: string;
-    district: string;
-    city: string;
-    region: string;
-    address: string;
-    notSpecified: string;
-  };
-
   // Company Form translations
   companyForm: {
     loading: string;
@@ -333,6 +253,23 @@ export interface Translations {
     departments: string;
   };
 
+  // Company List translations
+  companyList: {
+    loading: string;
+    companiesLoadError: string;
+    deleteSuccess: string;
+    deleteError: string;
+    addNewCompany: string;
+    detail: string;
+    edit: string;
+    delete: string;
+    district: string;
+    city: string;
+    region: string;
+    address: string;
+    notSpecified: string;
+  };
+
   // Department List translations
   departmentList: {
     title: string;
@@ -378,7 +315,6 @@ export interface Translations {
 
   // Location Management translations
   locationManagement: {
-    // Region translations
     regionList: {
       title: string;
       loading: string;
@@ -393,7 +329,6 @@ export interface Translations {
       regionsLoadError: string;
       emptyList: string;
       regionName: string;
-      
     };
     regionForm: {
       title: string;
@@ -407,7 +342,6 @@ export interface Translations {
       regionLoadError: string;
       nameRequired: string;
     };
-    // City translations
     cityList: {
       title: string;
       loading: string;
@@ -441,7 +375,6 @@ export interface Translations {
       nameRequired: string;
       regionRequired: string;
     };
-    // Town translations
     townList: {
       title: string;
       loading: string;
@@ -478,8 +411,70 @@ export interface Translations {
       regionsLoadError: string;
       citiesLoadError: string;
       nameRequired: string;
-      
     };
+  };
+
+  // Admin Dashboard translations
+  adminDashboard: {
+    loading: string;
+    welcome: string;
+    systemStats: string;
+    totalUsers: string;
+    totalCompanies: string;
+    totalDepartments: string;
+    activeUsers: string;
+    pendingUsers: string;
+    dataLoadError: string;
+    management: string;
+    departmentTypes: string;
+  };
+
+  // Bottom Tabs translations
+  bottomTabs: {
+    admin: string;
+    companies: string;
+    users: string;
+    home: string;
+    profile: string;
+    companyInfo: string;
+  };
+
+  // Admin User List translations
+  adminUserList: {
+    loading: string;
+    addNewUser: string;
+    edit: string;
+    delete: string;
+    deleteUser: string;
+    deleteConfirmation: string;
+    cancel: string;
+    deleteSuccess: string;
+    deleteError: string;
+    usersLoadError: string;
+    email: string;
+    role: string;
+    department: string;
+    company: string;
+  };
+
+  // Admin User Form translations
+  adminUserForm: {
+    loading: string;
+    name: string;
+    surname: string;
+    email: string;
+    department: string;
+    role: string;
+    isActive: string;
+    isActiveLabel: string;
+    selectDepartment: string;
+    save: string;
+    warning: string;
+    selectDepartmentWarning: string;
+    saveSuccess: string;
+    saveError: string;
+    userLoadError: string;
+    departmentsLoadError: string;
   };
 
   // Common translations
@@ -492,7 +487,6 @@ export interface Translations {
     delete: string;
     edit: string;
     add: string;
-    update: string;
     search: string;
     filter: string;
     refresh: string;
@@ -503,8 +497,9 @@ export interface Translations {
     confirm: string;
     yes: string;
     no: string;
-    ok: string;
     logout: string;
-    logoutError: string;
+    update: string;
+    ok: string;
+    logoutError: string; 
   };
 }

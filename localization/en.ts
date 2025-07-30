@@ -44,8 +44,8 @@ export const en: Translations = {
     },
   },
   userDashboard: {
-    loading: 'Loading...',
-    welcome: 'Welcome',
+    loading: 'Loading dashboard...',
+    welcome: 'Welcome!',
     myInfo: 'My Information',
     department: 'Department',
     company: 'Company',
@@ -54,7 +54,7 @@ export const en: Translations = {
     unassigned: 'Unassigned',
     unknown: 'Unknown',
     error: 'Error',
-    dataLoadError: 'Failed to load dashboard data',
+    dataLoadError: 'Dashboard data could not be retrieved',
     dashboardDataError: 'An error occurred while loading dashboard data'
   },
   userProfile: {
@@ -82,8 +82,8 @@ export const en: Translations = {
     cancel: 'Cancel',
     logout: 'Logout',
     error: 'Error',
-    profileLoadError: 'Could not load profile information',
-    fillAllFields: 'Please fill all fields',
+    profileLoadError: 'Profile information could not be retrieved',
+    fillAllFields: 'Please fill in all fields',
     passwordMismatch: 'New passwords do not match',
     passwordMinLength: 'New password must be at least 6 characters',
     success: 'Success',
@@ -96,9 +96,9 @@ export const en: Translations = {
     retry: 'Retry',
     companyInfo: 'Company Information',
     departmentInfo: 'Department Information',
-    noCompanyTitle: 'No Company Information Found',
+    noCompanyTitle: 'Company Information Not Found',
     noCompanyText: 'You are not yet associated with a company. Please contact your administrator for company assignment.',
-    noDepartmentTitle: 'No Department Information Found',
+    noDepartmentTitle: 'Department Information Not Found',
     noDepartmentText: 'You have not been assigned to a department yet. Please contact your administrator for department assignment.',
     active: 'Active',
     departmentName: 'Department Name',
@@ -137,7 +137,7 @@ export const en: Translations = {
     profileSettings: 'Profile Settings',
     department: 'Department',
     unknown: 'Unknown',
-    dataLoadError: 'Could not load dashboard data:',
+    dataLoadError: 'Dashboard data could not be retrieved:',
     error: 'Error',
     dashboardDataError: 'An error occurred while loading dashboard data'
   },
@@ -159,7 +159,7 @@ export const en: Translations = {
     passwordMismatch: 'New passwords do not match',
     passwordChangeSuccess: 'Password updated successfully',
     passwordChangeError: 'Password change failed',
-    profileLoadError: 'Could not load profile information'
+    profileLoadError: 'Profile information could not be retrieved'
   },
   managerUserList: {
     loading: 'Loading users...',
@@ -172,11 +172,11 @@ export const en: Translations = {
     deleteSuccess: 'User deleted successfully.',
     deleteError: 'An error occurred while deleting the user.',
     emptyList: 'No users found in this department yet.',
-    usersLoadError: 'Could not load users'
+    usersLoadError: 'Users could not be retrieved'
   },
   managerCompanyList: {
-    loading: 'Loading companies...',
-    title: 'Company List',
+    loading: 'Loading company...',
+    title: 'Company Information',
     companiesCount: 'companies',
     active: 'Active',
     inactive: 'Inactive',
@@ -185,9 +185,9 @@ export const en: Translations = {
     city: 'City',
     region: 'Region',
     address: 'Address',
-    createdDate: 'Created',
+    createdDate: 'Created Date',
     viewDetails: 'View Details',
-    companiesLoadError: 'Error loading companies'
+    companiesLoadError: 'An error occurred while loading company information'
   },
   adminDashboard: {
     loading: 'Loading dashboard...',
@@ -219,8 +219,8 @@ export const en: Translations = {
     deleteConfirmation: 'Are you sure you want to delete this user?',
     cancel: 'Cancel',
     deleteSuccess: 'User deleted',
-    deleteError: 'Could not delete user',
-    usersLoadError: 'Could not load users',
+    deleteError: 'User could not be deleted',
+    usersLoadError: 'Users could not be retrieved',
     email: 'Email',
     role: 'Role',
     department: 'Department',
@@ -233,22 +233,22 @@ export const en: Translations = {
     email: 'Email',
     department: 'Department',
     role: 'Role',
+    isActive: 'Active',
+    isActiveLabel: 'Active Status',
     selectDepartment: 'Select Department',
     save: 'Save',
     warning: 'Warning',
     selectDepartmentWarning: 'Please select a department.',
     saveSuccess: 'User saved',
-    saveError: 'Could not save user',
-    userLoadError: 'Could not load user information',
-    departmentsLoadError: 'Could not load departments',
-    isActive: 'Active',
-    isActiveLabel: 'Active User'
+    saveError: 'User could not be saved',
+    userLoadError: 'User information could not be retrieved',
+    departmentsLoadError: 'Departments could not be retrieved'
   },
   companyList: {
     loading: 'Loading...',
-    companiesLoadError: 'Could not load companies',
+    companiesLoadError: 'Companies could not be retrieved',
     deleteSuccess: 'Company deleted',
-    deleteError: 'Could not delete company',
+    deleteError: 'Company could not be deleted',
     addNewCompany: 'Add New Company',
     detail: 'Detail',
     edit: 'Edit',
@@ -271,15 +271,15 @@ export const en: Translations = {
     selectCity: 'Please select city',
     selectDistrict: 'Please select district',
     active: 'Active?',
-    companyInfoError: 'Could not load company information',
-    regionsError: 'Could not load regions',
-    citiesError: 'Could not load cities',
-    allCitiesError: 'Could not load all cities either',
-    districtsError: 'Could not load districts',
-    allDistrictsError: 'Could not load all districts either',
-    districtDetailsError: 'Could not load district details',
+    companyInfoError: 'Company information could not be retrieved',
+    regionsError: 'Regions could not be retrieved',
+    citiesError: 'Cities could not be retrieved',
+    allCitiesError: 'All cities could not be retrieved either',
+    districtsError: 'Districts could not be retrieved',
+    allDistrictsError: 'All districts could not be retrieved either',
+    districtDetailsError: 'District details could not be retrieved',
     updateSuccess: 'Company updated',
-    updateError: 'Could not update company'
+    updateError: 'Company could not be updated'
   },
   createCompany: {
     title: 'Create New Company',
@@ -295,9 +295,9 @@ export const en: Translations = {
     missingInfo: 'Missing Information',
     enterCompanyNameAndShort: 'Please enter company name and short name.',
     createSuccess: 'New company created',
-    createError: 'Could not create company',
-    districtsLoadError: 'Could not load districts',
-    companyTypesLoadError: 'Could not load company types'
+    createError: 'Company could not be created',
+    districtsLoadError: 'Districts could not be retrieved',
+    companyTypesLoadError: 'Company types could not be retrieved'
   },
   companyDetail: {
     title: '🏢 Company Detail Page',
@@ -309,8 +309,8 @@ export const en: Translations = {
     detail: 'Detail',
     edit: 'Edit',
     delete: 'Delete',
-    departmentsLoadError: 'Could not load departments',
-    districtsLoadError: 'Could not load districts',
+    departmentsLoadError: 'Departments could not be retrieved',
+    districtsLoadError: 'Districts could not be retrieved',
     departmentName: 'Department Name',
     departmentNamePlaceholder: 'Enter department name',
     selectDistrict: 'Select District',
@@ -322,15 +322,15 @@ export const en: Translations = {
     nameRequired: 'Department name cannot be empty',
     addressRequired: 'Address detail cannot be empty',
     addSuccess: 'Department added successfully',
-    addError: 'Could not add department',
+    addError: 'Department could not be added',
     updateSuccess: 'Department updated successfully',
-    updateError: 'Could not update department',
-    deleteError: 'Could not delete'
+    updateError: 'Department could not be updated',
+    deleteError: 'Could not be deleted'
   },
   departmentDetail: {
     loading: 'Loading department information...',
-    departmentDetailsError: 'Could not load department details',
-    departmentUsersError: 'Could not load department users',
+    departmentDetailsError: 'Department details could not be retrieved',
+    departmentUsersError: 'Department users could not be retrieved',
     notFound: 'Department not found',
     departmentInfo: 'Department Information',
     departmentType: 'Department Type:',
@@ -385,8 +385,7 @@ export const en: Translations = {
       emptyList: 'No cities found yet',
       cityName: 'City Name',
       region: 'Region',
-      deleteTitle:'Delete Title'
-
+      deleteTitle: 'Delete Title'
     },
     cityForm: {
       title: 'New City',
@@ -405,41 +404,41 @@ export const en: Translations = {
       regionRequired: 'Region selection is required'
     },
     townList: {
-      title: 'Town Management',
-      loading: 'Loading towns...',
-      addNewTown: 'Add New Town',
+      title: 'District Management',
+      loading: 'Loading districts...',
+      addNewTown: 'Add New District',
       edit: 'Edit',
       delete: 'Delete',
-      deleteTown: 'Delete Town',
-      deleteTitle: 'Delete Town',
-      deleteConfirmation: 'Are you sure you want to delete this town?',
+      deleteTown: 'Delete District',
+      deleteTitle: 'Delete District',
+      deleteConfirmation: 'Are you sure you want to delete this district?',
       cancel: 'Cancel',
-      deleteSuccess: 'Town deleted successfully',
-      deleteError: 'An error occurred while deleting the town',
-      townsLoadError: 'An error occurred while loading towns',
-      emptyList: 'No towns found yet',
-      townName: 'Town Name',
+      deleteSuccess: 'District deleted successfully',
+      deleteError: 'An error occurred while deleting the district',
+      townsLoadError: 'An error occurred while loading districts',
+      emptyList: 'No districts found yet',
+      townName: 'District Name',
       city: 'City',
       region: 'Region'
     },
     townForm: {
-      title: 'New Town',
-      editTitle: 'Edit Town',
-      townName: 'Town Name',
-      townNamePlaceholder: 'Enter town name',
+      title: 'New District',
+      editTitle: 'Edit District',
+      townName: 'District Name',
+      townNamePlaceholder: 'Enter district name',
       region: 'Region',
       selectRegion: 'Select region',
       city: 'City',
       selectCity: 'Select city',
       save: 'Save',
       loading: 'Loading...',
-      saveSuccess: 'Town saved successfully',
-      updateSuccess: 'Town updated successfully',
-      saveError: 'An error occurred while saving the town',
-      townLoadError: 'An error occurred while loading town information',
+      saveSuccess: 'District saved successfully',
+      updateSuccess: 'District updated successfully',
+      saveError: 'An error occurred while saving the district',
+      townLoadError: 'An error occurred while loading district information',
       regionsLoadError: 'An error occurred while loading regions',
       citiesLoadError: 'An error occurred while loading cities',
-      nameRequired: 'Town name is required'
+      nameRequired: 'District name is required'
     }
   },
   common: {
@@ -451,7 +450,6 @@ export const en: Translations = {
     delete: 'Delete',
     edit: 'Edit',
     add: 'Add',
-    update: 'Update',
     search: 'Search',
     filter: 'Filter',
     refresh: 'Refresh',
@@ -462,8 +460,9 @@ export const en: Translations = {
     confirm: 'Confirm',
     yes: 'Yes',
     no: 'No',
-    ok: 'OK',
     logout: 'Logout',
-    logoutError: 'An error occurred during logout'
+    update: 'Update',
+    ok: 'OK',
+    logoutError: 'An error occurred while logging out'
   },
 };

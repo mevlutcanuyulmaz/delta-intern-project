@@ -12,6 +12,7 @@ import UserList from '../pages/admin/UserList';
 // Manager pages
 import ManagerDashboard from '../pages/manager/ManagerDashboard';
 import ManagerUserList from '../pages/manager/ManagerUserList';
+  import ManagerCompanyList from '../pages/manager/ManagerCompanyList';
 import ManagerProfile from '../pages/manager/ManagerProfile';
 
 // User pages
@@ -88,6 +89,16 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
             title: t.bottomTabs.home,
             tabBarIcon: ({ color, size }) => (
               <Icon name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="ManagerCompanyList"
+          component={ManagerCompanyList}
+          options={{
+            title: t.bottomTabs.companies,
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="office-building" size={size} color={color} />
             ),
           }}
         />

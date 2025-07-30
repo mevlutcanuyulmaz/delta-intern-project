@@ -6,14 +6,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
-import { CompanyInfo } from '../../types/types';
+import { CompanyInfo, UserInfo } from '../../types/types';
 import { RootStackParamList } from '../../navigation/types';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
+
 const ManagerCompanyList = () => {
   const [companies, setCompanies] = useState<CompanyInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { t } = useLanguage();
 
@@ -43,11 +45,23 @@ const ManagerCompanyList = () => {
 
   const fetchCompanies = async () => {
     try {
-      const response = await api.get('/api/companies');
-      console.log('Şirketler:', response.data);
-      setCompanies(response.data);
+      // Önce kullanıcı bilgilerini al
+      const userResponse = await api.get('/api/user/get-self');
+      const userData = userResponse.data;
+      setUserInfo(userData);
+
+      // Eğer kullanıcının companyId'si varsa, sadece o şirketi getir
+      if (userData.companyId) {
+        const companyResponse = await api.get(`/api/company/${userData.companyId}`);
+        console.log('Manager\'ın şirketi:', companyResponse.data);
+        setCompanies([companyResponse.data]);
+      } else {
+        // CompanyId yoksa boş liste göster
+        console.log('Manager\'ın şirket bilgisi bulunamadı');
+        setCompanies([]);
+      }
     } catch (error) {
-      console.error('Error fetching companies:', error);
+      console.error('Error fetching company:', error);
       Alert.alert('Error', t.managerCompanyList.companiesLoadError);
     } finally {
       setLoading(false);
@@ -174,7 +188,9 @@ const ManagerCompanyList = () => {
       <View style={styles.header}>
         <MaterialCommunityIcons name="domain" size={24} color="#4b5c75" />
         <Text style={styles.headerTitle}>{t.managerCompanyList.title}</Text>
-        <Text style={styles.headerSubtitle}>{companies.length} {t.managerCompanyList.companiesCount}</Text>
+        {companies.length > 0 && (
+          <Text style={styles.headerSubtitle}>{companies.length} {t.managerCompanyList.companiesCount}</Text>
+        )}
       </View>
 
       <FlatList

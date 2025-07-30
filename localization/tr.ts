@@ -175,8 +175,8 @@ export const tr: Translations = {
     usersLoadError: 'Kullanıcılar getirilemedi'
   },
   managerCompanyList: {
-    loading: 'Şirketler yükleniyor...',
-    title: 'Şirket Listesi',
+    loading: 'Şirket yükleniyor...',
+    title: 'Şirket Bilgileri',
     companiesCount: 'şirket',
     active: 'Aktif',
     inactive: 'Pasif',
@@ -187,7 +187,7 @@ export const tr: Translations = {
     address: 'Adres',
     createdDate: 'Oluşturulma',
     viewDetails: 'Detayları Görüntüle',
-    companiesLoadError: 'Şirketler yüklenirken hata oluştu'
+    companiesLoadError: 'Şirket bilgileri yüklenirken hata oluştu'
   },
   common: {
     loading: 'Yükleniyor...',
