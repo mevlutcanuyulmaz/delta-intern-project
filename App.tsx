@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './pages/auth/LoginScreen';
 import  { AdminBottomTabs, ManagerBottomTabs, UserBottomTabs } from './navigation/BottomTabs';
@@ -27,6 +28,8 @@ import ManagerCompanyList from './pages/manager/ManagerCompanyList';
 import ManagerProfile from './pages/manager/ManagerProfile';
 import UserProfile from './pages/user/UserProfile';
 import { LanguageProvider } from './localization';
+// Include the OneSignal package
+import { OneSignal, LogLevel } from 'react-native-onesignal';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +48,18 @@ const linking: LinkingOptions<any> = {
 };
 
 const App = () => {
+  useEffect(() => {
+    // Enable verbose logging for debugging (remove in production)
+    OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+    
+    // Initialize with your OneSignal App ID
+    OneSignal.initialize('5463a6aa-f037-4a2a-955c-aa3c4c35c54a');
+    
+    // Use this method to prompt for push notifications.
+    // We recommend removing this method after testing and instead use In-App Messages
+    OneSignal.Notifications.requestPermission(false);
+  }, []);
+
   return (
     <LanguageProvider>
       <NavigationContainer linking={linking}>
