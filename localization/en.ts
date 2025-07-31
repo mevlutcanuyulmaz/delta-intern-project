@@ -27,6 +27,8 @@ export const en: Translations = {
       checkEmail: 'Please check your email.',
       error: 'Error',
       tryAgain: 'Please try again.',
+      infoTitle: 'How Password Reset Works?',
+      infoMessage: 'When you enter your email address, a password reset email is sent to your account. When you open this email on your phone, the application will open automatically and ask you to set your new password.'
     },
     activation: {
       title: 'Account Activation',
@@ -43,6 +45,8 @@ export const en: Translations = {
       invalidCode: 'Invalid activation code.',
       newPasswordPlaceholder: 'Enter new password',
       confirmPasswordPlaceholder: 'Confirm new password',
+      infoTitle: 'How Activation Works?',
+      infoMessage: 'When you enter your email address, an activation email is sent to your account. When you open this email on your phone, the application will open automatically and ask you to set your password.'
     },
   },
   userDashboard: {

@@ -1,6 +1,7 @@
 // ForgotPasswordScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
@@ -10,6 +11,13 @@ const ForgotPasswordScreen = () => {
   const navigation = useNavigation();
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: t.auth.forgotPassword.title,
+      headerRight: () => <LanguageSwitcher />,
+    });
+  }, [navigation, t]);
 
   const handleSubmit = async () => {
     try {
@@ -26,21 +34,21 @@ const ForgotPasswordScreen = () => {
 
   return (
     <View style={styles.wrapper}>
-      <View style={styles.header}>
-        <LanguageSwitcher />
-      </View>
-      
       <View style={styles.container}>
-        <Text style={styles.title}>{t.auth.forgotPassword.title}</Text>
         
-        <TextInput
-          placeholder={t.auth.forgotPassword.emailPlaceholder}
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder={t.auth.forgotPassword.emailPlaceholder}
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TouchableOpacity onPress={() => Alert.alert(t.auth.forgotPassword.infoTitle, t.auth.forgotPassword.infoMessage)}>
+            <MaterialCommunityIcons name="information-outline" size={24} color="#888" style={styles.infoIcon} />
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>{t.auth.forgotPassword.sendButton}</Text>
@@ -61,12 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
-  header: {
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    alignItems: 'flex-end',
-    paddingBottom: 20,
-  },
+
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -75,13 +78,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   title: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 28,
+    fontWeight: 'bold',
     color: '#333',
-    marginBottom: 30,
+    marginBottom: 40,
     textAlign: 'center',
   },
-  input: {
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
     height: 50,
     borderWidth: 1,
@@ -90,7 +95,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 20,
     backgroundColor: '#fff',
+  },
+  input: {
+    flex: 1,
+    height: '100%',
     fontSize: 16,
+  },
+  infoIcon: {
+    marginLeft: 10,
   },
   button: {
     width: '100%',

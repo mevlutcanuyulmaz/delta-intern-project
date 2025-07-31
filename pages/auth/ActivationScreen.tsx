@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useLanguage } from '../../localization';
@@ -17,7 +17,13 @@ const ActivationScreen = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const route = useRoute<any>();
-  
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: t.auth.activation.title,
+      headerRight: () => <LanguageSwitcher />,
+    });
+  }, [navigation, t]);
 
   // token varsa linkten al
   useEffect(() => {
@@ -69,83 +75,26 @@ const ActivationScreen = () => {
 
   return (
     <View style={styles.wrapper}>
-      <View style={styles.header}>
-        <LanguageSwitcher />
-      </View>
-      
       <View style={styles.container}>
-        <Text style={styles.title}>{t.auth.activation.title}</Text>
-        
-        <TextInput
-          placeholder={t.auth.activation.emailPlaceholder}
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder={t.auth.activation.emailPlaceholder}
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <TouchableOpacity onPress={() => Alert.alert(t.auth.activation.infoTitle, t.auth.activation.infoMessage)} style={styles.infoIcon}>
+            <MaterialCommunityIcons name="information-outline" size={24} color="#666" />
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={styles.button} onPress={handleResendActivation}>
           <Text style={styles.buttonText}>{t.auth.activation.sendButton}</Text>
         </TouchableOpacity>
 
-        <Text style={styles.orText}>{t.auth.activation.orText}</Text>
-
-        <TextInput
-          placeholder={t.auth.activation.tokenPlaceholder}
-          value={token}
-          onChangeText={setToken}
-          style={styles.input}
-        />
-
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.passwordInput}
-            placeholder={t.auth.activation.newPasswordPlaceholder}
-            value={newPassword}
-            onChangeText={setNewPassword}
-            secureTextEntry={!showNewPassword}
-          />
-          <TouchableOpacity
-            style={styles.eyeIcon}
-            onPress={() => setShowNewPassword(!showNewPassword)}
-          >
-            <MaterialCommunityIcons
-              name={showNewPassword ? 'eye-off' : 'eye'}
-              size={24}
-              color="#666"
-            />
-          </TouchableOpacity>
         </View>
-
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.passwordInput}
-            placeholder={t.auth.activation.confirmPasswordPlaceholder}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry={!showConfirmPassword}
-          />
-          <TouchableOpacity
-            style={styles.eyeIcon}
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            <MaterialCommunityIcons
-              name={showConfirmPassword ? 'eye-off' : 'eye'}
-              size={24}
-              color="#666"
-            />
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={handleActivate}>
-          <Text style={styles.buttonText}>{t.auth.activation.activateButton}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.linkText}>{t.auth.activation.backToLogin}</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -157,12 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
-  header: {
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    alignItems: 'flex-end',
-    paddingBottom: 20,
-  },
+
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -170,23 +114,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#f5f5f5',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#333',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  input: {
+
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
-    height: 50,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
-    paddingHorizontal: 15,
     marginBottom: 15,
     backgroundColor: '#fff',
+  },
+  input: {
+    flex: 1,
+    height: 50,
+    paddingHorizontal: 15,
     fontSize: 16,
+  },
+  infoIcon: {
+    paddingHorizontal: 10,
   },
   passwordContainer: {
     width: '100%',

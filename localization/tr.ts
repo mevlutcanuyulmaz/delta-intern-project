@@ -28,6 +28,8 @@ export const tr: Translations = {
       checkEmail: 'E-posta adresinizi kontrol edin.',
       error: 'Hata',
       tryAgain: 'Lütfen tekrar deneyin.',
+      infoTitle: 'Şifre Sıfırlama Nasıl Çalışır?',
+      infoMessage: 'E-posta adresinizi girdiğinizde, hesabınıza bir şifre sıfırlama e-postası gönderilir. Telefonunuzda bu e-postayı açtığınızda, uygulama otomatik olarak açılır ve yeni şifrenizi belirlemeniz istenir.'
     },
     activation: {
       title: 'Hesap Aktivasyonu',
@@ -44,6 +46,8 @@ export const tr: Translations = {
       invalidCode: 'Geçersiz aktivasyon kodu.',
       newPasswordPlaceholder: 'Yeni şifrenizi girin',
       confirmPasswordPlaceholder: 'Yeni şifreyi tekrar girin',
+      infoTitle: 'Aktivasyon Nasıl Çalışır?',
+      infoMessage: 'E-posta adresinizi girdiğinizde, hesabınıza bir aktivasyon e-postası gönderilir. Telefonunuzda bu e-postayı açtığınızda, uygulama otomatik olarak açılır ve şifrenizi belirlemeniz istenir.'
     },
   },
   userDashboard: {

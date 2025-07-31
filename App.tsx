@@ -92,8 +92,8 @@ const App = () => {
           <Stack.Screen name="CreateCompany" component={CreateCompany} options={{ title: 'Şirket Oluştur' }} />
           <Stack.Screen name="CompanyDetail" component={CompanyDetail} options={{ title: 'Şirket Detayı' }} />
           <Stack.Screen name="DepartmentDetail" component={DepartmentDetailPage} options={{ title: 'Departman Detayı' }} />
-          <Stack.Screen name="Activation" component={ActivationScreen} options={{ title: 'Hesap Aktivasyonu' }} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ title: 'Şifre Sıfırlama' }} />
+          <Stack.Screen name="Activation" component={ActivationScreen} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
           <Stack.Screen name="ManagerDashboard" component={ManagerDashboard} options={{ title: 'Yönetici Paneli' }} />
           <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ title: 'Kullanıcı Paneli' }} />
           <Stack.Screen name="UserCompanyInfo" component={UserCompanyInfo} options={{ title: 'Şirket Bilgileri' }} />

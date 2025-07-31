@@ -26,6 +26,8 @@ export interface Translations {
       checkEmail: string;
       error: string;
       tryAgain: string;
+      infoTitle: string;
+      infoMessage: string;
     };
     activation: {
       title: string;
@@ -42,6 +44,8 @@ export interface Translations {
       invalidCode: string;
       newPasswordPlaceholder: string;
       confirmPasswordPlaceholder:string;
+      infoTitle: string;
+      infoMessage: string;
     };
   };
   
