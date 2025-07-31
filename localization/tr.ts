@@ -315,7 +315,9 @@ export const tr: Translations = {
     allDistrictsError: 'Tüm ilçeler de alınamadı',
     districtDetailsError: 'İlçe detayları alınamadı',
     updateSuccess: 'Şirket güncellendi',
-    updateError: 'Şirket güncellenemedi'
+    updateError: 'Şirket güncellenemedi',
+    companyType: 'Şirket Türü',
+    selectCompanyType: 'Lütfen şirket türü seçin'
   },
   createCompany: {
     title: 'Yeni Şirket Oluştur',
@@ -361,7 +363,9 @@ export const tr: Translations = {
     addError: 'Departman eklenemedi',
     updateSuccess: 'Departman başarıyla güncellendi',
     updateError: 'Departman güncellenemedi',
-    deleteError: 'Silinemedi'
+    deleteError: 'Silinemedi',
+    districtRequired: 'Lütfen bir ilçe seçin',
+    departmentTypeRequired: 'Lütfen bir departman türü seçin'
   },
   departmentDetail: {
     loading: 'Departman bilgileri yükleniyor...',
@@ -553,5 +557,33 @@ export const tr: Translations = {
       regionRequired: 'Bölge seçimi gereklidir',
       cityRequired: 'Şehir seçimi gereklidir',
     }
+
+  },
+  navigation: {
+      home: 'Anasayfa',
+      companyList: 'Şirket Listesi',
+      companyDetail: 'Şirket Detay',
+      createCompany: 'Şirket Oluştur',
+      departmentList: 'Departman Listesi',
+      departmentDetail: 'Departman Detay',
+      userList: 'Kullanıcı Listesi',
+      userForm: 'Kullanıcı Formu',
+      departmentTypeList: 'Departman Tipi Listesi',
+      departmentTypeForm: 'Departman Tipi Formu',
+      companyTypeList: 'Şirket Tipi Listesi',
+      companyTypeForm: 'Şirket Tipi Formu',
+      regionList: 'Bölge Listesi',
+      regionForm: 'Bölge Formu',
+      cityList: 'Şehir Listesi',
+      cityForm: 'Şehir Formu',
+      townList: 'İlçe Listesi',
+      townForm: 'İlçe Formu',
+    managerDashboard: 'Yönetici Paneli',
+    userDashboard: 'Kullanıcı Paneli',
+    companyInfo: 'Şirket Bilgileri',
+    managerUserList: 'Kullanıcı Listesi',
+    managerCompanyList: 'Şirket Listesi',
+    profile: 'Profil',
+    companyForm: 'Şirket Formu'
   }
 };

@@ -316,6 +316,9 @@ export interface Translations {
     districtDetailsError: string;
     updateSuccess: string;
     updateError: string;
+    companyType: string;
+    selectCompanyType: string;
+    
   };
 
   // Create Company translations
@@ -368,6 +371,8 @@ export interface Translations {
     updateSuccess: string;
     updateError: string;
     deleteError: string;
+    districtRequired: string;
+    departmentTypeRequired: string;
   };
 
   // Department Detail translations
@@ -596,6 +601,34 @@ export interface Translations {
     ok: string;
     logout: string;
     logoutError: string;
+  };
+
+    navigation: {
+    home: string;
+    companyList: string;
+    companyDetail: string;
+    createCompany: string;
+    departmentList: string;
+    departmentDetail: string;
+    userList: string;
+    userForm: string;
+    departmentTypeList: string;
+    departmentTypeForm: string;
+    companyTypeList: string;
+    companyTypeForm: string;
+    regionList: string;
+    regionForm: string;
+    cityList: string;
+    cityForm: string;
+    townList: string;
+    townForm: string;
+    managerDashboard: string;
+    userDashboard: string;
+    companyInfo: string;
+    managerUserList: string;
+    managerCompanyList: string;
+    profile: string;
+    companyForm: string;
   };
 
 }

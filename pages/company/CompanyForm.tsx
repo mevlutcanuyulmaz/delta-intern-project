@@ -132,12 +132,12 @@ const handleUpdate = async () => {
       <Text style={styles.label}>{t.companyForm.shortName}</Text>
       <TextInput style={styles.input} value={shortName} onChangeText={setShortName} />
 
-      <Text style={styles.label}>Şirket Türü</Text>
+      <Text style={styles.label}>{t.companyForm.companyType}</Text>
       <Picker
         selectedValue={companyTypeId}
         onValueChange={(itemValue) => setCompanyTypeId(itemValue)}
       >
-        <Picker.Item label="Şirket türü seçin..." value={undefined} />
+        <Picker.Item label={t.companyForm.selectCompanyType} value={undefined} />
         {companyTypes.map((type) => (
           <Picker.Item key={type.id} label={type.name} value={type.id} />
         ))}

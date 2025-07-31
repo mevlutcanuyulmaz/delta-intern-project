@@ -86,11 +86,11 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       return;
     }
     if (selectedTownId === 0) {
-      Alert.alert(t.common.error, 'Lütfen bir ilçe seçin');
+      Alert.alert(t.common.error, t.departmentList.districtRequired);
       return;
     }
     if (selectedDepartmentTypeId === 0) {
-      Alert.alert(t.common.error, 'Lütfen bir departman türü seçin');
+      Alert.alert(t.common.error, t.departmentList.departmentTypeRequired);
       return;
     }
 

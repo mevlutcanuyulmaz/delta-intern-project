@@ -290,7 +290,9 @@ export const en: Translations = {
     allDistrictsError: 'All districts could not be loaded either',
     districtDetailsError: 'District details could not be loaded',
     updateSuccess: 'Company updated',
-    updateError: 'Company could not be updated'
+    updateError: 'Company could not be updated',
+    companyType: 'Company Type',
+    selectCompanyType: 'Please select company type',
   },
   createCompany: {
     title: 'Create New Company',
@@ -336,7 +338,9 @@ export const en: Translations = {
     addError: 'Department could not be added',
     updateSuccess: 'Department updated successfully',
     updateError: 'Department could not be updated',
-    deleteError: 'Could not be deleted'
+    deleteError: 'Could not be deleted',
+    districtRequired: 'Please select a district',
+    departmentTypeRequired: 'Please select a department type'
   },
   departmentDetail: {
     loading: 'Loading department information...',
@@ -553,4 +557,31 @@ export const en: Translations = {
     logout: 'Logout',
     logoutError: 'An error occurred while logging out'
   },
+    navigation: {
+      home: 'Home',
+      companyList: 'Company List',
+      companyDetail: 'Company Detail',
+      createCompany: 'Create Company',
+      departmentList: 'Department List', 
+      departmentDetail: 'Department Detail',
+      userList: 'User List',
+      userForm: 'User Form',
+      departmentTypeList: 'Department Type List',
+      departmentTypeForm: 'Department Type Form',
+      companyTypeList: 'Company Type List',
+      companyTypeForm: 'Company Type Form',
+      regionList: 'Region List',
+      regionForm: 'Region Form',
+      cityList: 'City List',
+      cityForm: 'City Form',
+      townList: 'Town List',
+      townForm: 'Town Form',
+      managerDashboard: 'Manager Dashboard',
+      userDashboard: 'User Dashboard',
+      companyInfo: 'Company Info',
+      managerUserList: 'User List',
+      managerCompanyList: 'Company List',
+      profile: 'Profile',
+      companyForm: 'Company Form'
+  }
 };
