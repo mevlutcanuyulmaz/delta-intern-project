@@ -3,7 +3,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = axios.create({
-  baseURL: 'http://organizationbackendenv-env-2.eba-ye3jwmbt.us-east-1.elasticbeanstalk.com',
+  baseURL: 'https://organizationbackendenv-env-2.eba-ye3jwmbt.us-east-1.elasticbeanstalk.com',
 });
 
 // Interceptor: her istekten önce çalışır
