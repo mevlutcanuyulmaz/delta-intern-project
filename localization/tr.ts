@@ -15,6 +15,7 @@ export const tr: Translations = {
       checkCredentials: 'Lütfen bilgilerinizi kontrol edin.',
       authError: 'Yetki Hatası',
       roleNotDefined: 'Yetkiniz tanımlı değil.',
+      
     },
     forgotPassword: {
       title: 'Şifre Sıfırlama',
@@ -41,6 +42,8 @@ export const tr: Translations = {
       accountActivated: 'Hesabınız başarıyla aktive edildi.',
       activationError: 'Aktivasyon Hatası',
       invalidCode: 'Geçersiz aktivasyon kodu.',
+      newPasswordPlaceholder: 'Yeni şifrenizi girin',
+      confirmPasswordPlaceholder: 'Yeni şifreyi tekrar girin',
     },
   },
   userDashboard: {

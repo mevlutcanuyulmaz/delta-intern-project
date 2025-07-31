@@ -40,6 +40,8 @@ export interface Translations {
       accountActivated: string;
       activationError: string;
       invalidCode: string;
+      newPasswordPlaceholder: string;
+      confirmPasswordPlaceholder:string;
     };
   };
   

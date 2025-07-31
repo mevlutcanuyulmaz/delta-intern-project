@@ -10,6 +10,7 @@ import {
   ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import api from '../../services/api';
 import { UserInfo } from '../../types/types';
 import { useLanguage } from '../../localization';
@@ -22,6 +23,9 @@ const UserProfile = ({ navigation }: any) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleLogout = () => {
     Alert.alert(
@@ -180,30 +184,66 @@ const UserProfile = ({ navigation }: any) => {
             <Text style={styles.sectionTitle}>{t.userProfile.changePassword}</Text>
           </View>
           
-          <TextInput
-            style={styles.input}
-            value={currentPassword}
-            onChangeText={setCurrentPassword}
-            placeholder={t.userProfile.currentPassword}
-            secureTextEntry
-            placeholderTextColor="#999"
-          />
-          <TextInput
-            style={styles.input}
-            value={newPassword}
-            onChangeText={setNewPassword}
-            placeholder={t.userProfile.newPassword}
-            secureTextEntry
-            placeholderTextColor="#999"
-          />
-          <TextInput
-            style={styles.input}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            placeholder={t.userProfile.confirmPassword}
-            secureTextEntry
-            placeholderTextColor="#999"
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              value={currentPassword}
+              onChangeText={setCurrentPassword}
+              placeholder={t.userProfile.currentPassword}
+              secureTextEntry={!showCurrentPassword}
+              placeholderTextColor="#999"
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowCurrentPassword(!showCurrentPassword)}
+            >
+              <MaterialCommunityIcons
+                name={showCurrentPassword ? 'eye-off' : 'eye'}
+                size={24}
+                color="#666"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              value={newPassword}
+              onChangeText={setNewPassword}
+              placeholder={t.userProfile.newPassword}
+              secureTextEntry={!showNewPassword}
+              placeholderTextColor="#999"
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowNewPassword(!showNewPassword)}
+            >
+              <MaterialCommunityIcons
+                name={showNewPassword ? 'eye-off' : 'eye'}
+                size={24}
+                color="#666"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              placeholder={t.userProfile.confirmPassword}
+              secureTextEntry={!showConfirmPassword}
+              placeholderTextColor="#999"
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              <MaterialCommunityIcons
+                name={showConfirmPassword ? 'eye-off' : 'eye'}
+                size={24}
+                color="#666"
+              />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
             <Icon name="check" size={20} color="#fff" style={styles.buttonIcon} />
             <Text style={styles.buttonText}>{t.userProfile.changePasswordButton}</Text>
@@ -285,6 +325,25 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontSize: 16,
     backgroundColor: '#fff',
+  },
+  passwordContainer: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    marginBottom: 12,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+    padding: 12,
+    fontSize: 16,
+  },
+  eyeIcon: {
+    paddingHorizontal: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#4b5c75',

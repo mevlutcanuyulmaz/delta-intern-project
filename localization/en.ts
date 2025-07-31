@@ -41,6 +41,8 @@ export const en: Translations = {
       accountActivated: 'Your account has been successfully activated.',
       activationError: 'Activation Error',
       invalidCode: 'Invalid activation code.',
+      newPasswordPlaceholder: 'Enter new password',
+      confirmPasswordPlaceholder: 'Confirm new password',
     },
   },
   userDashboard: {
