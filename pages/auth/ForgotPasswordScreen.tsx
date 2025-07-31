@@ -28,9 +28,7 @@ const ForgotPasswordScreen = () => {
     }
   };
 
-  const handleBackToLogin = () => {
-    navigation.goBack();
-  };
+
 
   return (
     <View style={styles.wrapper}>
@@ -77,13 +75,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#f5f5f5',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 40,
-    textAlign: 'center',
-  },
+
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',

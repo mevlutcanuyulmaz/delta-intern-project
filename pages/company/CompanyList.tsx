@@ -20,7 +20,7 @@ const CompanyList = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
           <LanguageSwitcher />
           <TouchableOpacity
-            onPress={handleLogout}
+            onPress={() => navigation.navigate('Login')}
             style={{ marginLeft: 15 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -29,11 +29,6 @@ const CompanyList = () => {
       ),
     });
   }, [navigation]);
-
-  const handleLogout = () => {
-    // Çıkış işlemi burada yapılacak
-    navigation.navigate('Login');
-  };
 
   useFocusEffect(
         useCallback(() => {
@@ -44,7 +39,6 @@ const CompanyList = () => {
   const fetchCompanies = async () => {
     try {
       const response = await api.get('/api/companies');
-      console.log('Şirketler:', response.data);
       setCompanies(response.data);
     } catch (error) {
       console.error(t.companyList.companiesLoadError, error);
@@ -59,7 +53,6 @@ const CompanyList = () => {
     // Listeyi güncelle
     setCompanies((prev) => prev.filter((c) => c.id !== id));
   } catch (error) {
-    console.error('Silme hatası:', error);
     Alert.alert(t.common.error, t.companyList.deleteError);
   }
 };

@@ -7,6 +7,7 @@ import api from '../../services/api';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { RootStackParamList } from '../../navigation/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ManagerUserListNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -36,9 +37,12 @@ const ManagerUserList = () => {
           <LanguageSwitcher />
           <TouchableOpacity
             style={{ marginLeft: 15 }}
-            onPress={() => {
-              // Logout logic here
-              navigation.navigate('Login');
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
             }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -67,7 +71,7 @@ const ManagerUserList = () => {
         
         setUsers(filteredUsers);
       } catch (err) {
-        console.error(t.managerUserList.usersLoadError, err);
+        Alert.alert(t.common.error, t.managerUserList.usersLoadError);
       } finally {
         setLoading(false);
       }
@@ -92,7 +96,6 @@ const ManagerUserList = () => {
               setUsers(users.filter(user => user.id !== userId));
               Alert.alert(t.common.success, t.managerUserList.deleteSuccess);
             } catch (err) {
-              console.error('Silme hatası:', err);
               Alert.alert(t.common.error, t.managerUserList.deleteError);
             }
           }

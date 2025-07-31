@@ -30,7 +30,7 @@ const CreateCompany = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
           <LanguageSwitcher />
           <TouchableOpacity
-            onPress={handleLogout}
+            onPress={() => navigation.navigate('Login')}
             style={{ marginLeft: 15 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -40,18 +40,13 @@ const CreateCompany = () => {
     });
   }, [navigation]);
 
-  const handleLogout = () => {
-    // Çıkış işlemi burada yapılacak
-    navigation.navigate('Login');
-  };
-
   useEffect(() => {
     const fetchTowns = async () => {
       try {
         const response = await api.get('/api/location/town');
         setTowns(response.data);
       } catch (err) {
-        console.error(t.createCompany.districtsLoadError, err);
+        Alert.alert(t.createCompany.districtsLoadError);
       }
     };
 
@@ -60,7 +55,7 @@ const CreateCompany = () => {
         const response = await api.get('/api/company-types');
         setCompanyTypes(response.data);
       } catch (err) {
-        console.error(t.createCompany.companyTypesLoadError, err);
+        Alert.alert(t.createCompany.companyTypesLoadError);
       }
     };
 
@@ -85,12 +80,10 @@ const CreateCompany = () => {
         companyTypeId: companyTypeId || 1, // 🔧 Şirket türü seçilmediyse 1 gönder
       };
 
-      const response = await api.post('/api/companies', payload);
-      console.log("✅ Şirket oluşturuldu:", response.data);
+      await api.post('/api/companies', payload);
       Alert.alert(t.common.success, t.createCompany.createSuccess);
       navigation.goBack();
     } catch (error: any) {
-      console.error('❌ Oluşturma hatası:', error.response?.data || error.message);
       Alert.alert(t.common.error, t.createCompany.createError);
     } finally {
       setLoading(false);

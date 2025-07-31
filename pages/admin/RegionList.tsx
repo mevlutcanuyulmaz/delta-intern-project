@@ -18,21 +18,19 @@ const RegionList = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<RegionListNavigationProp>();
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
-          <TouchableOpacity 
-            onPress={handleLogout} 
+          <TouchableOpacity
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
             style={{ marginLeft: 16, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -41,7 +39,7 @@ const RegionList = () => {
       ),
       headerTitle: t.locationManagement.regionList.title,
     });
-  }, [navigation]);
+  }, [navigation, t]);
 
   const fetchRegions = async () => {
     try {
@@ -49,7 +47,6 @@ const RegionList = () => {
       const response = await api.get('/api/location/region');
       setRegions(response.data);
     } catch (error) {
-      console.error('Bölgeler yüklenirken hata:', error);
       Alert.alert(t.common.error, t.locationManagement.regionList.regionsLoadError);
     } finally {
       setLoading(false);
@@ -71,7 +68,6 @@ const RegionList = () => {
               Alert.alert(t.common.success, t.locationManagement.regionList.deleteSuccess);
               fetchRegions();
             } catch (error) {
-              console.error('Bölge silinirken hata:', error);
               Alert.alert(t.common.error, t.locationManagement.regionList.deleteError);
             }
           },

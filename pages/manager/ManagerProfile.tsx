@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 type ManagerProfileNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ManagerProfile'>;
 
@@ -40,9 +42,12 @@ const ManagerProfile = () => {
           <LanguageSwitcher />
           <TouchableOpacity
             style={{ marginLeft: 15 }}
-            onPress={() => {
-              // Logout logic here
-              navigation.navigate('Login');
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
             }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -74,10 +79,9 @@ const ManagerProfile = () => {
     }
 
     try {
-      await api.post('/api/auth/reset-password', {
-        token: currentPassword, // Burada backend'in beklediği formata göre ayarlayın
+      await api.post('/api/auth/change-password', {
+        currentPassword,
         newPassword,
-        confirmPassword
       });
       Alert.alert(t.common.success, t.managerProfile.passwordChangeSuccess);
       setCurrentPassword('');

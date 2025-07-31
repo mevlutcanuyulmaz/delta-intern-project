@@ -19,21 +19,19 @@ const CompanyTypeForm = () => {
   const navigation = useNavigation<CompanyTypeFormNavigationProp>();
   const { companyTypeId } = route.params || {};
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
             style={{ marginLeft: 16, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -56,7 +54,6 @@ const CompanyTypeForm = () => {
       setName(response.data.name);
       setActive(response.data.active);
     } catch (error) {
-      console.error('Error fetching company type:', error);
       Alert.alert('Hata', 'Şirket türü bilgileri yüklenirken bir hata oluştu.');
     } finally {
       setLoading(false);
@@ -95,7 +92,6 @@ const CompanyTypeForm = () => {
       
       navigation.goBack();
     } catch (error) {
-      console.error('Error saving company type:', error);
       Alert.alert('Hata', 'Şirket türü kaydedilirken bir hata oluştu.');
     } finally {
       setLoading(false);

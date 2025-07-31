@@ -8,9 +8,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { RootStackParamList } from '../../navigation/types';
-import ForgotPasswordScreen from './ForgotPasswordScreen';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -25,7 +23,6 @@ const LoginScreen = () => {
   const clearTokens = async () => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('refreshToken');
-    console.log('📦 Tokenlar silindi!');
   };
 
   clearTokens();
@@ -37,7 +34,6 @@ const LoginScreen = () => {
       password,
     });
 
-    console.log("Gelen login cevabı:", response.data);
     const { accessToken } = response.data;
     await AsyncStorage.setItem('accessToken', accessToken);
 

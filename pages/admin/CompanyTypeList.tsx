@@ -19,14 +19,6 @@ const CompanyTypeList = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<CompanyTypeListNavigationProp>();
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -39,7 +31,13 @@ const CompanyTypeList = () => {
             <MaterialCommunityIcons name="plus" size={24} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
             style={{ marginLeft: 8, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -54,7 +52,6 @@ const CompanyTypeList = () => {
       const response = await api.get('/api/company-types');
       setCompanyTypes(response.data);
     } catch (error) {
-      console.error('Error fetching company types:', error);
       Alert.alert('Hata', 'Şirket türleri yüklenirken bir hata oluştu.');
     } finally {
       setLoading(false);
@@ -76,7 +73,6 @@ const CompanyTypeList = () => {
               fetchCompanyTypes();
               Alert.alert('Başarılı', 'Şirket türü başarıyla silindi.');
             } catch (error) {
-              console.error('Error deleting company type:', error);
               Alert.alert('Hata', 'Şirket türü silinirken bir hata oluştu.');
             }
           },

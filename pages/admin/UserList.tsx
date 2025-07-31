@@ -31,22 +31,26 @@ const UserList = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<UserListNavigationProp>();
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('UserForm')}
+            style={{ marginLeft: 16, marginRight: 8 }}
+          >
+            <MaterialCommunityIcons name="plus" size={24} color="#fff" />
+          </TouchableOpacity>
           <TouchableOpacity 
-            onPress={handleLogout} 
-            style={{ marginLeft: 16, marginRight: 16 }}
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
+            style={{ marginLeft: 8, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
           </TouchableOpacity>
@@ -60,7 +64,7 @@ const UserList = () => {
       const response = await api.get('/api/user/get-users-of-detailed');
       setUsers(response.data);
     } catch (error) {
-      console.error(t.adminUserList.usersLoadError, error);
+      Alert.alert(t.common.error, t.adminUserList.usersLoadError);
     } finally {
       setLoading(false);
     }
@@ -130,13 +134,6 @@ const UserList = () => {
         renderItem={renderUser}
         contentContainerStyle={styles.list}
       />
-      
-      <TouchableOpacity
-        style={styles.createButton}
-        onPress={() => navigation.navigate('UserForm')}
-      >
-        <Text style={styles.createButtonText}>{t.adminUserList.addNewUser}</Text>
-      </TouchableOpacity>
     </View>
   );
 };

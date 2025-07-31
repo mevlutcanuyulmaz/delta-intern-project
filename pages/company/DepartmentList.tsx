@@ -30,7 +30,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       const filtered = res.data.filter((d: DepartmentInfo) => d.company?.id === companyId);
       setDepartments(filtered);
     } catch (err) {
-      console.error(t.departmentList.departmentsLoadError, err);
+      Alert.alert(t.common.error, t.departmentList.departmentsLoadError);
     }
   };
 
@@ -39,7 +39,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       const response = await api.get('/api/location/town');
       setTowns(response.data);
     } catch (err) {
-      console.error(t.departmentList.districtsLoadError, err);
+      Alert.alert(t.common.error, t.departmentList.districtsLoadError);
     }
   };
 
@@ -48,7 +48,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       const response = await api.get('/api/department-types');
       setDepartmentTypes(response.data);
     } catch (err) {
-      console.error('Departman türleri yüklenirken hata:', err);
+      Alert.alert(t.common.error, 'Departman türleri yüklenirken hata oluştu.');
     }
   };
 
@@ -152,7 +152,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       setEditingId(item.id || 0);
       setModalVisible(true);
     } catch (error) {
-      console.error('Departman detayları alınırken hata:', error);
+      Alert.alert(t.common.error, 'Departman detayları alınırken hata oluştu.');
       // Hata durumunda mevcut bilgilerle devam et
       setNameInput(item.name || '');
       setAddressDetailInput(item.addressDetail || '');

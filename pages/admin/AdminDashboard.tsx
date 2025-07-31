@@ -25,21 +25,19 @@ const AdminDashboard = () => {
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation<AdminDashboardNavigationProp>();
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
             style={{ marginLeft: 16, marginRight: 16 }}
           >
             <Icon name="logout" size={24} color="#fff" />
@@ -74,7 +72,6 @@ const AdminDashboard = () => {
 
       setStats(dashboardStats);
     } catch (error) {
-      console.error('Dashboard verileri alınamadı:', error);
       Alert.alert(t.common.error, t.adminDashboard.dataLoadError);
     } finally {
       setLoading(false);

@@ -26,26 +26,27 @@ const ManagerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
           <LanguageSwitcher />
-          <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
-           <Icon name="logout" size={24} color="#fff" />
+          <TouchableOpacity
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
+            style={{ marginLeft: 16 }}
+          >
+            <Icon name="logout" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       ),
     });
-  }, [navigation, handleLogout, t]);
+  }, [navigation, t]);
 
   const fetchDashboardData = async () => {
     try {
@@ -70,7 +71,6 @@ const ManagerDashboard = () => {
 
       setStats(departmentStats);
     } catch (error) {
-      console.error(t.managerDashboard.dataLoadError, error);
       Alert.alert(t.common.error, t.managerDashboard.dashboardDataError);
     } finally {
       setLoading(false);

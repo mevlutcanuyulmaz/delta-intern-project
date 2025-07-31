@@ -20,7 +20,7 @@ const CompanyDetail = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
           <LanguageSwitcher />
           <TouchableOpacity
-            onPress={handleLogout}
+            onPress={() => navigation.navigate('Login')}
             style={{ marginLeft: 15 }}
           >
             <Icon name="logout" size={24} color="#fff" />
@@ -29,11 +29,6 @@ const CompanyDetail = () => {
       ),
     });
   }, [navigation]);
-
-  const handleLogout = () => {
-    // Çıkış işlemi burada yapılacak
-    navigation.navigate('Login');
-  };
 
   return (
     <View style={styles.container}>

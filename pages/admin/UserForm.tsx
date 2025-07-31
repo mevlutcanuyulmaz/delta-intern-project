@@ -25,21 +25,19 @@ const UserForm = () => {
   const navigation = useNavigation<UserFormNavigationProp>();
   const { userId } = route.params || {};
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
             style={{ marginLeft: 16, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -80,7 +78,7 @@ const fetchDepartments = async () => {
     const response = await api.get('/api/departments');
     setDepartments(response.data);
   } catch (error) {
-    console.error(t.adminUserForm.departmentsLoadError, error);
+    Alert.alert(t.common.error, t.adminUserForm.departmentsLoadError);
   }
 };
 
@@ -105,7 +103,7 @@ const fetchUser = async () => {
     
     setIsActive(user.isActive);
   } catch (error) {
-    console.error(t.adminUserForm.userLoadError, error);
+    Alert.alert(t.common.error, t.adminUserForm.userLoadError);
   }
 };
 
@@ -127,10 +125,6 @@ useEffect(() => {
     }
 
     try {
-      // Token kontrolü
-      const token = await AsyncStorage.getItem('accessToken');
-      console.log('🔑 Token mevcut mu?', token ? 'Evet' : 'Hayır');
-      
       if (userId) {
         // Kullanıcı güncelleme - userId'yi body'de gönder
         const updateData = {
@@ -142,7 +136,6 @@ useEffect(() => {
           roleId, // roleId gönder
           isActive,
         };
-        console.log('📤 Update Data:', updateData);
         await api.put('/api/user/update-user', updateData);
       } else {
         // Yeni kullanıcı oluşturma
@@ -154,13 +147,11 @@ useEffect(() => {
           roleId, // roleId gönder
           isActive,
         };
-        console.log('📤 Create Data:', createData);
         await api.post('/api/user/create-user', createData);
       }
       Alert.alert(t.common.success, t.adminUserForm.saveSuccess);
       navigation.goBack();
     } catch (error) {
-      console.error('API Error:', error);
       Alert.alert(t.common.error, t.adminUserForm.saveError);
     }
   };

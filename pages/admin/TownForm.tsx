@@ -26,21 +26,19 @@ const TownForm = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(!!townId);
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }} 
             style={{ marginLeft: 16, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -56,7 +54,6 @@ const TownForm = () => {
       const response = await api.get('/api/location/region');
       setRegions(response.data);
     } catch (error) {
-      console.error('Bölgeler yüklenirken hata:', error);
       Alert.alert(t.common.error, t.locationManagement.townForm.regionsLoadError);
     }
   };
@@ -71,7 +68,6 @@ const TownForm = () => {
       setName(town.name || '');
       setSelectedRegionId(town.region?.id);
     } catch (error) {
-      console.error('İlçe bilgileri yüklenirken hata:', error);
       Alert.alert(t.common.error, t.locationManagement.townForm.townLoadError);
     } finally {
       setInitialLoading(false);
@@ -106,7 +102,6 @@ const TownForm = () => {
       
       navigation.goBack();
     } catch (error) {
-      console.error('İlçe kaydedilirken hata:', error);
       Alert.alert(t.common.error, t.locationManagement.townForm.saveError);
     } finally {
       setLoading(false);

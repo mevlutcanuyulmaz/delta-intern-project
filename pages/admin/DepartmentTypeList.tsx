@@ -23,14 +23,6 @@ const DepartmentTypeList = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<DepartmentTypeListNavigationProp>();
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -43,7 +35,13 @@ const DepartmentTypeList = () => {
             <MaterialCommunityIcons name="plus" size={24} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
             style={{ marginLeft: 8, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -58,7 +56,6 @@ const DepartmentTypeList = () => {
       const response = await api.get('/api/department-types');
       setDepartmentTypes(response.data);
     } catch (error) {
-      console.error('Error fetching department types:', error);
       Alert.alert('Hata', 'Departman türleri yüklenirken bir hata oluştu.');
     } finally {
       setLoading(false);
@@ -80,7 +77,6 @@ const DepartmentTypeList = () => {
               fetchDepartmentTypes();
               Alert.alert('Başarılı', 'Departman türü başarıyla silindi.');
             } catch (error) {
-              console.error('Error deleting department type:', error);
               Alert.alert('Hata', 'Departman türü silinirken bir hata oluştu.');
             }
           },

@@ -44,7 +44,7 @@ const CompanyForm = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
           <LanguageSwitcher />
           <TouchableOpacity
-            onPress={handleLogout}
+            onPress={() => navigation.navigate('Login')}
             style={{ marginLeft: 15 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -53,11 +53,6 @@ const CompanyForm = () => {
       ),
     });
   }, [navigation]);
-
-  const handleLogout = () => {
-    // Çıkış işlemi burada yapılacak
-    navigation.navigate('Login');
-  };
 
   // Şirket bilgilerini çek
   useEffect(() => {
@@ -231,13 +226,7 @@ const handleUpdate = async () => {
       townId: town?.id || 1, // 🔧 İlçe seçilmemişse 1 gönder
     };
 
-    console.log("📤 Gönderilen payload:", payload);
-    console.log("🏢 Mevcut town:", town);
-    console.log("🌍 Seçilen bölge:", selectedRegion);
-    console.log("🏙️ Seçilen şehir:", selectedCity);
-
     const response = await api.put('/api/companies', payload);
-    console.log("✅ Şirket güncellendi:", response.data);
     
     Alert.alert(t.common.success, t.companyForm.updateSuccess, [
       {
@@ -255,9 +244,7 @@ const handleUpdate = async () => {
                setActive(data.active);
                setAddressDetail(data.addressDetail || '');
                setTown(data.town || null);
-               
-               console.log("🔄 Yeniden yüklenen şirket verisi:", data);
-               
+                              
                // Eğer town bilgisi varsa, ilgili bölge ve şehir bilgilerini de set et
                if (data.town && data.town.id) {
                  try {
@@ -277,19 +264,16 @@ const handleUpdate = async () => {
                    
                    // Seçili ilçeyi bul
                    const selectedTownData = allTowns.find((t: any) => t.id === data.town.id);
-                   console.log("🏘️ Seçili ilçe verisi:", selectedTownData);
-                   
+                                      
                    if (selectedTownData) {
                      // Bu ilçenin hangi şehirde olduğunu bul
                      const townCity = allCities.find((c: any) => c.name === selectedTownData.city);
-                     console.log("🏙️ İlçenin şehri:", townCity);
-                     
+                                          
                      if (townCity) {
                        setSelectedCity(townCity.id);
                        
                        // Şehre göre filtrelenmiş şehirleri set et
                        const cityRegion = regionList.find((r: any) => r.name === selectedTownData.region);
-                       console.log("🌍 Şehrin bölgesi:", cityRegion);
                        
                        if (cityRegion) {
                          setSelectedRegion(cityRegion.id);

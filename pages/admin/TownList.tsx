@@ -18,21 +18,19 @@ const TownList = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<TownListNavigationProp>();
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }} 
             style={{ marginLeft: 16, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -41,7 +39,7 @@ const TownList = () => {
       ),
       headerTitle: t.locationManagement.townList.title,
     });
-  }, [navigation]);
+  }, [navigation, t]);
 
   const fetchTowns = async () => {
     try {
@@ -49,7 +47,6 @@ const TownList = () => {
       const response = await api.get('/api/location/town');
       setTowns(response.data);
     } catch (error) {
-      console.error('İlçeler yüklenirken hata:', error);
       Alert.alert(t.common.error, t.locationManagement.townList.townsLoadError);
     } finally {
       setLoading(false);
@@ -71,7 +68,6 @@ const TownList = () => {
               Alert.alert(t.common.success, t.locationManagement.townList.deleteSuccess);
               fetchTowns();
             } catch (error) {
-              console.error('İlçe silinirken hata:', error);
               Alert.alert(t.common.error, t.locationManagement.townList.deleteError);
             }
           },

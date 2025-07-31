@@ -18,21 +18,19 @@ const CityList = () => {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<CityListNavigationProp>();
 
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem('accessToken');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <LanguageSwitcher />
           <TouchableOpacity 
-            onPress={handleLogout} 
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
             style={{ marginLeft: 16, marginRight: 16 }}
           >
             <MaterialCommunityIcons name="logout" size={24} color="#fff" />
@@ -49,7 +47,6 @@ const CityList = () => {
       const response = await api.get('/api/location/city');
       setCities(response.data);
     } catch (error) {
-      console.error('Şehirler yüklenirken hata:', error);
       Alert.alert(t.common.error, t.locationManagement.cityList.citiesLoadError);
     } finally {
       setLoading(false);
@@ -71,7 +68,6 @@ const CityList = () => {
               Alert.alert(t.common.success, t.locationManagement.cityList.deleteSuccess);
               fetchCities();
             } catch (error) {
-              console.error('Şehir silinirken hata:', error);
               Alert.alert(t.common.error, t.locationManagement.cityList.deleteError);
             }
           },

@@ -41,7 +41,6 @@ const CityForm: React.FC = () => {
       const response = await api.get(`/api/location/city/${cityId}`);
       setName(response.data.name);
     } catch (error) {
-      console.error('Error fetching city:', error);
       Alert.alert(t.common.error, t.locationManagement.cityForm.cityLoadError);
     } finally {
       setInitialLoading(false);
@@ -70,7 +69,6 @@ const CityForm: React.FC = () => {
       Alert.alert(t.common.success, t.locationManagement.cityForm.saveSuccess);
       navigation.goBack();
     } catch (error) {
-      console.error('Error saving city:', error);
       Alert.alert(t.common.error, t.locationManagement.cityForm.saveError);
     } finally {
       setLoading(false);

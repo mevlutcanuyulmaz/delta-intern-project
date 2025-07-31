@@ -49,7 +49,6 @@ const RegionForm: React.FC = () => {
       const response = await api.get('/api/location/city');
       setCities(response.data);
     } catch (error) {
-      console.error('Error fetching cities:', error);
       Alert.alert(t.common.error, 'Şehirler yüklenirken hata oluştu');
     }
   };
@@ -61,7 +60,6 @@ const RegionForm: React.FC = () => {
       setName(response.data.name);
       setCityId(response.data.cityId);
     } catch (error) {
-      console.error('Error fetching region:', error);
       Alert.alert(t.common.error, t.locationManagement.regionForm.regionLoadError);
     } finally {
       setInitialLoading(false);
@@ -96,7 +94,6 @@ const RegionForm: React.FC = () => {
       Alert.alert(t.common.success, t.locationManagement.regionForm.saveSuccess);
       navigation.goBack();
     } catch (error) {
-      console.error('Error saving region:', error);
       Alert.alert(t.common.error, t.locationManagement.regionForm.saveError);
     } finally {
       setLoading(false);

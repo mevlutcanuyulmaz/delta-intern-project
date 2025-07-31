@@ -16,19 +16,19 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('accessToken');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Login' }],
-      });
-    } catch (error) {
-      console.error(t.common.logoutError, error);
-    }
-  };
-
   useLayoutEffect(() => {
+    const handleLogout = async () => {
+      try {
+        await AsyncStorage.removeItem('accessToken');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        });
+      } catch (error) {
+        // console.error removed
+      }
+    };
+
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
@@ -39,7 +39,7 @@ const UserDashboard = () => {
         </View>
       ),
     });
-  }, [navigation, handleLogout, t]);
+  }, [navigation, t]);
 
 
   const fetchDashboardData = async () => {
@@ -57,7 +57,6 @@ const UserDashboard = () => {
 
       setStats(userStats);
     } catch (error) {
-      console.error(t.userDashboard.dataLoadError, error);
       Alert.alert(t.userDashboard.error, t.userDashboard.dashboardDataError);
     } finally {
       setLoading(false);

@@ -25,35 +25,31 @@ const UserCompanyInfo = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('accessToken');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Login' }],
-      });
-    } catch (error) {
-      console.error('Çıkış yapılırken hata:', error);
-    }
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
           <LanguageSwitcher />
-          <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
+          <TouchableOpacity
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            }}
+            style={{ marginLeft: 16 }}
+          >
             <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
           </TouchableOpacity>
         </View>
       ),
     });
-  }, [navigation, handleLogout, t]);
+  }, [navigation, t]);
 
   const fetchUserInfo = async () => {
     try {
       const response = await api.get('/api/user/get-self');
-      console.log('🔍 API Response - User Info:', JSON.stringify(response.data, null, 2));
       setUserInfo(response.data);
       
       // Eğer companyId varsa şirket bilgilerini çek
@@ -61,7 +57,6 @@ const UserCompanyInfo = () => {
         await fetchCompanyInfo(response.data.companyId);
       }
     } catch (error) {
-      console.error('Kullanıcı bilgileri alınamadı:', error);
       Alert.alert('Hata', 'Kullanıcı bilgileri yüklenirken bir hata oluştu');
     } finally {
       setLoading(false);
@@ -72,10 +67,8 @@ const UserCompanyInfo = () => {
   const fetchCompanyInfo = async (companyId: number) => {
     try {
       const response = await api.get(`/api/companies/${companyId}`);
-      console.log('🔍 API Response - Company Info:', JSON.stringify(response.data, null, 2));
       setCompanyInfo(response.data);
     } catch (error) {
-      console.error('Şirket bilgileri alınamadı:', error);
       // Şirket bilgisi alamazsa sessizce devam et
     }
   };

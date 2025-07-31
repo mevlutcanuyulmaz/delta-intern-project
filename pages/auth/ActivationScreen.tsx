@@ -10,11 +10,6 @@ const ActivationScreen = () => {
   const navigation = useNavigation<any>();
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
-  const [token, setToken] = useState<string>('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const route = useRoute<any>();
 
@@ -25,13 +20,7 @@ const ActivationScreen = () => {
     });
   }, [navigation, t]);
 
-  // token varsa linkten al
-  useEffect(() => {
-    const urlToken = route?.params?.token;
-    if (urlToken) {
-      setToken(urlToken);
-    }
-  }, [route?.params]);
+
 
   const handleResendActivation = async () => {
     try {
@@ -42,36 +31,7 @@ const ActivationScreen = () => {
     }
   };
 
-  const handleActivate = async () => {
-    if (!token) {
-      Alert.alert(t.auth.activation.activationError, t.auth.activation.invalidCode);
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      Alert.alert(t.auth.activation.activationError, 'Passwords do not match.');
-      return;
-    }
 
-    try {
-      await api.post('/api/auth/activate-with-password', {
-        token,
-        newPassword,
-        confirmPassword,
-      });
-      Alert.alert(t.auth.activation.activationSuccess, t.auth.activation.accountActivated, [
-        {
-          text: t.common.confirm,
-          onPress: () => navigation.replace('Login')
-        }
-      ]);
-    } catch (err) {
-      Alert.alert(t.auth.activation.activationError, t.auth.activation.invalidCode);
-    }
-  };
-
-  const handleBackToLogin = () => {
-    navigation.goBack();
-  };
 
   return (
     <View style={styles.wrapper}>
@@ -134,27 +94,7 @@ const styles = StyleSheet.create({
   infoIcon: {
     paddingHorizontal: 10,
   },
-  passwordContainer: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    marginBottom: 15,
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  passwordInput: {
-    flex: 1,
-    height: 50,
-    paddingHorizontal: 15,
-    fontSize: 16,
-  },
-  eyeIcon: {
-    paddingHorizontal: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   button: {
     width: '100%',
     height: 50,

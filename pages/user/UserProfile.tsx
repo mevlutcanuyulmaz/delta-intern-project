@@ -27,29 +27,30 @@ const UserProfile = ({ navigation }: any) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleLogout = () => {
-    Alert.alert(
-      t.userProfile.logoutTitle,
-      t.userProfile.logoutMessage,
-      [
-        { text: t.userProfile.cancel, style: 'cancel' },
-        { text: t.userProfile.logout, style: 'destructive', onPress: () => navigation.navigate('Login') }
-      ]
-    );
-  };
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
           <LanguageSwitcher />
-          <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                t.userProfile.logoutTitle,
+                t.userProfile.logoutMessage,
+                [
+                  { text: t.userProfile.cancel, style: 'cancel' },
+                  { text: t.userProfile.logout, style: 'destructive', onPress: () => navigation.navigate('Login') }
+                ]
+              );
+            }}
+            style={{ marginLeft: 16 }}
+          >
             <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
           </TouchableOpacity>
         </View>
       ),
     });
-  }, [navigation, handleLogout, t]);
+  }, [navigation, t]);
 
   useEffect(() => {
     fetchProfile();
