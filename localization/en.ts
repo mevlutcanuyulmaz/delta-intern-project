@@ -48,6 +48,11 @@ export const en: Translations = {
       infoTitle: 'How Activation Works?',
       infoMessage: 'When you enter your email address, an activation email is sent to your account. When you open this email on your phone, the application will open automatically and ask you to set your password.'
     },
+    roles: {
+      admin: 'Admin',
+      manager: 'Manager',
+      user: 'User'
+    }
   },
   userDashboard: {
     loading: 'Loading dashboard...',
@@ -364,7 +369,9 @@ export const en: Translations = {
     departmentTypeName: 'Department Type Name',
     active: 'Active',
     inactive: 'Inactive',
-    status: 'Status'
+    status: 'Status',
+    loadError: 'An error occurred while loading department types',
+    deleteTitle: 'Delete Department Type'
   },
   departmentTypeForm: {
     title: 'New Department Type',
@@ -378,7 +385,12 @@ export const en: Translations = {
     saveSuccess: 'Department type saved successfully',
     saveError: 'An error occurred while saving the department type',
     departmentTypeLoadError: 'An error occurred while loading department type information',
-    nameRequired: 'Department type name is required'
+    nameRequired: 'Department type name is required',
+    loadError: 'An error occurred while loading department type information',
+    updateSuccess: 'Department type updated successfully',
+    createSuccess: 'Department type created successfully',
+    nameLabel: 'Department Type Name',
+    namePlaceholder: 'Enter department type name'
   },
   companyTypeList: {
     title: 'Company Type Management',
@@ -437,8 +449,12 @@ export const en: Translations = {
       loading: 'Loading...',
       saveSuccess: 'Region saved successfully',
       saveError: 'An error occurred while saving the region',
-      regionLoadError: 'An error occurred while loading region information',
-      nameRequired: 'Region name is required'
+      regionLoadError: 'An error occurred while loading the region information.',
+      nameRequired: 'Region name is required.',
+      city: 'City',
+      cityPlaceholder: 'Select City',
+      cityRequired: 'City selection is required.',
+      citiesLoadError: 'An error occurred while loading cities.'
     },
     cityList: {
       title: 'City Management',
@@ -508,7 +524,9 @@ export const en: Translations = {
       townLoadError: 'An error occurred while loading district information',
       regionsLoadError: 'An error occurred while loading regions',
       citiesLoadError: 'An error occurred while loading cities',
-      nameRequired: 'District name is required'
+      nameRequired: 'District name is required',
+      regionRequired: 'Region selection is required',
+      cityRequired: 'City selection is required'
     }
   },
   common: {

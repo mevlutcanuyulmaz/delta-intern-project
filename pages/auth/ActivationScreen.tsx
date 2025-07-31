@@ -12,6 +12,23 @@ const ActivationScreen = () => {
   const [email, setEmail] = useState('');
 
   const route = useRoute<any>();
+  const token = route.params?.token;
+
+  useEffect(() => {
+    if (token) {
+      const handleActivate = async () => {
+        try {
+          await api.post('/api/auth/activate', { token });
+          Alert.alert(t.auth.activation.activationSuccess, t.auth.activation.accountActivated, [
+            { text: 'OK', onPress: () => navigation.navigate('Login') },
+          ]);
+        } catch (err) {
+          Alert.alert(t.auth.activation.activationError, t.common.error);
+        }
+      };
+      handleActivate();
+    }
+  }, [token, t, navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

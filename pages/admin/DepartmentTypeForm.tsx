@@ -52,7 +52,7 @@ const DepartmentTypeForm = () => {
       const response = await api.get(`/api/department-types/${departmentTypeId}`);
       setName(response.data.name);
     } catch (error) {
-      Alert.alert('Hata', 'Departman türü bilgileri yüklenirken bir hata oluştu.');
+      Alert.alert(t.common.error, t.departmentTypeForm.loadError);
     } finally {
       setLoading(false);
     }
@@ -66,7 +66,7 @@ const DepartmentTypeForm = () => {
 
   const handleSave = async () => {
     if (!name.trim()) {
-      Alert.alert('Hata', 'Departman türü adı boş olamaz.');
+      Alert.alert(t.common.error, t.departmentTypeForm.nameRequired);
       return;
     }
 
@@ -75,17 +75,18 @@ const DepartmentTypeForm = () => {
       
       if (departmentTypeId) {
         // Güncelleme
-        await api.put(`/api/department-types/${departmentTypeId}`, { name: name.trim() });
-        Alert.alert('Başarılı', 'Departman türü başarıyla güncellendi.');
+        await api.put('/api/department-types', { id: departmentTypeId, name: name.trim() });
+        Alert.alert(t.common.success, t.departmentTypeForm.updateSuccess);
       } else {
         // Yeni oluşturma
         await api.post('/api/department-types', { name: name.trim() });
-        Alert.alert('Başarılı', 'Departman türü başarıyla oluşturuldu.');
+        Alert.alert(t.common.success, t.departmentTypeForm.createSuccess);
       }
       
       navigation.goBack();
-    } catch (error) {
-      Alert.alert('Hata', 'Departman türü kaydedilirken bir hata oluştu.');
+    } catch (error: any) {
+      console.error("❌ Departman türü kaydetme hatası:", error.response?.data || error.message);
+      Alert.alert(t.common.error, t.departmentTypeForm.saveError);
     } finally {
       setLoading(false);
     }
@@ -95,24 +96,24 @@ const DepartmentTypeForm = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Yükleniyor...</Text>
+        <Text style={styles.loadingText}>{t.departmentTypeForm.loading}</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Departman Türü Adı</Text>
+      <Text style={styles.label}>{t.departmentTypeForm.nameLabel}</Text>
       <TextInput
         style={styles.input}
         value={name}
         onChangeText={setName}
-        placeholder="Departman türü adını girin"
+        placeholder={t.departmentTypeForm.namePlaceholder}
         editable={!loading}
       />
 
       <Button 
-        title={departmentTypeId ? "Güncelle" : "Kaydet"} 
+        title={departmentTypeId ? t.common.update : t.common.save} 
         onPress={handleSave} 
         color="#4b5c75" 
         disabled={loading}

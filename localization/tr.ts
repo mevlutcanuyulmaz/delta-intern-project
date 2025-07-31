@@ -49,6 +49,11 @@ export const tr: Translations = {
       infoTitle: 'Aktivasyon Nasıl Çalışır?',
       infoMessage: 'E-posta adresinizi girdiğinizde, hesabınıza bir aktivasyon e-postası gönderilir. Telefonunuzda bu e-postayı açtığınızda, uygulama otomatik olarak açılır ve şifrenizi belirlemeniz istenir.'
     },
+    roles: {
+      admin: 'Admin',
+      manager: 'Yönetici',
+      user: 'Kullanıcı'
+    }
   },
   userDashboard: {
     loading: 'Dashboard yükleniyor...',
@@ -389,7 +394,9 @@ export const tr: Translations = {
     departmentTypeName: 'Departman Türü Adı',
     active: 'Aktif',
     inactive: 'Pasif',
-    status: 'Durum'
+    status: 'Durum',
+    loadError: 'Departman türleri yüklenirken bir hata oluştu',
+    deleteTitle: 'Departman Türünü Sil'
   },
   departmentTypeForm: {
     title: 'Yeni Departman Türü',
@@ -403,7 +410,12 @@ export const tr: Translations = {
     saveSuccess: 'Departman türü başarıyla kaydedildi',
     saveError: 'Departman türü kaydedilirken bir hata oluştu',
     departmentTypeLoadError: 'Departman türü bilgileri yüklenirken bir hata oluştu',
-    nameRequired: 'Departman türü adı gereklidir'
+    nameRequired: 'Departman türü adı gereklidir',
+    loadError: 'Departman türü bilgileri yüklenirken bir hata oluştu',
+    updateSuccess: 'Departman türü başarıyla güncellendi',
+    createSuccess: 'Departman türü başarıyla oluşturuldu',
+    nameLabel: 'Departman Türü Adı',
+    namePlaceholder: 'Departman türü adını girin'
   },
   companyTypeList: {
     title: 'Şirket Türü Yönetimi',
@@ -462,8 +474,12 @@ export const tr: Translations = {
       loading: 'Yükleniyor...',
       saveSuccess: 'Bölge başarıyla kaydedildi',
       saveError: 'Bölge kaydedilirken bir hata oluştu',
-      regionLoadError: 'Bölge bilgileri yüklenirken bir hata oluştu',
-      nameRequired: 'Bölge adı gereklidir'
+      regionLoadError: 'Bölge bilgileri yüklenirken bir hata oluştu.',
+      nameRequired: 'Bölge adı gereklidir.',
+      city: 'Şehir',
+      cityPlaceholder: 'Şehir Seçiniz',
+      cityRequired: 'Şehir seçimi gereklidir.',
+      citiesLoadError: 'Şehirler yüklenirken bir hata oluştu.'
     },
     cityList: {
       title: 'Şehir Yönetimi',
@@ -480,7 +496,7 @@ export const tr: Translations = {
       emptyList: 'Henüz şehir bulunmuyor',
       cityName: 'Şehir Adı',
       region: 'Bölge',
-      deleteTitle: 'Başlığı Sil'
+      deleteTitle: 'Şehir Sil'
     },
     cityForm: {
       title: 'Yeni Şehir',
@@ -533,7 +549,9 @@ export const tr: Translations = {
       townLoadError: 'İlçe bilgileri yüklenirken bir hata oluştu',
       regionsLoadError: 'Bölgeler yüklenirken bir hata oluştu',
       citiesLoadError: 'Şehirler yüklenirken bir hata oluştu',
-      nameRequired: 'İlçe adı gereklidir'
+      nameRequired: 'İlçe adı gereklidir',
+      regionRequired: 'Bölge seçimi gereklidir',
+      cityRequired: 'Şehir seçimi gereklidir',
     }
-  },
+  }
 };

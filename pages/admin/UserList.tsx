@@ -98,11 +98,15 @@ const UserList = () => {
     return unsubscribe;
   }, [navigation]);
 
-  const renderUser = ({ item }: { item: User }) => (
+  const renderUser = ({ item }: { item: User }) => {
+    const roleName = item.role?.name.toLowerCase() as keyof typeof t.roles;
+    const displayRole = roleName in t.roles ? t.roles[roleName] : item.role?.name;
+
+    return (
     <View style={styles.card}>
       <Text style={styles.title}>{item.name} {item.surname}</Text>
       <Text style={styles.email}>{t.adminUserList.email}: {item.email}</Text>
-      <Text style={styles.role}>{t.adminUserList.role}: {item.role?.name}</Text>
+      <Text style={styles.role}>{t.adminUserList.role}: {displayRole}</Text>
       <Text style={styles.department}>{t.adminUserList.department}: {item.departmentName}</Text>
       <Text style={styles.company}>{t.adminUserList.company}: {item.companyName}</Text>
 
@@ -123,6 +127,7 @@ const UserList = () => {
       </View>
     </View>
   );
+}
 
   if (loading) return <ActivityIndicator size="large" color="#4b5c75" />;
 
@@ -207,4 +212,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-});
+})

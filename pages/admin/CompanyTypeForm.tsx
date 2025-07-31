@@ -42,7 +42,6 @@ const CompanyTypeForm = () => {
   }, [navigation, t]);
 
   const [name, setName] = useState('');
-  const [active, setActive] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const fetchCompanyType = async () => {
@@ -52,9 +51,8 @@ const CompanyTypeForm = () => {
       setLoading(true);
       const response = await api.get(`/api/company-types/${companyTypeId}`);
       setName(response.data.name);
-      setActive(response.data.active);
     } catch (error) {
-      Alert.alert('Hata', 'Şirket türü bilgileri yüklenirken bir hata oluştu.');
+      Alert.alert(t.common.error, t.companyTypeForm.companyTypeLoadError);
     } finally {
       setLoading(false);
     }
@@ -68,31 +66,34 @@ const CompanyTypeForm = () => {
 
   const handleSave = async () => {
     if (!name.trim()) {
-      Alert.alert('Hata', 'Şirket türü adı boş olamaz.');
+      Alert.alert(t.common.error, t.companyTypeForm.nameRequired);
       return;
     }
 
     try {
       setLoading(true);
       
-      const payload = {
-        name: name.trim(),
-        active: active
-      };
-
       if (companyTypeId) {
         // Güncelleme
-        await api.put(`/api/company-types/${companyTypeId}`, payload);
-        Alert.alert('Başarılı', 'Şirket türü başarıyla güncellendi.');
+        const payload = {
+          id: companyTypeId,
+          name: name.trim()
+        };
+        await api.put(`/api/company-types`, payload);
+        Alert.alert(t.common.success, t.companyTypeForm.saveSuccess);
       } else {
         // Yeni oluşturma
+        const payload = {
+          name: name.trim()
+        };
         await api.post('/api/company-types', payload);
-        Alert.alert('Başarılı', 'Şirket türü başarıyla oluşturuldu.');
+        Alert.alert(t.common.success, t.companyTypeForm.saveSuccess);
       }
       
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Hata', 'Şirket türü kaydedilirken bir hata oluştu.');
+
+      Alert.alert(t.common.error, t.companyTypeForm.saveError);
     } finally {
       setLoading(false);
     }
@@ -102,33 +103,26 @@ const CompanyTypeForm = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Yükleniyor...</Text>
+        <Text style={styles.loadingText}>{t.common.loading}</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Şirket Türü Adı</Text>
+      <Text style={styles.label}>{t.companyTypeForm.companyTypeName}</Text>
       <TextInput
         style={styles.input}
         value={name}
         onChangeText={setName}
-        placeholder="Şirket türü adını girin"
+        placeholder={t.companyTypeForm.companyTypeNamePlaceholder}
         editable={!loading}
       />
 
-      <View style={styles.switchContainer}>
-        <Text style={styles.label}>Aktif</Text>
-        <Switch
-          value={active}
-          onValueChange={setActive}
-          disabled={loading}
-        />
-      </View>
+
 
       <Button 
-        title={companyTypeId ? "Güncelle" : "Kaydet"} 
+        title={companyTypeId ? t.common.update : t.common.save} 
         onPress={handleSave} 
         color="#4b5c75" 
         disabled={loading}

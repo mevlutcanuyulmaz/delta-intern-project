@@ -4,20 +4,7 @@ export interface CompanyInfo {
   name: string;
   shortName: string;
   active: boolean;
-  town?: {
-    id: number;
-    name: string;
-    region?: {
-      id: number;
-      name: string;
-    };
-    city?: {
-      id: number;
-      name: string;
-    };
-    companyIds: number[];
-    departmentIds: number[];
-  };
+  town?: Town;
   companyType?: {
     id: number;
     name: string;
@@ -45,12 +32,7 @@ export interface DepartmentInfo {
     id: number;
     name: string;
   };
-  town?: {
-    id: number;
-    name: string;
-    city?: string;
-    region?: string;
-  };
+  town?: DepartmentTownInfo;
 }
 
 // DepartmentDetailData interface for DepartmentDetail page
@@ -63,16 +45,25 @@ export interface DepartmentDetailData {
     name: string;
     shortName: string;
   };
-  town: {
-    id: number;
-    name: string;
-    city: string;
-    region: string;
-  };
+  town: DepartmentTownDetail;
   departmentType: {
     id: number;
     name: string;
   };
+}
+
+export interface DepartmentTownInfo {
+  id: number;
+  name: string;
+  city?: City;
+  region?: Region;
+}
+
+export interface DepartmentTownDetail {
+  id: number;
+  name: string;
+  city: City;
+  region: Region;
 }
 
 // UserStats interface for UserDashboard
@@ -103,6 +94,7 @@ export interface UserInfo {
   company?: CompanyInfo;
   department?: DepartmentInfo;
   departmentName?: string; // API'den gelen departman adı
+  departmentId?: number;
   companyId?: number; // Backend'den gelecek şirket ID'si
   role?: UserRole;
   createdAt?: string;

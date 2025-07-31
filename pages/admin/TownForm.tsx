@@ -81,7 +81,7 @@ const TownForm = () => {
     }
 
     if (!selectedRegionId) {
-      Alert.alert(t.common.error, 'Lütfen bir bölge seçiniz');
+      Alert.alert(t.common.error, t.locationManagement.townForm.regionRequired);
       return;
     }
 

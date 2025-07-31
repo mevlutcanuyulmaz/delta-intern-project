@@ -47,6 +47,11 @@ export interface Translations {
       infoTitle: string;
       infoMessage: string;
     };
+    roles: {
+      admin: string;
+      manager: string;
+      user: string;
+    };
   };
   
   // User Dashboard translations
@@ -400,6 +405,8 @@ export interface Translations {
     active: string;
     inactive: string;
     status: string;
+    loadError:string;
+    deleteTitle:string;
   };
 
   // Department Type Form translations
@@ -416,9 +423,13 @@ export interface Translations {
     saveError: string;
     departmentTypeLoadError: string;
     nameRequired: string;
+    loadError:string;
+    updateSuccess:string;
+    createSuccess:string;
+    nameLabel:string;
+    namePlaceholder:string
   };
 
-  // Company Type List translations
   companyTypeList: {
     title: string;
     loading: string;
@@ -482,6 +493,10 @@ export interface Translations {
       saveError: string;
       regionLoadError: string;
       nameRequired: string;
+      city: string;
+      cityPlaceholder: string;
+      cityRequired: string;
+      citiesLoadError: string;
     };
     cityList: {
       title: string;
@@ -552,6 +567,8 @@ export interface Translations {
       regionsLoadError: string;
       citiesLoadError: string;
       nameRequired: string;
+      regionRequired:string;
+      cityRequired: string;
     };
   };
 
@@ -580,4 +597,5 @@ export interface Translations {
     logout: string;
     logoutError: string;
   };
+
 }

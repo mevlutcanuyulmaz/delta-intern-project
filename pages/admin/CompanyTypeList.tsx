@@ -52,7 +52,7 @@ const CompanyTypeList = () => {
       const response = await api.get('/api/company-types');
       setCompanyTypes(response.data);
     } catch (error) {
-      Alert.alert('Hata', 'Şirket türleri yüklenirken bir hata oluştu.');
+      Alert.alert(t.common.error, t.companyTypeList.companyTypesLoadError);
     } finally {
       setLoading(false);
     }
@@ -60,20 +60,20 @@ const CompanyTypeList = () => {
 
   const deleteCompanyType = async (id: number) => {
     Alert.alert(
-      'Şirket Türünü Sil',
-      'Bu şirket türünü silmek istediğinizden emin misiniz?',
+      t.companyTypeList.deleteCompanyType,
+      t.companyTypeList.deleteConfirmation,
       [
-        { text: 'İptal', style: 'cancel' },
+        { text: t.common.cancel, style: 'cancel' },
         {
-          text: 'Sil',
+          text: t.common.delete,
           style: 'destructive',
           onPress: async () => {
             try {
               await api.delete(`/api/company-types/${id}`);
               fetchCompanyTypes();
-              Alert.alert('Başarılı', 'Şirket türü başarıyla silindi.');
+              Alert.alert(t.common.success, t.companyTypeList.deleteSuccess);
             } catch (error) {
-              Alert.alert('Hata', 'Şirket türü silinirken bir hata oluştu.');
+              Alert.alert(t.common.error, t.companyTypeList.deleteError);
             }
           },
         },
@@ -97,7 +97,7 @@ const CompanyTypeList = () => {
         <Text style={styles.companyTypeId}>ID: {item.id}</Text>
         <View style={[styles.statusBadge, { backgroundColor: item.active ? '#4CAF50' : '#F44336' }]}>
           <Text style={styles.statusText}>
-            {item.active ? 'Aktif' : 'Pasif'}
+            {item.active ? t.companyTypeList.active : t.companyTypeList.inactive}
           </Text>
         </View>
       </View>
@@ -122,7 +122,7 @@ const CompanyTypeList = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Şirket türleri yükleniyor...</Text>
+        <Text style={styles.loadingText}>{t.companyTypeList.loading}</Text>
       </View>
     );
   }

@@ -47,17 +47,17 @@ const DepartmentDetailPage = () => {
 
   const fetchDepartmentUsers = async () => {
     try {
-      const response = await api.get('/api/users');
+      const response = await api.get('/api/user/get-users-of-detailed');
       const departmentUsers = response.data.filter((user: UserInfo) => 
-        user.department?.id === departmentId
+        user.departmentId === departmentId
       );
       
       // Yöneticiyi ve diğer kullanıcıları ayır
       const managerUser = departmentUsers.find((user: UserInfo) => 
-        user.role?.name === 'MANAGER'
+        user.role?.id === 5 // Manager role ID
       );
       const regularUsers = departmentUsers.filter((user: UserInfo) => 
-        user.role?.name !== 'MANAGER'
+        user.role?.id !== 5
       );
       
       setManager(managerUser || null);
@@ -128,7 +128,7 @@ const DepartmentDetailPage = () => {
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>{t.departmentDetail.cityRegion}</Text>
-            <Text style={styles.infoValue}>{department.town.city} / {department.town.region}</Text>
+            <Text style={styles.infoValue}>{department.town.city.name} / {department.town.region.name}</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>{t.departmentDetail.district}</Text>

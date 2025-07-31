@@ -159,7 +159,7 @@ const AdminDashboard = () => {
           onPress={() => navigation.navigate('CompanyTypeList')}
         >
           <Icon name="office-building-outline" size={24} color="#4b5c75" />
-          <Text style={styles.managementButtonText}>Şirket Türleri</Text>
+          <Text style={styles.managementButtonText}>{t.companyTypeList.title}</Text>
           <Icon name="chevron-right" size={24} color="#666" />
         </TouchableOpacity>
 

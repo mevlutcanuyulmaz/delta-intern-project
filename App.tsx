@@ -8,7 +8,8 @@ const linking: LinkingOptions<any> = {
   prefixes: [
     'myapp://', 
     'https://frontend-url',
-    'http://frontend-url'
+    'http://frontend-url',
+    'http://localhost:5173'
   ],
   config: {
     screens: {

@@ -56,7 +56,7 @@ const DepartmentTypeList = () => {
       const response = await api.get('/api/department-types');
       setDepartmentTypes(response.data);
     } catch (error) {
-      Alert.alert('Hata', 'Departman türleri yüklenirken bir hata oluştu.');
+      Alert.alert(t.common.error, t.departmentTypeList.loadError);
     } finally {
       setLoading(false);
     }
@@ -64,20 +64,20 @@ const DepartmentTypeList = () => {
 
   const deleteDepartmentType = async (id: number) => {
     Alert.alert(
-      'Departman Türünü Sil',
-      'Bu departman türünü silmek istediğinizden emin misiniz?',
+      t.departmentTypeList.deleteTitle,
+      t.departmentTypeList.deleteConfirmation,
       [
-        { text: 'İptal', style: 'cancel' },
+        { text: t.common.cancel, style: 'cancel' },
         {
-          text: 'Sil',
+          text: t.common.delete,
           style: 'destructive',
           onPress: async () => {
             try {
               await api.delete(`/api/department-types/${id}`);
               fetchDepartmentTypes();
-              Alert.alert('Başarılı', 'Departman türü başarıyla silindi.');
+              Alert.alert(t.common.success, t.departmentTypeList.deleteSuccess);
             } catch (error) {
-              Alert.alert('Hata', 'Departman türü silinirken bir hata oluştu.');
+              Alert.alert(t.common.error, t.departmentTypeList.deleteError);  
             }
           },
         },
@@ -121,7 +121,7 @@ const DepartmentTypeList = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4b5c75" />
-        <Text style={styles.loadingText}>Departman türleri yükleniyor...</Text>
+        <Text style={styles.loadingText}>{t.departmentTypeList.loading}</Text>
       </View>
     );
   }

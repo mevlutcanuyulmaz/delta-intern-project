@@ -49,7 +49,7 @@ const RegionForm: React.FC = () => {
       const response = await api.get('/api/location/city');
       setCities(response.data);
     } catch (error) {
-      Alert.alert(t.common.error, 'Şehirler yüklenirken hata oluştu');
+      Alert.alert(t.common.error, t.locationManagement.regionForm.citiesLoadError);
     }
   };
 
@@ -73,7 +73,7 @@ const RegionForm: React.FC = () => {
     }
 
     if (!cityId) {
-      Alert.alert(t.common.error, 'Lütfen bir şehir seçiniz');
+      Alert.alert(t.common.error, t.locationManagement.regionForm.cityRequired);
       return;
     }
 
@@ -116,14 +116,14 @@ const RegionForm: React.FC = () => {
       </Text>
 
       <View style={styles.form}>
-        <Text style={styles.label}>Şehir</Text>
+        <Text style={styles.label}>{t.locationManagement.regionForm.city}</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={cityId}
             onValueChange={(itemValue) => setCityId(itemValue)}
             style={styles.picker}
           >
-            <Picker.Item label="Şehir seçiniz..." value={null} />
+            <Picker.Item label={t.locationManagement.regionForm.cityPlaceholder} value={null} />
             {cities.map((city) => (
               <Picker.Item key={city.id} label={city.name} value={city.id} />
             ))}

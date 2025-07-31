@@ -1,6 +1,6 @@
 // src/screens/LoginScreen.tsx
 import React, { useState,useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
 import { useNavigation} from '@react-navigation/native';
@@ -18,53 +18,54 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
   const clearTokens = async () => {
-    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('accessToken');
     await AsyncStorage.removeItem('refreshToken');
   };
 
   clearTokens();
 }, []);
   const handleLogin = async () => {
-  try {
-    const response = await api.post('/api/auth/login', {
-      email,
-      password,
-    });
-
-    const { accessToken } = response.data;
-    await AsyncStorage.setItem('accessToken', accessToken);
-
-    // Biraz bekle
-    await new Promise<void>((resolve) => setTimeout(resolve, 100));
-
-    const userResponse = await api.get('/api/user/get-self');
-    const role = userResponse.data?.role?.name;
-
-    if (role === 'ADMIN') {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Tabs' }],
+    setLoading(true);
+    try {
+      const response = await api.post('/api/auth/login', {
+        email,
+        password,
       });
-    } else if (role === 'MANAGER') {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'ManagerBottomTabs' }],
-      });
-    } else if (role === 'USER') {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'UserBottomTabs' }],
-      });
-    } else {
-      Alert.alert(t.auth.login.authError, t.auth.login.roleNotDefined);
+
+      const { accessToken } = response.data;
+      await AsyncStorage.setItem('accessToken', accessToken);
+
+      const userResponse = await api.get('/api/user/get-self');
+      const role = userResponse.data?.role?.name;
+
+      if (role === 'ADMIN') {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Tabs' }],
+        });
+      } else if (role === 'MANAGER') {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'ManagerBottomTabs' }],
+        });
+      } else if (role === 'USER') {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'UserBottomTabs' }],
+        });
+      } else {
+        Alert.alert(t.auth.login.authError, t.auth.login.roleNotDefined);
+      }
+    } catch (error) {
+      Alert.alert(t.auth.login.loginError, t.auth.login.checkCredentials);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    Alert.alert(t.auth.login.loginError, t.auth.login.checkCredentials);
-  }
-};
+  };
 
   const handleForgotPassword = () => {
     navigation.navigate('ForgotPassword');
@@ -108,8 +109,12 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>{t.auth.login.loginButton}</Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>{t.auth.login.loginButton}</Text>
+          )}
         </TouchableOpacity>
 
         <Text style={styles.linkText}>
