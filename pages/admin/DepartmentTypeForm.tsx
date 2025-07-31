@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native';
@@ -101,8 +101,12 @@ const DepartmentTypeForm = () => {
     );
   }
 
-  return (
-    <View style={styles.container}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.label}>{t.departmentTypeForm.nameLabel}</Text>
       <TextInput
         style={styles.input}
@@ -116,9 +120,10 @@ const DepartmentTypeForm = () => {
         title={departmentTypeId ? t.common.update : t.common.save} 
         onPress={handleSave} 
         color="#4b5c75" 
-        disabled={loading}
+                disabled={loading}
       />
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

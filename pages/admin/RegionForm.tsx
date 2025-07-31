@@ -8,6 +8,8 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -109,8 +111,12 @@ const RegionForm: React.FC = () => {
     );
   }
 
-  return (
-    <ScrollView style={styles.container}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>
         {isEditing ? t.locationManagement.regionForm.editTitle : t.locationManagement.regionForm.title}
       </Text>
@@ -149,9 +155,10 @@ const RegionForm: React.FC = () => {
           ) : (
             <Text style={styles.saveButtonText}>{t.locationManagement.regionForm.save}</Text>
           )}
-        </TouchableOpacity>
+                </TouchableOpacity>
       </View>
     </ScrollView>
+   </KeyboardAvoidingView>
   );
 };
 

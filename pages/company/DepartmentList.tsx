@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, FlatList, Modal } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, FlatList, Modal, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -214,7 +214,11 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
         onRequestClose={closeModal}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
+                    <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.modalContent}
+          >
+            <ScrollView>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>
                 {editingId ? t.departmentList.editDepartment : t.departmentList.newDepartment}
@@ -279,8 +283,9 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
                   {editingId ? t.common.update : t.common.add}
                 </Text>
               </TouchableOpacity>
-            </View>
-          </View>
+              </View>
+           </ScrollView>
+          </KeyboardAvoidingView>
         </View>
       </Modal>
     </View>

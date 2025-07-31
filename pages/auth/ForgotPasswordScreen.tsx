@@ -1,6 +1,6 @@
 // ForgotPasswordScreen.tsx
 import React, { useState, useLayoutEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { useLanguage } from '../../localization';
@@ -30,8 +30,12 @@ const ForgotPasswordScreen = () => {
 
 
 
-  return (
-    <View style={styles.wrapper}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.wrapper}>
       <View style={styles.container}>
         
         <View style={styles.inputContainer}>
@@ -54,9 +58,10 @@ const ForgotPasswordScreen = () => {
 
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.linkText}>{t.auth.forgotPassword.backToLogin}</Text>
-        </TouchableOpacity>
+                </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

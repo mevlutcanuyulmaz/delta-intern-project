@@ -8,6 +8,8 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -84,8 +86,12 @@ const CityForm: React.FC = () => {
     );
   }
 
-  return (
-    <ScrollView style={styles.container}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>
         {isEditing ? t.locationManagement.cityForm.editTitle : t.locationManagement.cityForm.title}
       </Text>
@@ -110,9 +116,10 @@ const CityForm: React.FC = () => {
           ) : (
             <Text style={styles.saveButtonText}>{t.locationManagement.cityForm.save}</Text>
           )}
-        </TouchableOpacity>
+                </TouchableOpacity>
       </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

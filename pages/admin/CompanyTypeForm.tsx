@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Switch } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Switch, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native';
@@ -108,8 +108,12 @@ const CompanyTypeForm = () => {
     );
   }
 
-  return (
-    <View style={styles.container}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.label}>{t.companyTypeForm.companyTypeName}</Text>
       <TextInput
         style={styles.input}
@@ -125,9 +129,10 @@ const CompanyTypeForm = () => {
         title={companyTypeId ? t.common.update : t.common.save} 
         onPress={handleSave} 
         color="#4b5c75" 
-        disabled={loading}
+                disabled={loading}
       />
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

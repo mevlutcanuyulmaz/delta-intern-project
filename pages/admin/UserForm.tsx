@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Switch } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, Switch, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -158,8 +158,12 @@ useEffect(() => {
 
   if (loading) return <ActivityIndicator size="large" color="#4b5c75" />;
 
-  return (
-    <View style={styles.container}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.label}>{t.adminUserForm.name}</Text>
       <TextInput
         style={styles.input}
@@ -218,8 +222,9 @@ useEffect(() => {
         />
       </View>
 
-      <Button title={t.adminUserForm.save} onPress={handleSave} color="#4b5c75" />
-    </View>
+              <Button title={t.adminUserForm.save} onPress={handleSave} color="#4b5c75" />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

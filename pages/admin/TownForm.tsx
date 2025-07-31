@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -123,8 +123,12 @@ const TownForm = () => {
     );
   }
 
-  return (
-    <View style={styles.container}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.form}>
         <Text style={styles.label}>{t.locationManagement.townForm.townName}</Text>
         <TextInput
@@ -171,10 +175,11 @@ const TownForm = () => {
                 {townId ? t.common.update : t.common.save}
               </Text>
             )}
-          </TouchableOpacity>
+                    </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

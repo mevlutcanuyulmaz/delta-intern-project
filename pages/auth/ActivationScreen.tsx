@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
@@ -50,8 +50,12 @@ const ActivationScreen = () => {
 
 
 
-  return (
-    <View style={styles.wrapper}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.wrapper}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -69,10 +73,11 @@ const ActivationScreen = () => {
 
         <TouchableOpacity style={styles.button} onPress={handleResendActivation}>
           <Text style={styles.buttonText}>{t.auth.activation.sendButton}</Text>
-        </TouchableOpacity>
+                </TouchableOpacity>
 
-        </View>
-    </View>
+      </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

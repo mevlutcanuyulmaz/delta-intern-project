@@ -1,6 +1,6 @@
 // src/screens/LoginScreen.tsx
 import React, { useState,useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
 import { useNavigation} from '@react-navigation/native';
@@ -75,8 +75,12 @@ const LoginScreen = () => {
     navigation.navigate('Activation');
   };
 
-  return (
-    <View style={styles.wrapper}>
+    return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.wrapper}>
       <View style={styles.header}>
         <LanguageSwitcher />
       </View>
@@ -128,9 +132,10 @@ const LoginScreen = () => {
           <Text style={styles.link} onPress={handleActivation}>
             {t.auth.login.activate}
           </Text>
-        </Text>
+                </Text>
       </View>
-    </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
