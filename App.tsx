@@ -10,7 +10,9 @@ const linking: LinkingOptions<any> = {
     'deltacompanyapp://',
     'https://delta-app.com',
     'http://localhost:5173',
-    'http://localhost:5173/'
+    'http://localhost:5173/',
+    'http://my-demo-project-two.vercel.app',
+    'https://my-demo-project-two.vercel.app'
   ],
   config: {
     screens: {

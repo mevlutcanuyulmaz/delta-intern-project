@@ -257,18 +257,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     paddingVertical: 4,
+    flexWrap: 'wrap',
   },
   infoLabel: {
     fontSize: 14,
     color: '#666',
     marginLeft: 8,
     minWidth: 120,
+    flexShrink: 0,
   },
   infoValue: {
     fontSize: 14,
     color: '#333',
     flex: 1,
     fontWeight: '500',
+    flexWrap: 'wrap',
+    textAlign: 'left',
   },
   warningCard: {
     backgroundColor: '#fff3e0',
