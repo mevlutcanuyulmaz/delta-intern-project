@@ -46,8 +46,25 @@ export const en: Translations = {
       newPasswordPlaceholder: 'Enter new password',
       confirmPasswordPlaceholder: 'Confirm new password',
       infoTitle: 'How Activation Works?',
-      infoMessage: 'When you enter your email address, an activation email is sent to your account. When you open this email on your phone, the application will open automatically and ask you to set your password.'
+      infoMessage: 'When you enter your email address, an activation email is sent to your account. When you open this email on your phone, the application will open automatically and ask you to set your password.',
+      emailRequired: 'Email address is required.',
+      activationEmailSent: 'Activation email sent.',
+      activateAccount: 'To activate your account,',
+      setNewPassword: 'Set a new password',
     },
+    resetPassword: {
+      title: 'Reset Password',
+      newPasswordPlaceholder: 'Enter new password',
+      confirmPasswordPlaceholder: 'Confirm new password',
+      resetButton: 'Reset Password',
+      backToLogin: 'Back to Login',
+      resetSuccess: 'Password Reset Successful',
+      passwordReset: 'Your password has been successfully reset.',
+      resetError: 'Password Reset Error',
+      invalidToken: 'Invalid or expired reset token.',
+      passwordMismatch: 'Passwords do not match.',
+      tokenRequired: 'Reset token is required.',
+    },  
     roles: {
       admin: 'Admin',
       manager: 'Manager',
@@ -583,5 +600,11 @@ export const en: Translations = {
       managerCompanyList: 'Company List',
       profile: 'Profile',
       companyForm: 'Company Form'
+  },
+  roles:
+  {
+    admin: 'Admin',
+    manager:'Manager',
+    user:'User'
   }
 };

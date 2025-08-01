@@ -65,10 +65,10 @@ const UserForm = () => {
   // Role string'den ID'ye çevirme fonksiyonu
   const getRoleIdFromString = (roleString: string): number => {
     switch (roleString) {
-      case 'ADMIN': return 6;
+      case 'ADMIN': return 4;
       case 'MANAGER': return 5;
-      case 'USER': return 4;
-      default: return 4;
+      case 'USER': return 6;
+      default: return 6;
     }
   };
 

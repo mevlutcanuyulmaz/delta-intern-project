@@ -19,6 +19,7 @@ import CompanyDetail from '../pages/company/CompanyDetail';
 import DepartmentDetailPage from '../pages/company/DepartmentDetail';
 import ActivationScreen from '../pages/auth/ActivationScreen';
 import ForgotPassword from '../pages/auth/ForgotPasswordScreen';
+import ResetPasswordScreen from '../pages/auth/ResetPasswordScreen';
 import ManagerDashboard from '../pages/manager/ManagerDashboard';
 import UserDashboard from '../pages/user/UserDashboard';
 import UserCompanyInfo from '../pages/user/UserCompanyInfo';
@@ -44,8 +45,8 @@ export const AppNavigator = () => {
       },
     }}
   >
-    <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="Tabs" component={AdminBottomTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Tabs" component={AdminBottomTabs} options={{ headerShown: false }} />
         <Stack.Screen name="UserForm" component={UserForm} options={{ title: t.navigation.userForm }} />
         <Stack.Screen name="DepartmentTypeList" component={DepartmentTypeList} options={{ title: t.navigation.departmentTypeList }} />
         <Stack.Screen name="DepartmentTypeForm" component={DepartmentTypeForm} options={{ title: t.navigation.departmentTypeForm }} />
@@ -61,15 +62,16 @@ export const AppNavigator = () => {
         <Stack.Screen name="CreateCompany" component={CreateCompany} options={{ title: t.navigation.createCompany }} />
         <Stack.Screen name="CompanyDetail" component={CompanyDetail} options={{ title: t.navigation.companyDetail }} />
         <Stack.Screen name="DepartmentDetail" component={DepartmentDetailPage} options={{ title: t.navigation.departmentDetail }} />
-    <Stack.Screen name="Activation" component={ActivationScreen} />
-    <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="Activation" component={ActivationScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="ManagerDashboard" component={ManagerDashboard} options={{ title: t.navigation.managerDashboard }} />
         <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ title: t.navigation.userDashboard }} />
         <Stack.Screen name="UserCompanyInfo" component={UserCompanyInfo} options={{ title: t.navigation.companyInfo }} />
         <Stack.Screen name="ManagerUserList" component={ManagerUserList} options={{ title: t.navigation.managerUserList }} />
         <Stack.Screen name="ManagerCompanyList" component={ManagerCompanyList} options={{ title: t.navigation.managerCompanyList }} />
-    <Stack.Screen name="ManagerBottomTabs" component={ManagerBottomTabs} options={{ headerShown: false }} />
-    <Stack.Screen name="UserBottomTabs" component={UserBottomTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="ManagerBottomTabs" component={ManagerBottomTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="UserBottomTabs" component={UserBottomTabs} options={{ headerShown: false }} />
         <Stack.Screen name="ManagerProfile" component={ManagerProfile} options={{ title: t.navigation.profile }} />
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ title: t.navigation.profile }} />
     </Stack.Navigator>

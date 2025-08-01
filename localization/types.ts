@@ -46,6 +46,23 @@ export interface Translations {
       confirmPasswordPlaceholder:string;
       infoTitle: string;
       infoMessage: string;
+      emailRequired: string;
+      activationEmailSent: string;
+      activateAccount: string;
+      setNewPassword: string;
+    };
+    resetPassword: {
+      title: string;
+      newPasswordPlaceholder: string;
+      confirmPasswordPlaceholder: string;
+      resetButton: string;
+      backToLogin: string;
+      resetSuccess: string;
+      passwordReset: string;
+      resetError: string;
+      invalidToken: string;
+      passwordMismatch: string;
+      tokenRequired: string;
     };
     roles: {
       admin: string;
@@ -629,6 +646,12 @@ export interface Translations {
     managerCompanyList: string;
     profile: string;
     companyForm: string;
+  };
+
+  roles: {
+    admin: string;
+    manager: string;
+    user: string;
   };
 
 }

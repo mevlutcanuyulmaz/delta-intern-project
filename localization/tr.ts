@@ -1,634 +1,611 @@
-export interface Translations {
-  // Auth translations
+import { Translations } from './types';
+
+export const tr: Translations = {
   auth: {
     login: {
-      title: string;
-      email: string;
-      password: string;
-      loginButton: string;
-      forgotPassword: string;
-      resetPassword: string;
-      activateAccount: string;
-      activate: string;
-      loginError: string;
-      checkCredentials: string;
-      authError: string;
-      roleNotDefined: string;
-    };
+      title: 'Giriş Yap',
+      email: 'E-Posta',
+      password: 'Şifre',
+      loginButton: 'Giriş',
+      forgotPassword: 'Şifremi unuttum,',
+      resetPassword: 'Şifre sıfırla',
+      activateAccount: 'Hesabını aktive etmek için,',
+      activate: 'Aktive et',
+      loginError: 'Giriş başarısız',
+      checkCredentials: 'Lütfen bilgilerinizi kontrol edin.',
+      authError: 'Yetki Hatası',
+      roleNotDefined: 'Yetkiniz tanımlı değil.',
+
+    },
     forgotPassword: {
-      title: string;
-      email: string;
-      emailPlaceholder: string;
-      sendButton: string;
-      sendResetLink: string;
-      backToLogin: string;
-      resetLinkSent: string;
-      checkEmail: string;
-      error: string;
-      tryAgain: string;
-      infoTitle: string;
-      infoMessage: string;
-    };
+      title: 'Şifre Sıfırlama',
+      email: 'E-Posta',
+      emailPlaceholder: 'E-posta adresinizi girin',
+      sendButton: 'Sıfırlama Bağlantısı Gönder',
+      sendResetLink: 'Sıfırlama Bağlantısı Gönder',
+      backToLogin: 'Giriş Sayfasına Dön',
+      resetLinkSent: 'Sıfırlama Bağlantısı Gönderildi',
+      checkEmail: 'E-posta adresinizi kontrol edin.',
+      error: 'Hata',
+      tryAgain: 'Lütfen tekrar deneyin.',
+      infoTitle: 'Şifre Sıfırlama Nasıl Çalışır?',
+      infoMessage: 'E-posta adresinizi girdiğinizde, hesabınıza bir şifre sıfırlama e-postası gönderilir. Telefonunuzda bu e-postayı açtığınızda, uygulama otomatik olarak açılır ve yeni şifrenizi belirlemeniz istenir.'
+    },
     activation: {
-      title: string;
-      emailPlaceholder: string;
-      sendButton: string;
-      orText: string;
-      tokenPlaceholder: string;
-      activationCode: string;
-      activateButton: string;
-      backToLogin: string;
-      activationSuccess: string;
-      accountActivated: string;
-      activationError: string;
-      invalidCode: string;
-      newPasswordPlaceholder: string;
-      confirmPasswordPlaceholder:string;
-      infoTitle: string;
-      infoMessage: string;
-    };
+      title: 'Hesap Aktivasyonu',
+      emailPlaceholder: 'E-posta adresinizi girin',
+      sendButton: 'Aktivasyon E-postası Gönder',
+      orText: 'veya',
+      tokenPlaceholder: 'Aktivasyon kodunu girin',
+      activationCode: 'Aktivasyon Kodu',
+      activateButton: 'Aktive Et',
+      backToLogin: 'Giriş Sayfasına Dön',
+      activationSuccess: 'Aktivasyon Başarılı',
+      accountActivated: 'Hesabınız başarıyla aktive edildi.',
+      activationError: 'Aktivasyon Hatası',
+      invalidCode: 'Geçersiz aktivasyon kodu.',
+      newPasswordPlaceholder: 'Yeni şifrenizi girin',
+      confirmPasswordPlaceholder: 'Yeni şifreyi tekrar girin',
+      infoTitle: 'Aktivasyon Nasıl Çalışır?',
+      infoMessage: 'E-posta adresinizi girdiğinizde, hesabınıza bir aktivasyon e-postası gönderilir. Telefonunuzda bu e-postayı açtığınızda, uygulama otomatik olarak açılır ve şifrenizi belirlemeniz istenir.',
+      emailRequired: 'E-posta adresi gereklidir.',
+      activationEmailSent: 'Aktivasyon e-postası gönderildi.',
+      activateAccount: 'Hesabı aktive etmek için,',
+      setNewPassword: 'Yeni şifre belirleyin',
+    },
+    resetPassword: {
+      title: 'Şifre Sıfırla',
+      newPasswordPlaceholder: 'Yeni şifrenizi girin',
+      confirmPasswordPlaceholder: 'Yeni şifreyi tekrar girin',
+      resetButton: 'Şifreyi Sıfırla',
+      backToLogin: 'Giriş Sayfasına Dön',
+      resetSuccess: 'Şifre Sıfırlama Başarılı',
+      passwordReset: 'Şifreniz başarıyla sıfırlandı.',
+      resetError: 'Şifre Sıfırlama Hatası',
+      invalidToken: 'Geçersiz veya süresi dolmuş sıfırlama kodu.',
+      passwordMismatch: 'Şifreler eşleşmiyor.',
+      tokenRequired: 'Sıfırlama kodu gereklidir.',
+    },
     roles: {
-      admin: string;
-      manager: string;
-      user: string;
-    };
-  };
-  
-  // User Dashboard translations
+      admin: 'Admin',
+      manager: 'Yönetici',
+      user: 'Kullanıcı'
+    }
+  },
   userDashboard: {
-    loading: string;
-    welcome: string;
-    myInfo: string;
-    department: string;
-    company: string;
-    joinDate: string;
-    email: string;
-    unassigned: string;
-    unknown: string;
-    error: string;
-    dataLoadError: string;
-    dashboardDataError: string;
-  };
-
-  // User Profile translations
+    loading: 'Dashboard yükleniyor...',
+    welcome: 'Hoş Geldin!',
+    myInfo: 'Bilgilerim',
+    department: 'Departman',
+    company: 'Şirket',
+    joinDate: 'Katılım',
+    email: 'E-posta',
+    unassigned: 'Atanmamış',
+    unknown: 'Bilinmiyor',
+    error: 'Hata',
+    dataLoadError: 'Dashboard verileri alınamadı',
+    dashboardDataError: 'Dashboard verileri yüklenirken bir hata oluştu'
+  },
   userProfile: {
-    loading: string;
-    title: string;
-    generalInfo: string;
-    personalInfo: string;
-    changePassword: string;
-    department: string;
-    company: string;
-    role: string;
-    joinDate: string;
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-    changePasswordButton: string;
-    unassigned: string;
-    unknown: string;
-    logoutTitle: string;
-    logoutMessage: string;
-    cancel: string;
-    logout: string;
-    error: string;
-    profileLoadError: string;
-    fillAllFields: string;
-    passwordMismatch: string;
-    passwordMinLength: string;
-    success: string;
-    passwordChangeSuccess: string;
-    passwordChangeError: string;
-  };
-
-  // User Company Info translations
+    loading: 'Profil yükleniyor...',
+    title: 'Profil Bilgileri',
+    generalInfo: 'Genel Bilgiler',
+    personalInfo: 'Kişisel Bilgiler',
+    changePassword: 'Şifre Değiştir',
+    department: 'Departman',
+    company: 'Şirket',
+    role: 'Rol',
+    joinDate: 'Katılım Tarihi',
+    name: 'Ad',
+    surname: 'Soyad',
+    email: 'E-posta',
+    phone: 'Telefon',
+    currentPassword: 'Mevcut Şifre',
+    newPassword: 'Yeni Şifre (En az 6 karakter)',
+    confirmPassword: 'Yeni Şifre (Tekrar)',
+    changePasswordButton: 'Şifre Değiştir',
+    unassigned: 'Atanmamış',
+    unknown: 'Bilinmiyor',
+    logoutTitle: 'Çıkış',
+    logoutMessage: 'Çıkış yapmak istediğinizden emin misiniz?',
+    cancel: 'İptal',
+    logout: 'Çıkış',
+    error: 'Hata',
+    profileLoadError: 'Profil bilgileri alınamadı',
+    fillAllFields: 'Lütfen tüm alanları doldurun',
+    passwordMismatch: 'Yeni şifreler eşleşmiyor',
+    passwordMinLength: 'Yeni şifre en az 6 karakter olmalıdır',
+    success: 'Başarılı',
+    passwordChangeSuccess: 'Şifre başarıyla güncellendi',
+    passwordChangeError: 'Şifre değiştirme başarısız. Mevcut şifrenizi kontrol edin.'
+  },
   userCompanyInfo: {
-    loading: string;
-    error: string;
-    retry: string;
-    companyInfo: string;
-    departmentInfo: string;
-    noCompanyTitle: string;
-    noCompanyText: string;
-    noDepartmentTitle: string;
-    noDepartmentText: string;
-    active: string;
-    departmentName: string;
-    userRole: string;
-    joinDate: string;
-    notSpecified: string;
-    companyName: string;
-    companyCode: string;
-    companyAddress: string;
-    companyPhone: string;
-    companyEmail: string;
-    companyWebsite: string;
-    establishedDate: string;
-    employeeCount: string;
-    companyType: string;
-    user: string;
-    email: string;
-    role: string;
-    name: string;
-    surname: string;
-    emailNotSpecified: string;
-    roleNotSpecified: string;
-    addressNotSpecified: string;
-    inactive: string;
-    defaultRole: string;
-  };
-
-  // Manager Dashboard translations
+    loading: 'Şirket bilgileri yükleniyor...',
+    error: 'Şirket bilgileri yüklenirken bir hata oluştu.',
+    retry: 'Tekrar Dene',
+    companyInfo: 'Şirket Bilgileri',
+    departmentInfo: 'Departman Bilgileri',
+    noCompanyTitle: 'Şirket Bilgisi Bulunamadı',
+    noCompanyText: 'Henüz bir şirkete bağlı değilsiniz. Şirket ataması için yöneticinizle iletişime geçin.',
+    noDepartmentTitle: 'Departman Bilgisi Bulunamadı',
+    noDepartmentText: 'Henüz bir departmana atanmadınız. Departman ataması için yöneticinizle iletişime geçin.',
+    active: 'Aktif',
+    departmentName: 'Departman Adı',
+    userRole: 'Kullanıcı Rolü',
+    joinDate: 'Katılım Tarihi',
+    notSpecified: 'Belirtilmemiş',
+    companyName: 'Şirket Adı',
+    companyCode: 'Şirket Kodu',
+    companyAddress: 'Şirket Adresi',
+    companyPhone: 'Şirket Telefonu',
+    companyEmail: 'Şirket E-postası',
+    companyWebsite: 'Şirket Web Sitesi',
+    establishedDate: 'Kuruluş Tarihi',
+    employeeCount: 'Çalışan Sayısı',
+    companyType: 'Şirket Türü',
+    user: 'Kullanıcı',
+    email: 'E-posta',
+    role: 'Rol',
+    name: 'İsim',
+    surname: 'Soyisim',
+    emailNotSpecified: 'E-posta belirtilmemiş',
+    roleNotSpecified: 'Rol belirtilmemiş',
+    addressNotSpecified: 'Adres belirtilmemiş',
+    inactive: 'Pasif',
+    defaultRole: 'KULLANICI'
+  },
   managerDashboard: {
-    loading: string;
-    welcome: string;
-    departmentStats: string;
-    totalEmployees: string;
-    managedDepartments: string;
-    quickActions: string;
-    departmentEmployees: string;
-    companies: string;
-    profileSettings: string;
-    department: string;
-    unknown: string;
-    dataLoadError: string;
-    error: string;
-    dashboardDataError: string;
-  };
-
-  // Manager Profile translations
+    loading: 'Panel yükleniyor...',
+    welcome: 'Hoş Geldiniz!',
+    departmentStats: 'Departman İstatistikleri',
+    totalEmployees: 'Toplam Çalışan',
+    managedDepartments: 'Yönetilen Departmanlar',
+    quickActions: 'Hızlı İşlemler',
+    departmentEmployees: 'Departman Çalışanları',
+    companies: 'Şirketler',
+    profileSettings: 'Profil Ayarları',
+    department: 'Departman',
+    unknown: 'Bilinmiyor',
+    dataLoadError: 'Dashboard verileri alınamadı:',
+    error: 'Hata',
+    dashboardDataError: 'Dashboard verileri yüklenirken bir hata oluştu'
+  },
   managerProfile: {
-    loading: string;
-    title: string;
-    generalInfo: string;
-    personalInfo: string;
-    changePassword: string;
-    department: string;
-    role: string;
-    name: string;
-    surname: string;
-    email: string;
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-    changePasswordButton: string;
-    passwordMismatch: string;
-    passwordChangeSuccess: string;
-    passwordChangeError: string;
-    profileLoadError: string;
-  };
-
-  // Manager User List translations
+    loading: 'Profil yükleniyor...',
+    title: 'Profil Bilgileri',
+    generalInfo: 'Genel Bilgiler',
+    personalInfo: 'Kişisel Bilgiler',
+    changePassword: 'Şifre Değiştir',
+    department: 'Departman',
+    role: 'Rol',
+    name: 'Ad',
+    surname: 'Soyad',
+    email: 'E-posta',
+    currentPassword: 'Mevcut Şifre',
+    newPassword: 'Yeni Şifre',
+    confirmPassword: 'Yeni Şifre (Tekrar)',
+    changePasswordButton: 'Şifre Değiştir',
+    passwordMismatch: 'Yeni şifreler eşleşmiyor',
+    passwordChangeSuccess: 'Şifre başarıyla güncellendi',
+    passwordChangeError: 'Şifre değiştirme başarısız',
+    profileLoadError: 'Profil bilgileri alınamadı'
+  },
   managerUserList: {
-    loading: string;
-    department: string;
-    role: string;
-    deleteUser: string;
-    deleteConfirmation: string;
-    cancel: string;
-    delete: string;
-    deleteSuccess: string;
-    deleteError: string;
-    emptyList: string;
-    usersLoadError: string;
-  };
-
-  // Manager Company List translations
+    loading: 'Kullanıcılar yükleniyor...',
+    department: 'Departman',
+    role: 'Rol',
+    deleteUser: 'Kullanıcı Silme',
+    deleteConfirmation: 'kullanıcısını silmek istediğinize emin misiniz?',
+    cancel: 'İptal',
+    delete: 'Sil',
+    deleteSuccess: 'Kullanıcı başarıyla silindi.',
+    deleteError: 'Kullanıcı silinirken bir hata oluştu.',
+    emptyList: 'Bu departmanda henüz kullanıcı bulunmuyor.',
+    usersLoadError: 'Kullanıcılar getirilemedi'
+  },
   managerCompanyList: {
-    loading: string;
-    title: string;
-    companiesCount: string;
-    active: string;
-    inactive: string;
-    companyType: string;
-    district: string;
-    city: string;
-    region: string;
-    address: string;
-    createdDate: string;
-    viewDetails: string;
-    companiesLoadError: string;
-  };
-
-  // Admin Dashboard translations
+    loading: 'Şirket yükleniyor...',
+    title: 'Şirket Bilgileri',
+    companiesCount: 'şirket',
+    active: 'Aktif',
+    inactive: 'Pasif',
+    companyType: 'Tür',
+    district: 'İlçe',
+    city: 'Şehir',
+    region: 'Bölge',
+    address: 'Adres',
+    createdDate: 'Oluşturulma',
+    viewDetails: 'Detayları Görüntüle',
+    companiesLoadError: 'Şirket bilgileri yüklenirken hata oluştu'
+  },
+  common: {
+    loading: 'Yükleniyor...',
+    error: 'Hata',
+    success: 'Başarılı',
+    cancel: 'İptal',
+    save: 'Kaydet',
+    delete: 'Sil',
+    edit: 'Düzenle',
+    add: 'Ekle',
+    update: 'Güncelle',
+    search: 'Ara',
+    filter: 'Filtrele',
+    refresh: 'Yenile',
+    back: 'Geri',
+    next: 'İleri',
+    previous: 'Önceki',
+    close: 'Kapat',
+    confirm: 'Onayla',
+    yes: 'Evet',
+    no: 'Hayır',
+    ok: 'Tamam',
+    logout: 'Çıkış',
+    logoutError: 'Çıkış yapılırken hata oluştu'
+  },
   adminDashboard: {
-    loading: string;
-    welcome: string;
-    systemStats: string;
-    totalUsers: string;
-    totalCompanies: string;
-    totalDepartments: string;
-    activeUsers: string;
-    pendingUsers: string;
-    dataLoadError: string;
-    management: string;
-    departmentTypes: string;
-  };
-
-  // Bottom Tabs translations
+    loading: 'Dashboard yükleniyor...',
+    welcome: 'Hoş Geldin!',
+    systemStats: 'Sistem İstatistikleri',
+    totalUsers: 'Toplam Kullanıcı',
+    totalCompanies: 'Toplam Şirket',
+    totalDepartments: 'Toplam Departman',
+    activeUsers: 'Aktif Kullanıcı',
+    pendingUsers: 'Bekleyen Kullanıcı',
+    dataLoadError: 'Dashboard verileri yüklenirken bir hata oluştu',
+    management: 'Yönetim',
+    departmentTypes: 'Departman Türleri'
+  },
   bottomTabs: {
-    admin: string;
-    companies: string;
-    users: string;
-    home: string;
-    profile: string;
-    companyInfo: string;
-  };
-
-  // Admin User List translations
+    admin: 'Admin',
+    companies: 'Şirketler',
+    users: 'Kullanıcılar',
+    home: 'Ana Sayfa',
+    profile: 'Profil',
+    companyInfo: 'Şirket Bilgileri'
+  },
   adminUserList: {
-    loading: string;
-    addNewUser: string;
-    edit: string;
-    delete: string;
-    deleteUser: string;
-    deleteConfirmation: string;
-    cancel: string;
-    deleteSuccess: string;
-    deleteError: string;
-    usersLoadError: string;
-    email: string;
-    role: string;
-    department: string;
-    company: string;
-  };
-
-  // Admin User Form translations
+    loading: 'Yükleniyor...',
+    addNewUser: 'Yeni Kullanıcı Ekle',
+    edit: 'Düzenle',
+    delete: 'Sil',
+    deleteUser: 'Kullanıcıyı Sil',
+    deleteConfirmation: 'Bu kullanıcıyı silmek istediğinizden emin misiniz?',
+    cancel: 'İptal',
+    deleteSuccess: 'Kullanıcı silindi',
+    deleteError: 'Kullanıcı silinemedi',
+    usersLoadError: 'Kullanıcılar alınamadı',
+    email: 'E-posta',
+    role: 'Rol',
+    department: 'Departman',
+    company: 'Şirket',
+  },
   adminUserForm: {
-    loading: string;
-    name: string;
-    surname: string;
-    email: string;
-    department: string;
-    role: string;
-    isActive: string;
-    isActiveLabel: string;
-    selectDepartment: string;
-    save: string;
-    warning: string;
-    selectDepartmentWarning: string;
-    saveSuccess: string;
-    saveError: string;
-    userLoadError: string;
-    departmentsLoadError: string;
-  };
-
-  // Company List translations
+    loading: 'Yükleniyor...',
+    name: 'Ad',
+    surname: 'Soyad',
+    email: 'E-posta',
+    department: 'Departman',
+    role: 'Rol',
+    isActive: 'Aktif',
+    isActiveLabel: 'Aktif Durumu',
+    selectDepartment: 'Departman Seçin',
+    save: 'Kaydet',
+    warning: 'Uyarı',
+    selectDepartmentWarning: 'Lütfen bir departman seçiniz.',
+    saveSuccess: 'Kullanıcı kaydedildi',
+    saveError: 'Kullanıcı kaydedilemedi',
+    userLoadError: 'Kullanıcı bilgisi alınamadı',
+    departmentsLoadError: 'Departmanlar alınamadı'
+  },
   companyList: {
-    loading: string;
-    companiesLoadError: string;
-    deleteSuccess: string;
-    deleteError: string;
-    addNewCompany: string;
-    detail: string;
-    edit: string;
-    delete: string;
-    district: string;
-    city: string;
-    region: string;
-    address: string;
-    notSpecified: string;
-  };
-
-  // Company Form translations
+    loading: 'Yükleniyor...',
+    companiesLoadError: 'Şirketler alınamadı',
+    deleteSuccess: 'Şirket silindi',
+    deleteError: 'Şirket silinemedi',
+    addNewCompany: 'Yeni Şirket Ekle',
+    detail: 'Detay',
+    edit: 'Düzenle',
+    delete: 'Sil',
+    district: 'İlçe',
+    city: 'İl',
+    region: 'Bölge',
+    address: 'Adres',
+    notSpecified: 'Belirtilmedi'
+  },
   companyForm: {
-    loading: string;
-    companyName: string;
-    shortName: string;
-    addressDetail: string;
-    region: string;
-    city: string;
-    district: string;
-    selectRegion: string;
-    selectCity: string;
-    selectDistrict: string;
-    active: string;
-    companyInfoError: string;
-    regionsError: string;
-    citiesError: string;
-    allCitiesError: string;
-    districtsError: string;
-    allDistrictsError: string;
-    districtDetailsError: string;
-    updateSuccess: string;
-    updateError: string;
-    companyType: string;
-    selectCompanyType: string;
-    
-  };
-
-  // Create Company translations
+    loading: 'Yükleniyor...',
+    companyName: 'Şirket Adı',
+    shortName: 'Kısa Ad',
+    addressDetail: 'Adres Detayı',
+    region: 'Bölge',
+    city: 'İl',
+    district: 'İlçe',
+    selectRegion: 'Lütfen bölge seçin',
+    selectCity: 'Lütfen il seçin',
+    selectDistrict: 'Lütfen ilçe seçin',
+    active: 'Aktif mi?',
+    companyInfoError: 'Şirket bilgisi alınamadı',
+    regionsError: 'Bölgeler alınamadı',
+    citiesError: 'Şehirler alınamadı',
+    allCitiesError: 'Tüm şehirler de alınamadı',
+    districtsError: 'İlçeler alınamadı',
+    allDistrictsError: 'Tüm ilçeler de alınamadı',
+    districtDetailsError: 'İlçe detayları alınamadı',
+    updateSuccess: 'Şirket güncellendi',
+    updateError: 'Şirket güncellenemedi',
+    companyType: 'Şirket Türü',
+    selectCompanyType: 'Lütfen şirket türü seçin'
+  },
   createCompany: {
-    title: string;
-    companyName: string;
-    shortName: string;
-    addressDetail: string;
-    district: string;
-    selectDistrict: string;
-    companyType: string;
-    selectCompanyType: string;
-    active: string;
-    create: string;
-    missingInfo: string;
-    enterCompanyNameAndShort: string;
-    createSuccess: string;
-    createError: string;
-    districtsLoadError: string;
-    companyTypesLoadError: string;
-  };
-
-  // Company Detail translations
+    title: 'Yeni Şirket Oluştur',
+    companyName: 'Şirket Adı',
+    shortName: 'Kısa Ad',
+    addressDetail: 'Adres Detayı',
+    district: 'İlçe',
+    selectDistrict: 'Lütfen ilçe seçin',
+    companyType: 'Şirket Türü',
+    selectCompanyType: 'Lütfen şirket türü seçin',
+    active: 'Aktif mi?',
+    create: 'Oluştur',
+    missingInfo: 'Eksik Bilgi',
+    enterCompanyNameAndShort: 'Lütfen şirket adı ve kısa adı girin.',
+    createSuccess: 'Yeni şirket oluşturuldu',
+    createError: 'Şirket oluşturulamadı',
+    districtsLoadError: 'İlçeler alınamadı',
+    companyTypesLoadError: 'Şirket türleri alınamadı'
+  },
   companyDetail: {
-    title: string;
-    departments: string;
-  };
-
-  // Department List translations
+    title: '🏢 Şirket Detay Sayfası',
+    departments: 'Departmanlar'
+  },
   departmentList: {
-    title: string;
-    addDepartment: string;
-    detail: string;
-    edit: string;
-    delete: string;
-    departmentsLoadError: string;
-    districtsLoadError: string;
-    departmentName: string;
-    departmentNamePlaceholder: string;
-    selectDistrict: string;
-    selectDistrictPlaceholder: string;
-    addressDetail: string;
-    addressDetailPlaceholder: string;
-    newDepartment: string;
-    editDepartment: string;
-    nameRequired: string;
-    addressRequired: string;
-    addSuccess: string;
-    addError: string;
-    updateSuccess: string;
-    updateError: string;
-    deleteError: string;
-    districtRequired: string;
-    departmentTypeRequired: string;
-  };
-
-  // Department Detail translations
+    title: 'Departmanlar',
+    addDepartment: '+ Departman Ekle',
+    detail: 'Detay',
+    edit: 'Düzenle',
+    delete: 'Sil',
+    departmentsLoadError: 'Departmanlar alınamadı',
+    districtsLoadError: 'İlçeler alınamadı',
+    departmentName: 'Departman Adı',
+    departmentNamePlaceholder: 'Departman adı girin',
+    selectDistrict: 'İlçe Seçin',
+    selectDistrictPlaceholder: 'İlçe seçin...',
+    addressDetail: 'Adres Detayı',
+    addressDetailPlaceholder: 'Adres detayı girin',
+    newDepartment: 'Yeni Departman Ekle',
+    editDepartment: 'Departman Düzenle',
+    nameRequired: 'Departman adı boş olamaz',
+    addressRequired: 'Adres detayı boş olamaz',
+    addSuccess: 'Departman başarıyla eklendi',
+    addError: 'Departman eklenemedi',
+    updateSuccess: 'Departman başarıyla güncellendi',
+    updateError: 'Departman güncellenemedi',
+    deleteError: 'Silinemedi',
+    districtRequired: 'Lütfen bir ilçe seçin',
+    departmentTypeRequired: 'Lütfen bir departman türü seçin'
+  },
   departmentDetail: {
-    loading: string;
-    departmentDetailsError: string;
-    departmentUsersError: string;
-    notFound: string;
-    departmentInfo: string;
-    departmentType: string;
-    cityRegion: string;
-    district: string;
-    address: string;
-    departmentManager: string;
-    noManager: string;
-    departmentEmployees: string;
-    noEmployees: string;
-  };
-
-  // Department Type List translations
+    loading: 'Departman bilgileri yükleniyor...',
+    departmentDetailsError: 'Departman detayları alınamadı',
+    departmentUsersError: 'Departman kullanıcıları alınamadı',
+    notFound: 'Departman bulunamadı',
+    departmentInfo: 'Departman Bilgileri',
+    departmentType: 'Departman Türü:',
+    cityRegion: 'Şehir/Bölge:',
+    district: 'İlçe:',
+    address: 'Adres:',
+    departmentManager: 'Departman Yöneticisi',
+    noManager: 'Bu departmana henüz yönetici atanmamış',
+    departmentEmployees: 'Departman Çalışanları',
+    noEmployees: 'Bu departmanda henüz çalışan bulunmuyor'
+  },
   departmentTypeList: {
-    title: string;
-    loading: string;
-    addNewDepartmentType: string;
-    edit: string;
-    delete: string;
-    deleteDepartmentType: string;
-    deleteConfirmation: string;
-    cancel: string;
-    deleteSuccess: string;
-    deleteError: string;
-    departmentTypesLoadError: string;
-    emptyList: string;
-    departmentTypeName: string;
-    active: string;
-    inactive: string;
-    status: string;
-    loadError:string;
-    deleteTitle:string;
-  };
-
-  // Department Type Form translations
+    title: 'Departman Türü Yönetimi',
+    loading: 'Departman türleri yükleniyor...',
+    addNewDepartmentType: 'Yeni Departman Türü Ekle',
+    edit: 'Düzenle',
+    delete: 'Sil',
+    deleteDepartmentType: 'Departman Türünü Sil',
+    deleteConfirmation: 'Bu departman türünü silmek istediğinizden emin misiniz?',
+    cancel: 'İptal',
+    deleteSuccess: 'Departman türü başarıyla silindi',
+    deleteError: 'Departman türü silinirken bir hata oluştu',
+    departmentTypesLoadError: 'Departman türleri yüklenirken bir hata oluştu',
+    emptyList: 'Henüz departman türü bulunmuyor',
+    departmentTypeName: 'Departman Türü Adı',
+    active: 'Aktif',
+    inactive: 'Pasif',
+    status: 'Durum',
+    loadError: 'Departman türleri yüklenirken bir hata oluştu',
+    deleteTitle: 'Departman Türünü Sil'
+  },
   departmentTypeForm: {
-    title: string;
-    editTitle: string;
-    departmentTypeName: string;
-    departmentTypeNamePlaceholder: string;
-    isActive: string;
-    isActiveLabel: string;
-    save: string;
-    loading: string;
-    saveSuccess: string;
-    saveError: string;
-    departmentTypeLoadError: string;
-    nameRequired: string;
-    loadError:string;
-    updateSuccess:string;
-    createSuccess:string;
-    nameLabel:string;
-    namePlaceholder:string
-  };
-
+    title: 'Yeni Departman Türü',
+    editTitle: 'Departman Türü Düzenle',
+    departmentTypeName: 'Departman Türü Adı',
+    departmentTypeNamePlaceholder: 'Departman türü adını girin',
+    isActive: 'Aktif',
+    isActiveLabel: 'Aktif Durumu',
+    save: 'Kaydet',
+    loading: 'Yükleniyor...',
+    saveSuccess: 'Departman türü başarıyla kaydedildi',
+    saveError: 'Departman türü kaydedilirken bir hata oluştu',
+    departmentTypeLoadError: 'Departman türü bilgileri yüklenirken bir hata oluştu',
+    nameRequired: 'Departman türü adı gereklidir',
+    loadError: 'Departman türü bilgileri yüklenirken bir hata oluştu',
+    updateSuccess: 'Departman türü başarıyla güncellendi',
+    createSuccess: 'Departman türü başarıyla oluşturuldu',
+    nameLabel: 'Departman Türü Adı',
+    namePlaceholder: 'Departman türü adını girin'
+  },
   companyTypeList: {
-    title: string;
-    loading: string;
-    addNewCompanyType: string;
-    edit: string;
-    delete: string;
-    deleteCompanyType: string;
-    deleteConfirmation: string;
-    cancel: string;
-    deleteSuccess: string;
-    deleteError: string;
-    companyTypesLoadError: string;
-    emptyList: string;
-    companyTypeName: string;
-    active: string;
-    inactive: string;
-    status: string;
-  };
-
-  // Company Type Form translations
+    title: 'Şirket Türü Yönetimi',
+    loading: 'Şirket türleri yükleniyor...',
+    addNewCompanyType: 'Yeni Şirket Türü Ekle',
+    edit: 'Düzenle',
+    delete: 'Sil',
+    deleteCompanyType: 'Şirket Türünü Sil',
+    deleteConfirmation: 'Bu şirket türünü silmek istediğinizden emin misiniz?',
+    cancel: 'İptal',
+    deleteSuccess: 'Şirket türü başarıyla silindi',
+    deleteError: 'Şirket türü silinirken bir hata oluştu',
+    companyTypesLoadError: 'Şirket türleri yüklenirken bir hata oluştu',
+    emptyList: 'Henüz şirket türü bulunmuyor',
+    companyTypeName: 'Şirket Türü Adı',
+    active: 'Aktif',
+    inactive: 'Pasif',
+    status: 'Durum'
+  },
   companyTypeForm: {
-    title: string;
-    editTitle: string;
-    companyTypeName: string;
-    companyTypeNamePlaceholder: string;
-    isActive: string;
-    isActiveLabel: string;
-    save: string;
-    loading: string;
-    saveSuccess: string;
-    saveError: string;
-    companyTypeLoadError: string;
-    nameRequired: string;
-  };
-
-  // Location Management translations
+    title: 'Yeni Şirket Türü',
+    editTitle: 'Şirket Türü Düzenle',
+    companyTypeName: 'Şirket Türü Adı',
+    companyTypeNamePlaceholder: 'Şirket türü adını girin',
+    isActive: 'Aktif',
+    isActiveLabel: 'Aktif Durumu',
+    save: 'Kaydet',
+    loading: 'Yükleniyor...',
+    saveSuccess: 'Şirket türü başarıyla kaydedildi',
+    saveError: 'Şirket türü kaydedilirken bir hata oluştu',
+    companyTypeLoadError: 'Şirket türü bilgileri yüklenirken bir hata oluştu',
+    nameRequired: 'Şirket türü adı gereklidir'
+  },
   locationManagement: {
     regionList: {
-      title: string;
-      loading: string;
-      addNewRegion: string;
-      edit: string;
-      delete: string;
-      deleteRegion: string;
-      deleteConfirmation: string;
-      cancel: string;
-      deleteSuccess: string;
-      deleteError: string;
-      regionsLoadError: string;
-      emptyList: string;
-      regionName: string;
-    };
+      title: 'Bölge Yönetimi',
+      loading: 'Bölgeler yükleniyor...',
+      addNewRegion: 'Yeni Bölge Ekle',
+      edit: 'Düzenle',
+      delete: 'Sil',
+      deleteRegion: 'Bölge Sil',
+      deleteConfirmation: 'Bu bölgeyi silmek istediğinizden emin misiniz?',
+      cancel: 'İptal',
+      deleteSuccess: 'Bölge başarıyla silindi',
+      deleteError: 'Bölge silinirken bir hata oluştu',
+      regionsLoadError: 'Bölgeler yüklenirken bir hata oluştu',
+      emptyList: 'Henüz bölge bulunmuyor',
+      regionName: 'Bölge Adı'
+    },
     regionForm: {
-      title: string;
-      editTitle: string;
-      regionName: string;
-      regionNamePlaceholder: string;
-      save: string;
-      loading: string;
-      saveSuccess: string;
-      saveError: string;
-      regionLoadError: string;
-      nameRequired: string;
-      city: string;
-      cityPlaceholder: string;
-      cityRequired: string;
-      citiesLoadError: string;
-    };
+      title: 'Yeni Bölge',
+      editTitle: 'Bölge Düzenle',
+      regionName: 'Bölge Adı',
+      regionNamePlaceholder: 'Bölge adını girin',
+      save: 'Kaydet',
+      loading: 'Yükleniyor...',
+      saveSuccess: 'Bölge başarıyla kaydedildi',
+      saveError: 'Bölge kaydedilirken bir hata oluştu',
+      regionLoadError: 'Bölge bilgileri yüklenirken bir hata oluştu.',
+      nameRequired: 'Bölge adı gereklidir.',
+      city: 'Şehir',
+      cityPlaceholder: 'Şehir Seçiniz',
+      cityRequired: 'Şehir seçimi gereklidir.',
+      citiesLoadError: 'Şehirler yüklenirken bir hata oluştu.'
+    },
     cityList: {
-      title: string;
-      loading: string;
-      addNewCity: string;
-      edit: string;
-      delete: string;
-      deleteCity: string;
-      deleteConfirmation: string;
-      cancel: string;
-      deleteSuccess: string;
-      deleteError: string;
-      citiesLoadError: string;
-      emptyList: string;
-      cityName: string;
-      region: string;
-      deleteTitle: string;
-    };
+      title: 'Şehir Yönetimi',
+      loading: 'Şehirler yükleniyor...',
+      addNewCity: 'Yeni Şehir Ekle',
+      edit: 'Düzenle',
+      delete: 'Sil',
+      deleteCity: 'Şehir Sil',
+      deleteConfirmation: 'Bu şehri silmek istediğinizden emin misiniz?',
+      cancel: 'İptal',
+      deleteSuccess: 'Şehir başarıyla silindi',
+      deleteError: 'Şehir silinirken bir hata oluştu',
+      citiesLoadError: 'Şehirler yüklenirken bir hata oluştu',
+      emptyList: 'Henüz şehir bulunmuyor',
+      cityName: 'Şehir Adı',
+      region: 'Bölge',
+      deleteTitle: 'Şehir Sil'
+    },
     cityForm: {
-      title: string;
-      editTitle: string;
-      cityName: string;
-      cityNamePlaceholder: string;
-      region: string;
-      selectRegion: string;
-      save: string;
-      loading: string;
-      saveSuccess: string;
-      saveError: string;
-      cityLoadError: string;
-      regionsLoadError: string;
-      nameRequired: string;
-      regionRequired: string;
-    };
+      title: 'Yeni Şehir',
+      editTitle: 'Şehir Düzenle',
+      cityName: 'Şehir Adı',
+      cityNamePlaceholder: 'Şehir adını girin',
+      region: 'Bölge',
+      selectRegion: 'Bölge seçin',
+      save: 'Kaydet',
+      loading: 'Yükleniyor...',
+      saveSuccess: 'Şehir başarıyla kaydedildi',
+      saveError: 'Şehir kaydedilirken bir hata oluştu',
+      cityLoadError: 'Şehir bilgileri yüklenirken bir hata oluştu',
+      regionsLoadError: 'Bölgeler yüklenirken bir hata oluştu',
+      nameRequired: 'Şehir adı gereklidir',
+      regionRequired: 'Bölge seçimi gereklidir'
+    },
     townList: {
-      title: string;
-      loading: string;
-      addNewTown: string;
-      edit: string;
-      delete: string;
-      deleteTown: string;
-      deleteTitle: string;
-      deleteConfirmation: string;
-      cancel: string;
-      deleteSuccess: string;
-      deleteError: string;
-      townsLoadError: string;
-      emptyList: string;
-      townName: string;
-      city: string;
-      region: string;
-    };
+      title: 'İlçe Yönetimi',
+      loading: 'İlçeler yükleniyor...',
+      addNewTown: 'Yeni İlçe Ekle',
+      edit: 'Düzenle',
+      delete: 'Sil',
+      deleteTown: 'İlçe Sil',
+      deleteTitle: 'İlçe Sil',
+      deleteConfirmation: 'Bu ilçeyi silmek istediğinizden emin misiniz?',
+      cancel: 'İptal',
+      deleteSuccess: 'İlçe başarıyla silindi',
+      deleteError: 'İlçe silinirken bir hata oluştu',
+      townsLoadError: 'İlçeler yüklenirken bir hata oluştu',
+      emptyList: 'Henüz ilçe bulunmuyor',
+      townName: 'İlçe Adı',
+      city: 'Şehir',
+      region: 'Bölge'
+    },
     townForm: {
-      title: string;
-      editTitle: string;
-      townName: string;
-      townNamePlaceholder: string;
-      region: string;
-      selectRegion: string;
-      city: string;
-      selectCity: string;
-      save: string;
-      loading: string;
-      saveSuccess: string;
-      updateSuccess: string;
-      saveError: string;
-      townLoadError: string;
-      regionsLoadError: string;
-      citiesLoadError: string;
-      nameRequired: string;
-      regionRequired:string;
-      cityRequired: string;
-    };
-  };
+      title: 'Yeni İlçe',
+      editTitle: 'İlçe Düzenle',
+      townName: 'İlçe Adı',
+      townNamePlaceholder: 'İlçe adını girin',
+      region: 'Bölge',
+      selectRegion: 'Bölge seçin',
+      city: 'Şehir',
+      selectCity: 'Şehir seçin',
+      save: 'Kaydet',
+      loading: 'Yükleniyor...',
+      saveSuccess: 'İlçe başarıyla kaydedildi',
+      updateSuccess: 'İlçe başarıyla güncellendi',
+      saveError: 'İlçe kaydedilirken bir hata oluştu',
+      townLoadError: 'İlçe bilgileri yüklenirken bir hata oluştu',
+      regionsLoadError: 'Bölgeler yüklenirken bir hata oluştu',
+      citiesLoadError: 'Şehirler yüklenirken bir hata oluştu',
+      nameRequired: 'İlçe adı gereklidir',
+      regionRequired: 'Bölge seçimi gereklidir',
+      cityRequired: 'Şehir seçimi gereklidir',
+    }
 
-  // Common translations
-  common: {
-    loading: string;
-    error: string;
-    success: string;
-    cancel: string;
-    save: string;
-    delete: string;
-    edit: string;
-    add: string;
-    update: string;
-    search: string;
-    filter: string;
-    refresh: string;
-    back: string;
-    next: string;
-    previous: string;
-    close: string;
-    confirm: string;
-    yes: string;
-    no: string;
-    ok: string;
-    logout: string;
-    logoutError: string;
-  };
-
-    navigation: {
-    home: string;
-    companyList: string;
-    companyDetail: string;
-    createCompany: string;
-    departmentList: string;
-    departmentDetail: string;
-    userList: string;
-    userForm: string;
-    departmentTypeList: string;
-    departmentTypeForm: string;
-    companyTypeList: string;
-    companyTypeForm: string;
-    regionList: string;
-    regionForm: string;
-    cityList: string;
-    cityForm: string;
-    townList: string;
-    townForm: string;
-    managerDashboard: string;
-    userDashboard: string;
-    companyInfo: string;
-    managerUserList: string;
-    managerCompanyList: string;
-    profile: string;
-    companyForm: string;
-  };
-
-}
+  },
+  navigation: {
+      home: 'Anasayfa',
+      companyList: 'Şirket Listesi',
+      companyDetail: 'Şirket Detay',
+      createCompany: 'Şirket Oluştur',
+      departmentList: 'Departman Listesi',
+      departmentDetail: 'Departman Detay',
+      userList: 'Kullanıcı Listesi',
+      userForm: 'Kullanıcı Formu',
+      departmentTypeList: 'Departman Tipi Listesi',
+      departmentTypeForm: 'Departman Tipi Formu',
+      companyTypeList: 'Şirket Tipi Listesi',
+      companyTypeForm: 'Şirket Tipi Formu',
+      regionList: 'Bölge Listesi',
+      regionForm: 'Bölge Formu',
+      cityList: 'Şehir Listesi',
+      cityForm: 'Şehir Formu',
+      townList: 'İlçe Listesi',
+      townForm: 'İlçe Formu',
+    managerDashboard: 'Yönetici Paneli',
+    userDashboard: 'Kullanıcı Paneli',
+    companyInfo: 'Şirket Bilgileri',
+    managerUserList: 'Kullanıcı Listesi',
+    managerCompanyList: 'Şirket Listesi',
+    profile: 'Profil',
+    companyForm: 'Şirket Formu'
+  },
+  roles: {
+      admin: 'Admin',
+      manager: 'Yönetici',
+      user: 'Kullanıcı'
+    }
+};
