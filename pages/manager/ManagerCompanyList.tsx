@@ -207,15 +207,6 @@ const ManagerCompanyList = () => {
           {new Date(item.createdAt).toLocaleDateString('tr-TR')}
         </Text>
       </View>
-
-      {/* Detay butonu */}
-      <TouchableOpacity
-        style={styles.detailButton}
-        onPress={() => navigation.navigate('CompanyDetail', { id: item.id })}
-      >
-        <MaterialCommunityIcons name="eye" size={16} color="#fff" />
-        <Text style={styles.detailButtonText}>{t.managerCompanyList.viewDetails}</Text>
-      </TouchableOpacity>
     </View>
   );
 
@@ -350,21 +341,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#4b5c75',
   },
-  detailButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#4b5c75',
-    padding: 12,
-    borderRadius: 8,
-    marginTop: 12,
-  },
-  detailButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginLeft: 6,
-  },
+
 });
 
 export default ManagerCompanyList;

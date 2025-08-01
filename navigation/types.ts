@@ -31,6 +31,8 @@ export type RootStackParamList = {
   ManagerUserList: undefined;
   ManagerCompanyList: undefined;
   ManagerBottomTabs: undefined;
+  UserDepartmentInfo: undefined;
+
   
   
 };

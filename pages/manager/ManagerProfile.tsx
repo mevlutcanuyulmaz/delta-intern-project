@@ -104,14 +104,6 @@ const ManagerProfile = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>{t.managerProfile.title}</Text>
-      
-      <View style={styles.infoSection}>
-        <Text style={styles.label}>{t.managerProfile.department}</Text>
-        <Text style={styles.value}>{profile?.departmentName}</Text>
-        
-        <Text style={styles.label}>{t.managerProfile.role}</Text>
-        <Text style={styles.value}>{profile?.role.name}</Text>
-      </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t.managerProfile.personalInfo}</Text>
@@ -123,6 +115,14 @@ const ManagerProfile = () => {
         
         <Text style={styles.label}>{t.managerProfile.email}</Text>
         <Text style={styles.value}>{profile?.email}</Text>
+      </View>
+            
+      <View style={styles.infoSection}>
+        <Text style={styles.label}>{t.managerProfile.department}</Text>
+        <Text style={styles.value}>{profile?.departmentName}</Text>
+        
+        <Text style={styles.label}>{t.managerProfile.role}</Text>
+        <Text style={styles.value}>{profile?.role.name}</Text>
       </View>
 
       <View style={styles.section}>

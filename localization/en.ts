@@ -236,7 +236,8 @@ export const en: Translations = {
     users: 'Users',
     home: 'Home',
     profile: 'Profile',
-    companyInfo: 'Company Info'
+    companyInfo: 'Company Info',
+    departmentInfo: 'Department Info'
   },
   adminUserList: {
     loading: 'Loading...',
@@ -599,7 +600,8 @@ export const en: Translations = {
       managerUserList: 'User List',
       managerCompanyList: 'Company List',
       profile: 'Profile',
-      companyForm: 'Company Form'
+      companyForm: 'Company Form',
+      departmentInfo: 'Department Info'
   },
   roles:
   {

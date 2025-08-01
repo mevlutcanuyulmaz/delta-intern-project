@@ -22,7 +22,7 @@ import ForgotPassword from '../pages/auth/ForgotPasswordScreen';
 import ResetPasswordScreen from '../pages/auth/ResetPasswordScreen';
 import ManagerDashboard from '../pages/manager/ManagerDashboard';
 import UserDashboard from '../pages/user/UserDashboard';
-import UserCompanyInfo from '../pages/user/UserCompanyInfo';
+import UserDepartmentInfo from '../pages/user/UserDepartmentInfo';
 import ManagerUserList from '../pages/manager/ManagerUserList';
 import ManagerCompanyList from '../pages/manager/ManagerCompanyList';
 import ManagerProfile from '../pages/manager/ManagerProfile';
@@ -67,7 +67,7 @@ export const AppNavigator = () => {
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="ManagerDashboard" component={ManagerDashboard} options={{ title: t.navigation.managerDashboard }} />
         <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ title: t.navigation.userDashboard }} />
-        <Stack.Screen name="UserCompanyInfo" component={UserCompanyInfo} options={{ title: t.navigation.companyInfo }} />
+        <Stack.Screen name="UserDepartmentInfo" component={UserDepartmentInfo} options={{ title: t.navigation.departmentInfo }} />
         <Stack.Screen name="ManagerUserList" component={ManagerUserList} options={{ title: t.navigation.managerUserList }} />
         <Stack.Screen name="ManagerCompanyList" component={ManagerCompanyList} options={{ title: t.navigation.managerCompanyList }} />
         <Stack.Screen name="ManagerBottomTabs" component={ManagerBottomTabs} options={{ headerShown: false }} />

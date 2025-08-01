@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, ScrollView, RefreshControl, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -34,7 +35,7 @@ const UserDashboard = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
           <LanguageSwitcher />
           <TouchableOpacity onPress={handleLogout} style={{ marginLeft: 16 }}>
-            <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       ),
@@ -51,7 +52,6 @@ const UserDashboard = () => {
 
       const userStats: UserStats = {
         departmentName: userData.departmentName || t.userDashboard.unassigned,
-        companyName: userData.company?.name || t.userDashboard.unknown,
         joinDate: userData.createdAt || new Date().toISOString(),
       };
 
@@ -106,7 +106,6 @@ const UserDashboard = () => {
               <Text style={styles.welcomeTitle}>{t.userDashboard.welcome}</Text>
               <Text style={styles.welcomeName}>{userInfo?.name} {userInfo?.surname}</Text>
               <Text style={styles.welcomeRole}>{userInfo?.role?.name}</Text>
-              <Text style={styles.welcomeCompany}>{stats?.companyName}</Text>
             </View>
           </View>
         </View>
@@ -118,10 +117,6 @@ const UserDashboard = () => {
             <View style={styles.infoItem}>
               <Icon name="domain" size={20} color="#4b5c75" />
               <Text style={styles.infoText}>{t.userDashboard.department}: {stats?.departmentName}</Text>
-            </View>
-            <View style={styles.infoItem}>
-              <Icon name="office-building" size={20} color="#4b5c75" />
-              <Text style={styles.infoText}>{t.userDashboard.company}: {stats?.companyName}</Text>
             </View>
             <View style={styles.infoItem}>
               <Icon name="calendar" size={20} color="#4b5c75" />
@@ -189,11 +184,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   welcomeRole: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 2,
-  },
-  welcomeCompany: {
     fontSize: 14,
     color: '#666',
     marginTop: 2,

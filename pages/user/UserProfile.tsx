@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
 import { UserInfo } from '../../types/types';
 import { useLanguage } from '../../localization';
@@ -30,22 +31,19 @@ const UserProfile = ({ navigation }: any) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
           <LanguageSwitcher />
           <TouchableOpacity
-            onPress={() => {
-              Alert.alert(
-                t.userProfile.logoutTitle,
-                t.userProfile.logoutMessage,
-                [
-                  { text: t.userProfile.cancel, style: 'cancel' },
-                  { text: t.userProfile.logout, style: 'destructive', onPress: () => navigation.navigate('Login') }
-                ]
-              );
+            onPress={async () => {
+              await AsyncStorage.removeItem('accessToken');
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
             }}
-            style={{ marginLeft: 16 }}
+            style={{ marginLeft: 15 }}
           >
-            <Text style={{ color: 'red', fontWeight: 'bold' }}>{t.common.logout}</Text>
+            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       ),
@@ -98,14 +96,7 @@ const UserProfile = ({ navigation }: any) => {
     }
   };
 
-  const formatJoinDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('tr-TR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+
 
   if (loading) {
     return (
@@ -120,33 +111,7 @@ const UserProfile = ({ navigation }: any) => {
     <ScrollView style={styles.container}>
         <Text style={styles.title}>{t.userProfile.title}</Text>
         
-        {/* Genel Bilgiler */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Icon name="account-circle" size={24} color="#4b5c75" />
-            <Text style={styles.sectionTitle}>{t.userProfile.generalInfo}</Text>
-          </View>
-          
-          <View style={styles.infoItem}>
-            <Text style={styles.label}>{t.userProfile.department}</Text>
-            <Text style={styles.value}>{profile?.departmentName || profile?.department?.name || t.userProfile.unassigned}</Text>
-          </View>
-          
-          <View style={styles.infoItem}>
-            <Text style={styles.label}>{t.userProfile.company}</Text>
-            <Text style={styles.value}>{profile?.company?.name || t.userProfile.unknown}</Text>
-          </View>
-          
-          <View style={styles.infoItem}>
-            <Text style={styles.label}>{t.userProfile.role}</Text>
-            <Text style={styles.value}>{profile?.role?.name}</Text>
-          </View>
 
-          <View style={styles.infoItem}>
-            <Text style={styles.label}>{t.userProfile.joinDate}</Text>
-            <Text style={styles.value}>{formatJoinDate(profile?.createdAt || '')}</Text>
-          </View>
-        </View>
 
         {/* Kişisel Bilgiler */}
         <View style={styles.section}>
@@ -170,12 +135,25 @@ const UserProfile = ({ navigation }: any) => {
             <Text style={styles.value}>{profile?.email}</Text>
           </View>
 
-          {profile?.phone && (
-            <View style={styles.infoItem}>
-              <Text style={styles.label}>{t.userProfile.phone}</Text>
-              <Text style={styles.value}>{profile.phone}</Text>
-            </View>
-          )}
+
+        </View>
+
+        {/* Genel Bilgiler */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Icon name="account-circle" size={24} color="#4b5c75" />
+            <Text style={styles.sectionTitle}>{t.userProfile.generalInfo}</Text>
+          </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.department}</Text>
+            <Text style={styles.value}>{profile?.departmentName || profile?.department?.name || t.userProfile.unassigned}</Text>
+          </View>
+          
+          <View style={styles.infoItem}>
+            <Text style={styles.label}>{t.userProfile.role}</Text>
+            <Text style={styles.value}>{profile?.role?.name}</Text>
+          </View>
         </View>
 
         {/* Şifre Değiştir */}

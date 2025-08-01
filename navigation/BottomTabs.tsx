@@ -17,7 +17,7 @@ import ManagerProfile from '../pages/manager/ManagerProfile';
 
 // User pages
 import UserDashboard from '../pages/user/UserDashboard';
-import UserCompanyInfo from '../pages/user/UserCompanyInfo';
+import UserDepartmentInfo from '../pages/user/UserDepartmentInfo';
 import UserProfile from '../pages/user/UserProfile';
 
 const Tab = createBottomTabNavigator();
@@ -140,10 +140,10 @@ const BottomTabs: React.FC<BottomTabsProps> = ({ userRole }) => {
         }}
       />
       <Tab.Screen
-        name="UserCompanyInfo"
-        component={UserCompanyInfo}
+        name="UserDepartmentInfo"
+        component={UserDepartmentInfo}
         options={{
-          title: t.bottomTabs.companyInfo,
+          title: t.bottomTabs.departmentInfo,
           tabBarIcon: ({ color, size }) => (
             <Icon name="office-building" size={size} color={color} />
           ),

@@ -261,7 +261,8 @@ export const tr: Translations = {
     users: 'Kullanıcılar',
     home: 'Ana Sayfa',
     profile: 'Profil',
-    companyInfo: 'Şirket Bilgileri'
+    companyInfo: 'Şirket Bilgileri',
+    departmentInfo: 'Departman Bilgileri'
   },
   adminUserList: {
     loading: 'Yükleniyor...',
@@ -601,7 +602,8 @@ export const tr: Translations = {
     managerUserList: 'Kullanıcı Listesi',
     managerCompanyList: 'Şirket Listesi',
     profile: 'Profil',
-    companyForm: 'Şirket Formu'
+    companyForm: 'Şirket Formu',
+    departmentInfo: 'Departman Bilgileri'
   },
   roles: {
       admin: 'Admin',

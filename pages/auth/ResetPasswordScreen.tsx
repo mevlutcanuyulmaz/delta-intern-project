@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, KeyboardAvo
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { useLanguage } from '../../localization';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
-import api from '../../services/api';
+import axios from 'axios';
 
 const ResetPasswordScreen = () => {
   const navigation = useNavigation<any>();
@@ -14,6 +14,11 @@ const ResetPasswordScreen = () => {
 
   const route = useRoute<any>();
   const token = route.params?.token;
+
+  // Şifre sıfırlama için interceptor'sız axios instance
+  const resetPasswordApi = axios.create({
+    baseURL: 'https://organizationbackendenv-env-2.eba-ye3jwmbt.us-east-1.elasticbeanstalk.com',
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -49,7 +54,7 @@ const ResetPasswordScreen = () => {
 
     try {
       console.log('Trying password reset for token:', token);
-      await api.post('/api/auth/reset-password', {
+      await resetPasswordApi.post('/api/auth/reset-password', {
         token,
         newPassword,
         confirmPassword

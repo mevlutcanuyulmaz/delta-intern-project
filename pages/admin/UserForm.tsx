@@ -57,9 +57,9 @@ const UserForm = () => {
   const [loading, setLoading] = useState(!!userId);
 
   const roles = [
-    { value: 6, label: t.roles.admin },
+    { value: 4, label: t.roles.admin },
     { value: 5, label: t.roles.manager },
-    { value: 4, label: t.roles.user },
+    { value: 6, label: t.roles.user },
   ];
 
   // Role string'den ID'ye çevirme fonksiyonu

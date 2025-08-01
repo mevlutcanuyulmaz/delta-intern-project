@@ -22,12 +22,19 @@ interface User {
   };
   departmentName: string;
   departmentId: number;
-  companyName: string;
+  companyId: number;
+  companyName?: string;
+}
+
+interface Company {
+  id: number;
+  name: string;
 }
 
 const UserList = () => {
   const { t } = useLanguage();
   const [users, setUsers] = useState<User[]>([]);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<UserListNavigationProp>();
 
@@ -61,8 +68,14 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get('/api/user/get-users-of-detailed');
-      setUsers(response.data);
+      // Şirketleri ve kullanıcıları paralel olarak getir
+      const [usersResponse, companiesResponse] = await Promise.all([
+        api.get('/api/user/get-users-of-detailed'),
+        api.get('/api/companies') 
+      ]);
+      
+      setUsers(usersResponse.data);
+      setCompanies(companiesResponse.data);
     } catch (error) {
       Alert.alert(t.common.error, t.adminUserList.usersLoadError);
     } finally {
@@ -101,6 +114,10 @@ const UserList = () => {
   const renderUser = ({ item }: { item: User }) => {
     const roleName = item.role?.name.toLowerCase() as keyof typeof t.roles;
     const displayRole = roleName in t.roles ? t.roles[roleName] : item.role?.name;
+    
+    // CompanyId'ye göre company name'i bul
+    const company = companies.find(c => c.id === item.companyId);
+    const companyName = company ? company.name : t.managerDashboard.unknown || 'Bilinmiyor';
 
     return (
     <View style={styles.card}>
@@ -108,7 +125,7 @@ const UserList = () => {
       <Text style={styles.email}>{t.adminUserList.email}: {item.email}</Text>
       <Text style={styles.role}>{t.adminUserList.role}: {displayRole}</Text>
       <Text style={styles.department}>{t.adminUserList.department}: {item.departmentName}</Text>
-      <Text style={styles.company}>{t.adminUserList.company}: {item.companyName}</Text>
+      <Text style={styles.company}>{t.adminUserList.company}: {companyName}</Text>
 
       <View style={styles.buttonRow}>
         <TouchableOpacity

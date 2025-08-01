@@ -254,6 +254,7 @@ export interface Translations {
     home: string;
     profile: string;
     companyInfo: string;
+    departmentInfo: string;
   };
 
   // Admin User List translations
@@ -646,6 +647,7 @@ export interface Translations {
     managerCompanyList: string;
     profile: string;
     companyForm: string;
+    departmentInfo: string;
   };
 
   roles: {

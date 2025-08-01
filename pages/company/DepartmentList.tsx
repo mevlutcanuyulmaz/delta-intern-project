@@ -39,6 +39,7 @@ const DepartmentList = ({ companyId }: { companyId: number }) => {
       const response = await api.get('/api/location/town');
       setTowns(response.data);
     } catch (err) {
+      console.error('Towns fetch error:', err);
       Alert.alert(t.common.error, t.departmentList.districtsLoadError);
     }
   };

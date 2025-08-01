@@ -69,7 +69,6 @@ export interface DepartmentTownDetail {
 // UserStats interface for UserDashboard
 export interface UserStats {
   departmentName: string;
-  companyName: string;
   joinDate: string;
 }
 
